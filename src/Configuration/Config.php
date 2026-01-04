@@ -3,8 +3,8 @@
 namespace LemonSqueezy\Configuration;
 
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Factory\RequestFactoryInterface;
-use Psr\Http\Factory\StreamFactoryInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * Immutable configuration holder for the LemonSqueezy API client

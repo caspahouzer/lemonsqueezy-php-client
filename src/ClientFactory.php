@@ -5,8 +5,8 @@ namespace LemonSqueezy;
 use LemonSqueezy\Configuration\ConfigBuilder;
 use LemonSqueezy\Configuration\Config;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Factory\RequestFactoryInterface;
-use Psr\Http\Factory\StreamFactoryInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
