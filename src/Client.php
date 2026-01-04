@@ -5,13 +5,26 @@ namespace LemonSqueezy;
 use LemonSqueezy\Configuration\Config;
 use LemonSqueezy\Authentication\{AuthenticationInterface, BearerTokenAuth, PublicAuth};
 use LemonSqueezy\Http\{RequestFactory, ResponseHandler, RateLimiter};
-use LemonSqueezy\Http\Middleware\{MiddlewareInterface, AuthenticationMiddleware, RateLimitMiddleware};
+use LemonSqueezy\Http\Middleware\{MiddlewareInterface, AuthenticationMiddleware, RateLimitMiddleware, LoggingMiddleware};
 use LemonSqueezy\Resource\{
-    Users, Stores, Products, Variants, Prices, Files,
-    Customers, Orders, OrderItems,
-    Subscriptions, SubscriptionInvoices, SubscriptionItems,
-    Discounts, DiscountRedemptions, LicenseKeys,
-    Webhooks, Checkouts, Affiliates
+    Users,
+    Stores,
+    Products,
+    Variants,
+    Prices,
+    Files,
+    Customers,
+    Orders,
+    OrderItems,
+    Subscriptions,
+    SubscriptionInvoices,
+    SubscriptionItems,
+    Discounts,
+    DiscountRedemptions,
+    LicenseKeys,
+    Webhooks,
+    Checkouts,
+    Affiliates
 };
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -93,9 +106,7 @@ class Client
             $guzzle = new \GuzzleHttp\Client();
 
             return new class($guzzle) implements ClientInterface {
-                public function __construct(private \GuzzleHttp\Client $client)
-                {
-                }
+                public function __construct(private \GuzzleHttp\Client $client) {}
 
                 public function sendRequest(RequestInterface $request): ResponseInterface
                 {
@@ -105,7 +116,7 @@ class Client
         } catch (\Throwable) {
             throw new \RuntimeException(
                 'No PSR-18 HTTP client provided and GuzzleHttp is not installed. ' .
-                'Either provide an HTTP client via Config or install guzzlehttp/guzzle.'
+                    'Either provide an HTTP client via Config or install guzzlehttp/guzzle.'
             );
         }
     }
@@ -130,7 +141,7 @@ class Client
         } catch (\Throwable) {
             throw new \RuntimeException(
                 'No PSR-17 factories provided and GuzzleHttp is not installed. ' .
-                'Either provide factories via Config or install guzzlehttp/guzzle.'
+                    'Either provide factories via Config or install guzzlehttp/guzzle.'
             );
         }
     }
@@ -153,6 +164,7 @@ class Client
     private function setupDefaultMiddleware(): void
     {
         $this->middleware = [
+            new LoggingMiddleware($this->logger),
             new AuthenticationMiddleware($this->authentication),
             new RateLimitMiddleware($this->rateLimiter),
         ];
@@ -213,8 +225,7 @@ class Client
             public function __construct(
                 private ClientInterface $baseClient,
                 private array $middlewares
-            ) {
-            }
+            ) {}
 
             public function sendRequest(RequestInterface $request): ResponseInterface
             {
