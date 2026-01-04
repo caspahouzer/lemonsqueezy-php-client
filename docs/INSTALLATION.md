@@ -6,23 +6,23 @@ The easiest way to install the LemonSqueezy PHP API client is via Composer.
 
 ### Prerequisites
 
-- PHP 8.0 or higher
-- Composer installed on your system
-- GuzzleHttp 7.0+ or another PSR-18 compatible HTTP client
+-   PHP 8.0 or higher
+-   Composer installed on your system
+-   GuzzleHttp 7.0+ or another PSR-18 compatible HTTP client
 
 ### Installation Steps
 
 1. **Install the package**
 
-   ```bash
-   composer require slk/lemonsqueezy-api-client
-   ```
+    ```bash
+    composer require slk/lemonsqueezy-api-client
+    ```
 
 2. **Verify installation**
 
-   ```bash
-   vendor/bin/phpunit tests/Unit/ClientTest.php
-   ```
+    ```bash
+    vendor/bin/phpunit tests/Unit/ClientTest.php
+    ```
 
 ## Manual Installation
 
@@ -30,36 +30,36 @@ If you prefer to install manually or don't use Composer:
 
 1. **Clone or download the repository**
 
-   ```bash
-   git clone https://github.com/slk/lemonsqueezy-php-client.git
-   cd LemonSqueezy
-   ```
+    ```bash
+    git clone https://github.com/caspahouzer/lemonsqueezy-php-client.git
+    cd LemonSqueezy
+    ```
 
 2. **Configure autoloading**
 
-   Add this to your `composer.json` (create one if it doesn't exist):
+    Add this to your `composer.json` (create one if it doesn't exist):
 
-   ```json
-   {
-       "autoload": {
-           "psr-4": {
-               "LemonSqueezy\\": "path/to/LemonSqueezy/src/"
-           }
-       }
-   }
-   ```
+    ```json
+    {
+        "autoload": {
+            "psr-4": {
+                "LemonSqueezy\\": "path/to/LemonSqueezy/src/"
+            }
+        }
+    }
+    ```
 
 3. **Install dependencies**
 
-   ```bash
-   composer install
-   ```
+    ```bash
+    composer install
+    ```
 
 4. **Load in your project**
 
-   ```php
-   require 'vendor/autoload.php';
-   ```
+    ```php
+    require 'vendor/autoload.php';
+    ```
 
 ## Configuration
 
@@ -184,7 +184,7 @@ try {
 
 ## Next Steps
 
-- Read the [Quick Start](QUICKSTART.md) guide
-- Check out [examples](../examples/) folder
-- Review [API Resources documentation](API_RESOURCES.md)
-- See [Error Handling](ERROR_HANDLING.md) guide
+-   Read the [Quick Start](QUICKSTART.md) guide
+-   Check out [examples](../examples/) folder
+-   Review [API Resources documentation](API_RESOURCES.md)
+-   See [Error Handling](ERROR_HANDLING.md) guide

@@ -25,3 +25,10 @@ composer.phar
 # OS
 Thumbs.db
 .DS_Store
+
+# ignore *.md files except README.md
+*.md
+!CHANGELOG.md
+!CONTRIBUTING.md
+!LICENSE.md
+!README.md

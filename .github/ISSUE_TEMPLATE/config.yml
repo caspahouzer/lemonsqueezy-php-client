@@ -1,0 +1,14 @@
+# GitHub Issue Template Configuration
+# This file configures how issue templates are shown on GitHub
+
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/caspahouzer/lemonsqueezy-php-client/discussions
+    about: Ask questions and discuss ideas
+  - name: LemonSqueezy Documentation
+    url: https://docs.lemonsqueezy.com
+    about: Official LemonSqueezy API documentation
+  - name: Packagist Package
+    url: https://packagist.org/packages/slk/lemonsqueezy-api-client
+    about: View the package on Packagist

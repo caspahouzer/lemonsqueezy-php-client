@@ -4,17 +4,17 @@ A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemo
 
 ## Features
 
-- ✅ Full API coverage (19 resources)
-- ✅ PSR-4 autoloading, PSR-7/17/18 HTTP standards compliance
-- ✅ Bearer token authentication
-- ✅ Public License API support
-- ✅ Fluent query builder with filtering, sorting, pagination
-- ✅ Automatic rate limit handling (300 req/min)
-- ✅ Comprehensive exception hierarchy
-- ✅ Middleware-based request pipeline
-- ✅ JSON:API spec compliance
-- ✅ Framework-agnostic (works with any PHP project)
-- ✅ Zero production dependencies (optional Guzzle fallback)
+-   ✅ Full API coverage (19 resources)
+-   ✅ PSR-4 autoloading, PSR-7/17/18 HTTP standards compliance
+-   ✅ Bearer token authentication
+-   ✅ Public License API support
+-   ✅ Fluent query builder with filtering, sorting, pagination
+-   ✅ Automatic rate limit handling (300 req/min)
+-   ✅ Comprehensive exception hierarchy
+-   ✅ Middleware-based request pipeline
+-   ✅ JSON:API spec compliance
+-   ✅ Framework-agnostic (works with any PHP project)
+-   ✅ Zero production dependencies (optional Guzzle fallback)
 
 ## Installation
 
@@ -28,15 +28,15 @@ composer require slk/lemonsqueezy-api-client
 
 1. Download or clone this repository
 2. Add PSR-4 autoloading to your `composer.json`:
-   ```json
-   {
-       "autoload": {
-           "psr-4": {
-               "LemonSqueezy\\": "path/to/LemonSqueezy/src/"
-           }
-       }
-   }
-   ```
+    ```json
+    {
+        "autoload": {
+            "psr-4": {
+                "LemonSqueezy\\": "path/to/LemonSqueezy/src/"
+            }
+        }
+    }
+    ```
 3. Run `composer dump-autoload`
 
 ## Quick Start
@@ -102,26 +102,26 @@ $result = $client->licenseKeys()->deactivate(
 
 The client provides access to **all 18 documented LemonSqueezy API resources** with comprehensive method coverage:
 
-| Resource | Methods | Endpoint | Notes |
-|----------|---------|----------|-------|
-| Users | list, get | `/users` | Read-only |
-| Stores | ✅ CRUD | `/stores` | Full support |
-| Products | ✅ CRUD | `/products` | Full support |
-| Variants | ✅ CRUD | `/variants` | Full support |
-| Prices | ✅ CRUD | `/prices` | Full support |
-| Files | ✅ CRUD | `/files` | Full support |
-| Customers | ✅ CRUD | `/customers` | Full support |
-| Orders | list, get | `/orders` | Read-only |
-| Order Items | list, get | `/order-items` | Read-only |
-| Subscriptions | list, get | `/subscriptions` | Read-only |
-| Subscription Invoices | list, get | `/subscription-invoices` | Read-only |
-| Subscription Items | list, get | `/subscription-items` | Read-only |
-| Discounts | ✅ CRUD | `/discounts` | Full support |
-| Discount Redemptions | list, get | `/discount-redemptions` | Read-only |
-| **License Keys** | **activate**, **validate**, **deactivate** | `/licenses/*` | **Public API (no auth)** |
-| Webhooks | ✅ CRUD | `/webhooks` | Full support |
-| Checkouts | list, create | `/checkouts` | Limited |
-| Affiliates | list, get | `/affiliates` | Read-only |
+| Resource              | Methods                                    | Endpoint                 | Notes                    |
+| --------------------- | ------------------------------------------ | ------------------------ | ------------------------ |
+| Users                 | list, get                                  | `/users`                 | Read-only                |
+| Stores                | ✅ CRUD                                    | `/stores`                | Full support             |
+| Products              | ✅ CRUD                                    | `/products`              | Full support             |
+| Variants              | ✅ CRUD                                    | `/variants`              | Full support             |
+| Prices                | ✅ CRUD                                    | `/prices`                | Full support             |
+| Files                 | ✅ CRUD                                    | `/files`                 | Full support             |
+| Customers             | ✅ CRUD                                    | `/customers`             | Full support             |
+| Orders                | list, get                                  | `/orders`                | Read-only                |
+| Order Items           | list, get                                  | `/order-items`           | Read-only                |
+| Subscriptions         | list, get                                  | `/subscriptions`         | Read-only                |
+| Subscription Invoices | list, get                                  | `/subscription-invoices` | Read-only                |
+| Subscription Items    | list, get                                  | `/subscription-items`    | Read-only                |
+| Discounts             | ✅ CRUD                                    | `/discounts`             | Full support             |
+| Discount Redemptions  | list, get                                  | `/discount-redemptions`  | Read-only                |
+| **License Keys**      | **activate**, **validate**, **deactivate** | `/licenses/*`            | **Public API (no auth)** |
+| Webhooks              | ✅ CRUD                                    | `/webhooks`              | Full support             |
+| Checkouts             | list, create                               | `/checkouts`             | Limited                  |
+| Affiliates            | list, get                                  | `/affiliates`            | Read-only                |
 
 **→ See [API_COVERAGE.md](API_COVERAGE.md) for complete endpoint checklist with all methods and status**
 
@@ -277,10 +277,10 @@ composer cs:fix
 
 ## Requirements
 
-- PHP >= 8.0
-- PSR-18 HTTP Client (or GuzzleHttp 7.0+)
-- PSR-17 HTTP Factories (or GuzzleHttp 7.0+)
-- PSR-7 HTTP Messages
+-   PHP >= 8.0
+-   PSR-18 HTTP Client (or GuzzleHttp 7.0+)
+-   PSR-17 HTTP Factories (or GuzzleHttp 7.0+)
+-   PSR-7 HTTP Messages
 
 ## License
 
@@ -288,7 +288,7 @@ MIT. See [LICENSE](LICENSE) file for details.
 
 ## Support
 
-For issues, feature requests, or contributions, please visit the [GitHub repository](https://github.com/slk/lemonsqueezy-php-client).
+For issues, feature requests, or contributions, please visit the [GitHub repository](https://github.com/caspahouzer/lemonsqueezy-php-client).
 
 ## API Documentation
 
