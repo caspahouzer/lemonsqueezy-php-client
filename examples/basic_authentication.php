@@ -10,6 +10,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use LemonSqueezy\ClientFactory;
 use LemonSqueezy\Exception\LemonSqueezyException;
+use LemonSqueezy\Model\Entities\Customer;
+use LemonSqueezy\Model\Entities\Product;
 
 // Create a client with your API key
 $client = ClientFactory::create('YOUR_API_KEY');
@@ -20,6 +22,7 @@ try {
     $customers = $client->customers()->list();
     echo "Total customers: " . $customers->getTotal() . "\n";
 
+    /** @var Customer $customer */
     foreach ($customers->items() as $customer) {
         echo "- " . $customer->getEmail() . "\n";
     }
@@ -28,6 +31,7 @@ try {
     echo "\n=== Getting Specific Customer ===\n";
     if ($customers->count() > 0) {
         $first = $customers->items()[0];
+        /** @var Customer $customer */
         $customer = $client->customers()->get($first->getId());
         echo "Name: " . $customer->getAttribute('name') . "\n";
         echo "Email: " . $customer->getEmail() . "\n";
@@ -38,6 +42,7 @@ try {
     $products = $client->products()->list();
     echo "Total products: " . $products->getTotal() . "\n";
 
+    /** @var Product $product */
     foreach ($products->items() as $product) {
         echo "- " . $product->getAttribute('name') . "\n";
     }

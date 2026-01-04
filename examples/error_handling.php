@@ -54,7 +54,7 @@ try {
 echo "\n=== Handling Authentication Error ===\n";
 try {
     // This will fail with invalid API key
-    $badClient = ClientFactory::create('lsq_invalid_key');
+    $badClient = ClientFactory::create('invalid_api_key_12345');
     $users = $badClient->users()->list();
 } catch (UnauthorizedException $e) {
     echo "Unauthorized: " . $e->getMessage() . "\n";

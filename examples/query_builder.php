@@ -10,6 +10,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use LemonSqueezy\ClientFactory;
 use LemonSqueezy\Query\QueryBuilder;
 use LemonSqueezy\Exception\LemonSqueezyException;
+use LemonSqueezy\Model\Entities\Customer;
 
 $client = ClientFactory::create('YOUR_API_KEY');
 
@@ -38,6 +39,7 @@ try {
     $customers = $client->customers()->list($query);
     echo "Found " . $customers->count() . " customers\n";
 
+    /** @var Customer $customer */
     foreach ($customers->items() as $customer) {
         echo "- " . $customer->getEmail() . "\n";
     }
