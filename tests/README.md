@@ -29,31 +29,38 @@ Tests actual API endpoints by connecting to the real LemonSqueezy API.
 ### Prerequisites
 1. A LemonSqueezy account (https://www.lemonsqueezy.com)
 2. An API key from your LemonSqueezy dashboard
+3. **Recommended**: Use a **test mode API key** for running integration tests (safer, won't affect live data)
+4. **For Testing Checkouts/Orders**: Use test card numbers:
+   - Visa: `4242 4242 4242 4242`
+   - Any future expiration date (e.g., 12/25)
+   - Any 3-digit CVC (e.g., 123)
 
 ### Configuration
 
 1. **Get your API key:**
    - Go to https://app.lemonsqueezy.com/settings/api
-   - Create or copy an existing API key (starts with `lsq_live_` or `lsq_test_`)
+   - **For Integration Tests**: Create an API key in Test Mode (safer)
+   - **For Production**: Use an API key from Live Mode
+   - Copy your API key
 
 2. **Set the environment variable:**
 
    **Option A: Export in terminal (temporary)**
    ```bash
-   export LEMONSQUEEZY_API_KEY="lsq_live_YOUR_KEY_HERE"
+   export LEMONSQUEEZY_API_KEY="YOUR_API_KEY"
    ```
 
    **Option B: Create .env file (permanent)**
    ```bash
    # Create .env in the LemonSqueezy root directory
-   echo "LEMONSQUEEZY_API_KEY=lsq_live_YOUR_KEY_HERE" > .env
+   echo "LEMONSQUEEZY_API_KEY=YOUR_API_KEY" > .env
    ```
 
    **Option C: phpunit.xml**
    Edit `phpunit.xml` and add:
    ```xml
    <php>
-       <env name="LEMONSQUEEZY_API_KEY" value="lsq_live_YOUR_KEY_HERE" />
+       <env name="LEMONSQUEEZY_API_KEY" value="YOUR_API_KEY" />
    </php>
    ```
 
@@ -213,15 +220,15 @@ OK (14 tests, 50+ assertions)
 ### "LEMONSQUEEZY_API_KEY environment variable not set"
 The test skips automatically if no API key is set. Set the environment variable:
 ```bash
-export LEMONSQUEEZY_API_KEY="lsq_live_YOUR_KEY"
+export LEMONSQUEEZY_API_KEY="YOUR_API_KEY"
 vendor/bin/phpunit tests/Integration/RealApiTest.php
 ```
 
 ### "Invalid API key: Unauthorized"
 Your API key is invalid. Check:
-1. The key starts with `lsq_live_` or `lsq_test_`
-2. The key is from your LemonSqueezy dashboard
-3. The key hasn't been revoked
+1. The key is from your LemonSqueezy dashboard
+2. The key hasn't been revoked
+3. You have the correct key in the environment variable
 
 ### "API error: [error message]"
 Check the error message:
@@ -233,7 +240,7 @@ Check the error message:
 The real API tests make actual HTTP requests. To speed up testing:
 1. Use unit tests for development: `composer test`
 2. Run real API tests less frequently
-3. Consider using the test API key (`lsq_test_`) for faster responses
+3. Consider using a test account for faster API responses
 
 ## Test Configuration
 

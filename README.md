@@ -47,7 +47,7 @@ composer require slk/lemonsqueezy-api-client
 use LemonSqueezy\ClientFactory;
 
 // Create a client with your API key
-$client = ClientFactory::create('lsq_live_YOUR_API_KEY');
+$client = ClientFactory::create('YOUR_API_KEY');
 
 // Get all customers
 $customers = $client->customers()->list();
@@ -188,7 +188,7 @@ use GuzzleHttp\Client as GuzzleClient;
 
 $guzzleClient = new GuzzleClient(['timeout' => 60]);
 
-$client = ClientFactory::create('lsq_live_...')
+$client = ClientFactory::create('YOUR_API_KEY')
     ->withHttpClient($guzzleClient)
     ->withTimeout(60)
     ->withMaxRetries(3)
@@ -204,14 +204,14 @@ use Monolog\Handlers\StreamHandler;
 $logger = new Logger('lemonsqueezy');
 $logger->pushHandler(new StreamHandler('app.log'));
 
-$client = ClientFactory::create('lsq_live_...', $logger);
+$client = ClientFactory::create('YOUR_API_KEY', $logger);
 ```
 
 ### Webhook Verification
 
 ```php
 $config = (new ConfigBuilder())
-    ->withApiKey('lsq_live_...')
+    ->withApiKey('YOUR_API_KEY')
     ->withWebhookSecret('webhook_secret_...')
     ->build();
 

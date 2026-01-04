@@ -12,7 +12,7 @@ use LemonSqueezy\ClientFactory;
 use LemonSqueezy\Exception\LemonSqueezyException;
 
 // Create a client with your API key
-$client = ClientFactory::create('lsq_live_YOUR_API_KEY_HERE');
+$client = ClientFactory::create('YOUR_API_KEY');
 
 try {
     // List all customers

@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  *
  * SETUP REQUIRED:
  * 1. Create a .env file in the root directory with your API key:
- *    LEMONSQUEEZY_API_KEY=lsq_live_YOUR_KEY_HERE
+ *    LEMONSQUEEZY_API_KEY=YOUR_API_KEY
  *
  * 2. Run tests with:
  *    composer test
@@ -38,10 +38,10 @@ class RealApiTest extends TestCase
         // Load API key from environment
         $this->apiKey = $_ENV['LEMONSQUEEZY_API_KEY'] ?? getenv('LEMONSQUEEZY_API_KEY') ?? '';
 
-        if (empty($this->apiKey) || $this->apiKey === 'lsq_live_YOUR_KEY_HERE') {
+        if (empty($this->apiKey)) {
             $this->markTestSkipped(
                 'LEMONSQUEEZY_API_KEY environment variable not set. ' .
-                    'Set it to run real API tests: export LEMONSQUEEZY_API_KEY=lsq_live_...'
+                    'Set it to run real API tests: export LEMONSQUEEZY_API_KEY=your_api_key_here'
             );
         }
 

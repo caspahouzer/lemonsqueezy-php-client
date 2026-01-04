@@ -21,7 +21,7 @@ use LemonSqueezy\Exception\{
     LemonSqueezyException
 };
 
-$client = ClientFactory::create('lsq_live_YOUR_API_KEY_HERE');
+$client = ClientFactory::create('YOUR_API_KEY');
 
 // Example 1: Handle 404 Not Found
 echo "=== Handling Not Found ===\n";

@@ -14,11 +14,11 @@ use Psr\Log\LoggerInterface;
  *
  * Example usage:
  * ```php
- * $client = ClientFactory::create('lsq_live_...');
+ * $client = ClientFactory::create('YOUR_API_KEY');
  *
  * // Or with custom configuration:
  * $client = (new ClientFactory())
- *     ->withApiKey('lsq_live_...')
+ *     ->withApiKey('YOUR_API_KEY')
  *     ->withTimeout(60)
  *     ->withLogger($logger)
  *     ->build();

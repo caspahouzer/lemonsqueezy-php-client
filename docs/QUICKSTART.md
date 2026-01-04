@@ -16,8 +16,10 @@ composer install
 
 1. Log in to [LemonSqueezy](https://app.lemonsqueezy.com)
 2. Go to Settings → API
-3. Create a new API key or copy existing one
-4. Copy the key (starts with `lsq_live_` or `lsq_test_`)
+3. Create a new API key or copy existing one:
+   - **For Testing/Development**: Create an API key in **Test Mode** (won't affect live data)
+   - **For Production**: Create an API key in **Live Mode**
+4. Copy your API key
 
 ## 3. Create Your First Client
 
@@ -28,7 +30,7 @@ require 'vendor/autoload.php';
 use LemonSqueezy\ClientFactory;
 
 // Create a client with your API key
-$client = ClientFactory::create('lsq_live_YOUR_API_KEY_HERE');
+$client = ClientFactory::create('YOUR_API_KEY');
 
 // Verify it works
 $users = $client->users()->list();

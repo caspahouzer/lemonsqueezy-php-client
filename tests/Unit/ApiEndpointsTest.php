@@ -27,7 +27,7 @@ class ApiEndpointsTest extends TestCase
         // Create mock HTTP client for testing
         // Note: Unit tests don't need real HTTP factories since we mock the client
         $config = (new ConfigBuilder())
-            ->withApiKey('lsq_test_key_123')
+            ->withApiKey('test_api_key_unit_tests')
             ->withHttpClient(new MockHttpClient())
             ->build();
 
@@ -234,7 +234,7 @@ class ApiEndpointsTest extends TestCase
     public function testConfigurationOptions(): void
     {
         $config = (new ConfigBuilder())
-            ->withApiKey('lsq_live_key')
+            ->withApiKey('test_api_key_config')
             ->withTimeout(60)
             ->withMaxRetries(5)
             ->withWebhookSecret('webhook_secret')
@@ -252,7 +252,7 @@ class ApiEndpointsTest extends TestCase
     public function testApiBaseUrl(): void
     {
         $config = (new ConfigBuilder())
-            ->withApiKey('lsq_live_key')
+            ->withApiKey('test_api_key_url')
             ->build();
 
         $this->assertStringContainsString('api.lemonsqueezy.com', $config->getApiBaseUrl());
@@ -265,7 +265,7 @@ class ApiEndpointsTest extends TestCase
     public function testLoggerIntegration(): void
     {
         $config = (new ConfigBuilder())
-            ->withApiKey('lsq_live_key')
+            ->withApiKey('test_api_key_logger')
             ->build();
 
         $client = new Client($config);
@@ -373,12 +373,12 @@ class ApiEndpointsTest extends TestCase
     public function testConfigurationImmutability(): void
     {
         $config = (new ConfigBuilder())
-            ->withApiKey('lsq_live_key')
+            ->withApiKey('test_api_key_immutable')
             ->withTimeout(30)
             ->build();
 
         // Config should be created and cannot be modified directly
-        $this->assertEquals('lsq_live_key', $config->getCredentials()->getApiKey());
+        $this->assertEquals('test_api_key_immutable', $config->getCredentials()->getApiKey());
         $this->assertEquals(30, $config->getTimeout());
     }
 }

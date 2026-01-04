@@ -14,7 +14,7 @@ class ClientTest extends TestCase
     protected function setUp(): void
     {
         $config = (new ConfigBuilder())
-            ->withApiKey('lsq_test_key')
+            ->withApiKey('test_key_123456789')
             ->withHttpClient(new MockHttpClient())
             ->build();
 
@@ -42,7 +42,7 @@ class ClientTest extends TestCase
 
     public function testClientFactoryCreatesClient(): void
     {
-        $client = ClientFactory::create('lsq_test_key');
+        $client = ClientFactory::create('test_api_key_factory');
         $this->assertInstanceOf(Client::class, $client);
     }
 

@@ -68,9 +68,13 @@ If you prefer to install manually or don't use Composer:
 Store your API key in environment variables rather than hardcoding:
 
 ```php
-// .env
-LEMONSQUEEZY_API_KEY=lsq_live_xxxxxxxxxxxxx
+// .env (for development/testing - use Test Mode API key)
+LEMONSQUEEZY_API_KEY=your_test_mode_api_key
+
+// For production, use a Live Mode API key instead
 ```
+
+**Note**: For development and testing, use an API key created in Test Mode. This way your tests won't affect live data.
 
 ### Loading from Environment
 
@@ -107,7 +111,7 @@ require 'vendor/autoload.php';
 use LemonSqueezy\ClientFactory;
 
 try {
-    $client = ClientFactory::create('lsq_live_YOUR_KEY');
+    $client = ClientFactory::create('YOUR_API_KEY');
     $users = $client->users()->list();
     echo "✓ Installation successful! Found " . $users->getTotal() . " users.\n";
 } catch (Exception $e) {
@@ -139,7 +143,7 @@ use LemonSqueezy\Configuration\ConfigBuilder;
 use MyHttpClient\Client;
 
 $config = (new ConfigBuilder())
-    ->withApiKey('lsq_live_...')
+    ->withApiKey('YOUR_API_KEY')
     ->withHttpClient(new Client())
     ->build();
 ```
@@ -158,7 +162,7 @@ If you're experiencing timeout issues, increase the timeout:
 
 ```php
 $config = (new ConfigBuilder())
-    ->withApiKey('lsq_live_...')
+    ->withApiKey('YOUR_API_KEY')
     ->withTimeout(60)
     ->build();
 ```

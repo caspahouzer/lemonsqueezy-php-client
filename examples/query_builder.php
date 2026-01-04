@@ -11,7 +11,7 @@ use LemonSqueezy\ClientFactory;
 use LemonSqueezy\Query\QueryBuilder;
 use LemonSqueezy\Exception\LemonSqueezyException;
 
-$client = ClientFactory::create('lsq_live_YOUR_API_KEY_HERE');
+$client = ClientFactory::create('YOUR_API_KEY');
 
 try {
     // Simple pagination
