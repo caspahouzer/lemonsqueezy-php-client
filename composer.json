@@ -1,0 +1,65 @@
+{
+    "name": "slk/lemonsqueezy-api-client",
+    "description": "PSR-4 compliant PHP API client for LemonSqueezy REST API",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SLK",
+            "email": "dev@slk.dev"
+        }
+    ],
+    "keywords": [
+        "lemonsqueezy",
+        "api",
+        "client",
+        "psr-18",
+        "psr-7",
+        "psr-4",
+        "json-api"
+    ],
+    "homepage": "https://github.com/caspahouzer/lemonsqueezy-php-client",
+    "require": {
+        "php": ">=8.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0",
+        "psr/log": "^1.0 || ^2.0 || ^3.0"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.0",
+        "phpunit/phpunit": "^9.0 || ^10.0",
+        "phpstan/phpstan": "^1.8",
+        "squizlabs/php_codesniffer": "^3.7",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "mockery/mockery": "^1.5"
+    },
+    "suggest": {
+        "guzzlehttp/guzzle": "For HTTP requests when no PSR-18 client is provided (^7.0)"
+    },
+    "autoload": {
+        "psr-4": {
+            "LemonSqueezy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LemonSqueezy\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test:coverage": "phpunit --coverage-html=coverage",
+        "stan": "phpstan analyse src",
+        "cs:check": "php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "php-cs-fixer fix",
+        "test": "phpunit --testsuite Unit",
+        "test:integration": "phpunit --testsuite Integration"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0-dev"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
