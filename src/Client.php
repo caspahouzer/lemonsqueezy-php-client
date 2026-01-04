@@ -5,7 +5,8 @@ namespace LemonSqueezy;
 use LemonSqueezy\Configuration\Config;
 use LemonSqueezy\Authentication\{AuthenticationInterface, BearerTokenAuth, PublicAuth};
 use LemonSqueezy\Http\{RequestFactory, ResponseHandler, RateLimiter};
-use LemonSqueezy\Http\Middleware\{MiddlewareInterface, AuthenticationMiddleware, RateLimitMiddleware, LoggingMiddleware};
+use LemonSqueezy\Http\Middleware\{MiddlewareInterface, AuthenticationMiddleware, RateLimitMiddleware, LoggingMiddleware, CacheMiddleware};
+use LemonSqueezy\Cache\FileCache;
 use LemonSqueezy\Resource\{
     Users,
     Stores,
@@ -164,6 +165,7 @@ class Client
     private function setupDefaultMiddleware(): void
     {
         $this->middleware = [
+            new CacheMiddleware(new FileCache(sys_get_temp_dir() . '/lemonsqueezy-cache')),
             new LoggingMiddleware($this->logger),
             new AuthenticationMiddleware($this->authentication),
             new RateLimitMiddleware($this->rateLimiter),

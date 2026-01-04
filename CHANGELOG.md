@@ -5,6 +5,18 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-01-04
+
+### Added
+
+-   Response caching middleware to improve performance for repeated GET requests.
+-   Automated release process using GitHub Actions.
+
+### Fixed
+
+-   Corrected PSR-16 incompatibility in `FileCache` implementation.
+-   Added missing `psr/simple-cache` dependency to `composer.json`.
+
 ## [1.0.1] - 2026-01-04
 
 ### Added
@@ -127,6 +139,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### [Planned Features]
 
 -   Webhook signature verification utilities
+-   Response caching middleware
 -   Response caching middleware
 -   Request retry with exponential backoff
 -   Async/await support with ReactPHP
