@@ -2,8 +2,8 @@
 
 namespace LemonSqueezy\Http;
 
-use Psr\Http\Factory\RequestFactoryInterface;
-use Psr\Http\Factory\StreamFactoryInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 
