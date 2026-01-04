@@ -22,14 +22,14 @@ jobs:
                   sudo apt-get install -y jq
                   VERSION=$(jq -r '.version' composer.json)
                   echo "Version in composer.json: $VERSION"
-                  echo "::set-output name=version::$VERSION"
+                  echo "version=$VERSION" >> $GITHUB_OUTPUT
 
             - name: Get Latest Tag
               id: get_tag
               run: |
                   LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
                   echo "Latest Git tag: $LATEST_TAG"
-                  echo "::set-output name=tag::$LATEST_TAG"
+                  echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
 
             - name: Create Release if Version Changed
               if: steps.get_version.outputs.version != '' && steps.get_tag.outputs.tag != format('v{0}', steps.get_version.outputs.version)
