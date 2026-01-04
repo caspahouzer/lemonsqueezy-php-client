@@ -156,14 +156,14 @@ abstract class AbstractResource implements ResourceInterface
         }
 
         $pagination = null;
-        if (isset($response['meta']['pagination'])) {
-            // Parse pagination data
-            $paginationData = $response['meta']['pagination'];
+        if (isset($response['meta']['page'])) {
+            // Parse pagination data from LemonSqueezy API format
+            $paginationData = $response['meta']['page'];
             $pagination = [
                 'total' => $paginationData['total'] ?? 0,
-                'page' => $paginationData['current_page'] ?? 1,
-                'per_page' => $paginationData['per_page'] ?? 50,
-                'last_page' => $paginationData['last_page'] ?? 1,
+                'page' => $paginationData['currentPage'] ?? 1,
+                'per_page' => $paginationData['perPage'] ?? 50,
+                'last_page' => $paginationData['lastPage'] ?? 1,
             ];
         }
 

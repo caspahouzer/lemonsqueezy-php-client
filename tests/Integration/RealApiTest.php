@@ -66,8 +66,8 @@ class RealApiTest extends TestCase
         }
 
         try {
-            $users = $this->client->users()->list();
-            $this->assertNotNull($users);
+            $user = $this->client->users()->me();
+            $this->assertNotNull($user);
             echo "\n✓ Successfully connected to LemonSqueezy API\n";
         } catch (UnauthorizedException $e) {
             $this->fail('Invalid API key: ' . $e->getMessage());
@@ -202,7 +202,7 @@ class RealApiTest extends TestCase
     }
 
     /**
-     * Test Users endpoint (AFTER orders - per user request)
+     * Test Users endpoint - Get current authenticated user
      */
     public function testGUsersEndpoint(): void
     {
@@ -211,10 +211,10 @@ class RealApiTest extends TestCase
         }
 
         try {
-            $users = $this->client->users()->list();
-            $this->assertNotNull($users);
-            $this->assertGreaterThan(0, $users->count());
-            echo "\n✓ Users endpoint: Found " . $users->count() . " users\n";
+            $user = $this->client->users()->me();
+            $this->assertNotNull($user);
+            $this->assertNotEmpty($user->getId());
+            echo "\n✓ Users endpoint: Retrieved current user (ID: " . $user->getId() . ")\n";
         } catch (LemonSqueezyException $e) {
             echo "\n✗ Users endpoint failed: " . $e->getMessage() . "\n";
         }
@@ -291,6 +291,11 @@ class RealApiTest extends TestCase
             $customers = $this->client->customers()->list($query);
 
             $this->assertNotNull($customers->getPaginationData());
+            $this->assertIsInt($customers->getTotal());
+            $this->assertIsInt($customers->getCurrentPage());
+            $this->assertIsInt($customers->getPerPage());
+            $this->assertIsInt($customers->getLastPage());
+
             echo "\n✓ Pagination:\n";
             echo "  - Total: " . $customers->getTotal() . "\n";
             echo "  - Current Page: " . $customers->getCurrentPage() . "\n";
@@ -299,6 +304,7 @@ class RealApiTest extends TestCase
             echo "  - Has Next: " . ($customers->hasNextPage() ? 'Yes' : 'No') . "\n";
         } catch (LemonSqueezyException $e) {
             echo "\n✗ Pagination test failed: " . $e->getMessage() . "\n";
+            $this->fail('Pagination test failed: ' . $e->getMessage());
         }
     }
 
@@ -312,14 +318,27 @@ class RealApiTest extends TestCase
         }
 
         try {
-            $query = (new QueryBuilder())
-                ->filter('status', 'active')
-                ->pageSize(10);
+            // Get a store to filter by
+            $stores = $this->client->stores()->list();
+            if ($stores->count() > 0) {
+                $storeId = $stores->items()[0]->getId();
 
-            $customers = $this->client->customers()->list($query);
-            echo "\n✓ Filtering: Retrieved " . $customers->count() . " active customers\n";
+                // Filter orders by store_id
+                $query = (new QueryBuilder())
+                    ->filter('store_id', $storeId)
+                    ->pageSize(10);
+
+                $orders = $this->client->orders()->list($query);
+                $this->assertIsInt($orders->count());
+
+                echo "\n✓ Filtering: Retrieved " . $orders->count() . " orders for store " . $storeId . "\n";
+            } else {
+                echo "\n✓ Filtering: Skipped (no stores available)\n";
+                $this->assertTrue(true);
+            }
         } catch (LemonSqueezyException $e) {
             echo "\n✗ Filtering test failed: " . $e->getMessage() . "\n";
+            $this->fail('Filtering test failed: ' . $e->getMessage());
         }
     }
 
@@ -334,13 +353,16 @@ class RealApiTest extends TestCase
 
         try {
             $query = (new QueryBuilder())
-                ->sort('created_at', 'desc')
+                ->sort('createdAt', 'desc')
                 ->pageSize(10);
 
-            $customers = $this->client->customers()->list($query);
-            echo "\n✓ Sorting: Retrieved and sorted " . $customers->count() . " customers\n";
+            $products = $this->client->products()->list($query);
+            $this->assertIsInt($products->count());
+
+            echo "\n✓ Sorting: Retrieved and sorted " . $products->count() . " products by created_at DESC\n";
         } catch (LemonSqueezyException $e) {
             echo "\n✗ Sorting test failed: " . $e->getMessage() . "\n";
+            $this->fail('Sorting test failed: ' . $e->getMessage());
         }
     }
 
@@ -357,9 +379,11 @@ class RealApiTest extends TestCase
             $this->client->customers()->get('nonexistent-id-12345');
             $this->fail('Should have thrown NotFoundException');
         } catch (NotFoundException $e) {
+            $this->assertInstanceOf(NotFoundException::class, $e);
             echo "\n✓ Error Handling (404): Correctly caught NotFoundException\n";
         } catch (LemonSqueezyException $e) {
             echo "\n✗ Unexpected exception: " . $e->getMessage() . "\n";
+            $this->fail('Expected NotFoundException but got ' . get_class($e));
         }
     }
 
@@ -380,13 +404,20 @@ class RealApiTest extends TestCase
                 $id = $customer->getId();
                 $attributes = $customer->getAttributes();
 
+                $this->assertNotNull($id);
+                $this->assertIsArray($attributes);
+
                 echo "\n✓ Model Attributes:\n";
                 echo "  - ID: $id\n";
                 echo "  - Type: " . $customer->getAttribute('name', 'N/A') . "\n";
                 echo "  - Email: " . $customer->getAttribute('email', 'N/A') . "\n";
+            } else {
+                echo "\n✓ Model Attributes: Skipped (no customers available)\n";
+                $this->assertTrue(true);
             }
         } catch (LemonSqueezyException $e) {
             echo "\n✗ Model attributes test failed: " . $e->getMessage() . "\n";
+            $this->fail('Model attributes test failed: ' . $e->getMessage());
         }
     }
 

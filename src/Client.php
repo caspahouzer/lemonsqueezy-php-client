@@ -181,7 +181,21 @@ class Client
         $request = $this->requestFactory->create($method, $uri, $data, $headers);
 
         // Process through middleware stack
-        $response = $this->executeMiddlewareStack($request);
+        try {
+            $response = $this->executeMiddlewareStack($request);
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            // Guzzle throws RequestException for HTTP errors
+            // Convert to our response handler which will throw appropriate exceptions
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+            } else {
+                throw new \LemonSqueezy\Exception\HttpException(
+                    $e->getMessage(),
+                    0,
+                    []
+                );
+            }
+        }
 
         // Handle response and convert to array
         return $this->responseHandler->handle($response);

@@ -15,7 +15,22 @@ class Sort
 
     public function getField(): string
     {
-        return $this->direction === 'desc' ? '-' . $this->field : $this->field;
+        // Convert snake_case to camelCase for API compatibility
+        $camelCaseField = $this->snakeToCamelCase($this->field);
+        return $this->direction === 'desc' ? '-' . $camelCaseField : $camelCaseField;
+    }
+
+    /**
+     * Convert snake_case to camelCase
+     */
+    private function snakeToCamelCase(string $string): string
+    {
+        $words = explode('_', $string);
+        $camelCase = array_shift($words);
+        foreach ($words as $word) {
+            $camelCase .= ucfirst($word);
+        }
+        return $camelCase;
     }
 
     public function getDirection(): string
