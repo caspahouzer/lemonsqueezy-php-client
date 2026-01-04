@@ -32,7 +32,7 @@ jobs:
                   echo "::set-output name=tag::$LATEST_TAG"
 
             - name: Create Release if Version Changed
-              if: steps.get_version.outputs.version != '' && steps.get_tag.outputs.tag != 'v' + steps.get_version.outputs.version
+              if: steps.get_version.outputs.version != '' && steps.get_tag.outputs.tag != format('v{0}', steps.get_version.outputs.version)
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
@@ -54,5 +54,5 @@ jobs:
                   echo "This should trigger the Packagist update automatically."
 
             - name: No Version Change
-              if: steps.get_version.outputs.version == '' || steps.get_tag.outputs.tag == 'v' + steps.get_version.outputs.version
+              if: steps.get_version.outputs.version == '' || steps.get_tag.outputs.tag == format('v{0}', steps.get_version.outputs.version)
               run: echo "No new version detected. Skipping release."
