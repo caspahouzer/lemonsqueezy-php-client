@@ -17,36 +17,44 @@ $config = (new ConfigBuilder())->build();
 $client = new Client($config);
 
 try {
-    // Activate a license
+    // Activate a license key
+    // Creates a new instance activation for a license key
     echo "=== Activating License ===\n";
     $activation = $client->licenseKeys()->activate(
-        'your-license-key',
-        'example.com' // instance name (usually domain)
+        'your-license-key-here',
+        'example.com' // instance name (usually domain or device name)
     );
     echo "Activation successful!\n";
-    echo "Instance ID: " . $activation['instance_id'] . "\n";
-    echo "Times activated: " . $activation['times_activated'] . "\n";
-    echo "Max activations: " . $activation['times_activated_max'] . "\n";
+    if (is_array($activation)) {
+        echo "Instance ID: " . ($activation['instance_id'] ?? 'N/A') . "\n";
+        echo "Times activated: " . ($activation['times_activated'] ?? 'N/A') . "\n";
+        echo "Max activations: " . ($activation['times_activated_max'] ?? 'N/A') . "\n";
+    }
 
-    // Validate a license
+    // Validate a license key
+    // Checks if a license key is valid (optionally for a specific instance)
     echo "\n=== Validating License ===\n";
     $validation = $client->licenseKeys()->validate(
-        'your-license-key',
-        'instance-id-from-above',
-        'example.com'
+        'your-license-key-here'
+        // Optionally pass instance ID to validate specific instance: , 'instance-id-from-activation'
     );
-    echo "Valid: " . ($validation['valid'] ? 'Yes' : 'No') . "\n";
-    echo "Times activated: " . $validation['times_activated'] . "\n";
+    echo "Validation completed!\n";
+    if (is_array($validation)) {
+        echo "Valid: " . ($validation['valid'] ? 'Yes' : 'No') . "\n";
+        echo "Times activated: " . ($validation['times_activated'] ?? 'N/A') . "\n";
+    }
 
-    // Deactivate a license
-    echo "\n=== Deactivating License ===\n";
+    // Deactivate a license instance
+    // Removes an activation (instance) from a license key
+    echo "\n=== Deactivating License Instance ===\n";
     $deactivation = $client->licenseKeys()->deactivate(
-        'your-license-key',
-        'instance-id-from-above',
-        'example.com'
+        'your-license-key-here',
+        'instance-id-from-activation' // The instance ID returned from activation
     );
     echo "Deactivation successful!\n";
-    echo "Times activated: " . $deactivation['times_activated'] . "\n";
+    if (is_array($deactivation)) {
+        echo "Times activated: " . ($deactivation['times_activated'] ?? 'N/A') . "\n";
+    }
 
 } catch (LemonSqueezyException $e) {
     echo "Error: " . $e->getMessage() . "\n";
