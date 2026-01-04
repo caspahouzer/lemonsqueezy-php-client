@@ -1,12 +1,12 @@
 {
-    "name": "slk/lemonsqueezy-api-client",
+    "name": "caspahouzer/lemonsqueezy-api-client",
     "description": "PSR-4 compliant PHP API client for LemonSqueezy REST API",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "SLK",
-            "email": "dev@slk.dev"
+            "name": "Sebastian Klaus",
+            "email": "sebastian@slk-communications.de"
         }
     ],
     "keywords": [

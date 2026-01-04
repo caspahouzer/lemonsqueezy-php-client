@@ -21,7 +21,7 @@ A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemo
 ### Via Composer (Recommended)
 
 ```bash
-composer require slk/lemonsqueezy-api-client
+composer require caspahouzer/lemonsqueezy-api-client
 ```
 
 ### Manual Installation

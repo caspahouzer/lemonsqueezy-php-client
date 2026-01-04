@@ -15,7 +15,7 @@ The easiest way to install the LemonSqueezy PHP API client is via Composer.
 1. **Install the package**
 
     ```bash
-    composer require slk/lemonsqueezy-api-client
+    composer require caspahouzer/lemonsqueezy-api-client
     ```
 
 2. **Verify installation**
