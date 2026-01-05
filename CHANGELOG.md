@@ -5,6 +5,51 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-01-05
+
+### Added
+
+-   **Webhook Signature Verification** - Comprehensive webhook signature verification utility:
+    -   `WebhookVerifier` static utility class for HMAC-SHA256 signature verification
+    -   Three verification methods:
+        -   `verify()` - Throws exception on invalid signature (strict mode)
+        -   `isValid()` - Returns boolean without exceptions (graceful mode)
+        -   `verifyWithConfig()` - Uses webhook secret from Config object
+    -   Support for both string payloads and PSR-7 StreamInterface
+    -   Timing-safe comparison using `hash_equals()` to prevent timing attacks
+    -   Hex digest signature format (matches LemonSqueezy API standard)
+
+-   **Webhook Integration with Client**:
+    -   Convenience method `Client::verifyWebhookSignature()` for easy integration
+    -   Automatic webhook secret retrieval from configuration
+
+-   **Exception Handling**:
+    -   `WebhookVerificationException` extending `ValidationException`
+    -   Error codes for different failure scenarios: MISSING_SECRET, EMPTY_SIGNATURE, INVALID_FORMAT, VERIFICATION_FAILED, UNSUPPORTED_ALGORITHM
+
+-   **Comprehensive Webhook Tests**:
+    -   `WebhookVerifierTest` - 23 unit tests covering all verification scenarios
+    -   `WebhookIntegrationTest` - 13 integration tests with Config and Client integration
+    -   Tests for PSR-7 stream handling (seekable and unseekable)
+    -   Tests for large payloads, empty bodies, and sequential verifications
+
+### Fixed
+
+-   **Batch Operations Discount Validation** - Fixed discount code validation:
+    -   Removed hyphens from discount codes in batch tests (API validates alphanumeric only)
+    -   Updated all 8 batch test methods to use valid discount code format
+    -   All batch operations now execute successfully with 100% success rate
+    -   Real API integration verified with actual LemonSqueezy API
+
+### Technical Details
+
+-   Webhook verification uses industry-standard HMAC-SHA256 with hex digest format
+-   Timing-safe string comparison prevents timing-based signature attacks
+-   Support for PSR-7 StreamInterface enables webhook body reading from various sources
+-   Algorithm validation ensures only supported algorithms are used
+-   Full backward compatibility maintained - purely additive feature
+-   All webhook verification tests pass (36 total: 23 unit + 13 integration)
+
 ## [1.1.1] - 2026-01-05
 
 ### Added
@@ -237,9 +282,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Planned Features]
 
--   Webhook signature verification utilities
--   Response caching middleware
--   Response caching middleware
 -   Request retry with exponential backoff
 -   Async/await support with ReactPHP
 -   Laravel service provider

@@ -10,6 +10,9 @@ use LemonSqueezy\Cache\FileCache;
 use LemonSqueezy\Logger\NullLogger;
 use LemonSqueezy\Batch\{BatchOperationExecutor, BatchResult};
 use LemonSqueezy\Batch\Operations\{BatchCreateOperation, BatchUpdateOperation, BatchDeleteOperation};
+use LemonSqueezy\Webhook\WebhookVerifier;
+use LemonSqueezy\Exception\WebhookVerificationException;
+use Psr\Http\Message\StreamInterface;
 use LemonSqueezy\Resource\{
     Users,
     Stores,
@@ -297,6 +300,38 @@ class Client
         );
 
         return $this->batch($operations, $options);
+    }
+
+    /**
+     * Verify a webhook signature using the configured webhook secret
+     *
+     * Convenience method that automatically uses the webhook secret from the Config object.
+     * Throws an exception if verification fails.
+     *
+     * Example usage:
+     * ```php
+     * try {
+     *     $client->verifyWebhookSignature(
+     *         file_get_contents('php://input'),
+     *         $_SERVER['HTTP_X_SIGNATURE'] ?? ''
+     *     );
+     *     // Signature is valid - process webhook
+     * } catch (WebhookVerificationException $e) {
+     *     http_response_code(401);
+     * }
+     * ```
+     *
+     * @param string|StreamInterface $body The webhook request body
+     * @param string $signature The signature from webhook header
+     * @param string $algorithm The hash algorithm to use (default: sha256)
+     * @throws WebhookVerificationException If verification fails or secret is not configured
+     */
+    public function verifyWebhookSignature(
+        string|StreamInterface $body,
+        string $signature,
+        string $algorithm = 'sha256'
+    ): void {
+        WebhookVerifier::verifyWithConfig($body, $signature, $this->config, $algorithm);
     }
 
     /**

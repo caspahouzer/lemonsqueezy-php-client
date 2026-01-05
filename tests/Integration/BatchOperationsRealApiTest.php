@@ -47,21 +47,27 @@ class BatchOperationsRealApiTest extends TestCase
      * Test A: Batch Operation Structure & Execution
      *
      * Tests that batch operations execute correctly and track results
-     * Uses Customers resource since it supports CREATE operations
+     * Uses Discounts resource since it supports CREATE operations
      */
     public function testABatchOperationStructure(): void
     {
         echo "\n✓ Batch Operation Structure Test\n";
 
-        // Test batch operations with Customers (supports CREATE)
+        // Test batch operations with Discounts (supports CREATE)
         $operations = [
-            new BatchCreateOperation('customers', [
-                'email' => 'batch-test-1-' . time() . '@example.com',
-                'name' => 'Batch Test Customer 1',
+            new BatchCreateOperation('discounts', [
+                'store_id' => self::$storeId,
+                'name' => 'Batch Test Discount 1 - ' . time(),
+                'code' => 'BATCH1' . strtoupper(substr(md5(time()), 0, 6)),
+                'amount' => 10,
+                'amount_type' => 'percent',
             ]),
-            new BatchCreateOperation('customers', [
-                'email' => 'batch-test-2-' . time() . '@example.com',
-                'name' => 'Batch Test Customer 2',
+            new BatchCreateOperation('discounts', [
+                'store_id' => self::$storeId,
+                'name' => 'Batch Test Discount 2 - ' . time(),
+                'code' => 'BATCH2' . strtoupper(substr(md5(time() . 'suffix'), 0, 6)),
+                'amount' => 15,
+                'amount_type' => 'percent',
             ]),
         ];
 
@@ -94,19 +100,19 @@ class BatchOperationsRealApiTest extends TestCase
     /**
      * Test B: Batch Create with Convenience Method
      *
-     * Tests the batchCreate() convenience method using Customers resource
+     * Tests the batchCreate() convenience method using Discounts resource
      */
     public function testBBatchCreateConvenienceMethod(): void
     {
         echo "\n✓ Batch Create (Convenience Method) Test\n";
 
         $items = [
-            ['email' => 'batch-conv-1-' . time() . '@example.com', 'name' => 'Convenience Test 1'],
-            ['email' => 'batch-conv-2-' . time() . '@example.com', 'name' => 'Convenience Test 2'],
-            ['email' => 'batch-conv-3-' . time() . '@example.com', 'name' => 'Convenience Test 3'],
+            ['store_id' => self::$storeId, 'name' => 'Convenience Test Discount 1 - ' . time(), 'code' => 'CONV1' . strtoupper(substr(md5(time()), 0, 6)), 'amount' => 5, 'amount_type' => 'percent'],
+            ['store_id' => self::$storeId, 'name' => 'Convenience Test Discount 2 - ' . time(), 'code' => 'CONV2' . strtoupper(substr(md5(time() . '2'), 0, 6)), 'amount' => 10, 'amount_type' => 'percent'],
+            ['store_id' => self::$storeId, 'name' => 'Convenience Test Discount 3 - ' . time(), 'code' => 'CONV3' . strtoupper(substr(md5(time() . '3'), 0, 6)), 'amount' => 15, 'amount_type' => 'percent'],
         ];
 
-        $result = self::$client->batchCreate('customers', $items);
+        $result = self::$client->batchCreate('discounts', $items);
 
         $this->assertNotNull($result);
         $this->assertEquals(3, $result->getTotalCount());
@@ -120,85 +126,86 @@ class BatchOperationsRealApiTest extends TestCase
     /**
      * Test C: Batch Update with Convenience Method
      *
-     * Updates multiple customers using batchUpdate()
+     * Updates multiple discounts using batchUpdate()
      */
     public function testCBatchUpdateConvenienceMethod(): void
     {
         echo "\n✓ Batch Update (Convenience Method) Test\n";
 
-        // First, create some customers to update
-        $createResult = self::$client->batchCreate('customers', [
-            ['email' => 'update-test-1-' . time() . '@example.com', 'name' => 'Update Test 1'],
-            ['email' => 'update-test-2-' . time() . '@example.com', 'name' => 'Update Test 2'],
+        // First, create some discounts to update
+        $createResult = self::$client->batchCreate('discounts', [
+            ['store_id' => self::$storeId, 'name' => 'Update Test Discount 1 - ' . time(), 'code' => 'UPD1' . strtoupper(substr(md5(time()), 0, 6)), 'amount' => 5, 'amount_type' => 'percent'],
+            ['store_id' => self::$storeId, 'name' => 'Update Test Discount 2 - ' . time(), 'code' => 'UPD2' . strtoupper(substr(md5(time() . '2'), 0, 6)), 'amount' => 10, 'amount_type' => 'percent'],
         ]);
 
         if (!$createResult->wasSuccessful() || $createResult->getSuccessCount() < 2) {
-            $this->markTestSkipped('Failed to create customers for update test');
+            $this->markTestSkipped('Failed to create discounts for update test');
         }
 
-        // Extract customer IDs from successful creates
-        $customerIds = [];
+        // Extract discount IDs from successful creates
+        $discountIds = [];
         foreach ($createResult->getSuccessful() as $success) {
             if (isset($success['result']->id)) {
-                $customerIds[] = $success['result']->id;
+                $discountIds[] = $success['result']->id;
             }
         }
 
-        if (count($customerIds) < 2) {
-            $this->markTestSkipped('Could not extract customer IDs from creation');
+        if (count($discountIds) < 2) {
+            $this->markTestSkipped('Could not extract discount IDs from creation');
         }
 
         // Now update them
         $updateItems = [
-            ['id' => $customerIds[0], 'name' => 'Updated via Batch 1 - ' . time()],
-            ['id' => $customerIds[1], 'name' => 'Updated via Batch 2 - ' . time()],
+            ['id' => $discountIds[0], 'name' => 'Updated via Batch 1 - ' . time()],
+            ['id' => $discountIds[1], 'name' => 'Updated via Batch 2 - ' . time()],
         ];
 
-        $updateResult = self::$client->batchUpdate('customers', $updateItems);
+        $updateResult = self::$client->batchUpdate('discounts', $updateItems);
 
         $this->assertNotNull($updateResult);
         $this->assertEquals(2, $updateResult->getTotalCount());
         $this->assertGreaterThanOrEqual(1, $updateResult->getSuccessCount());
 
-        echo "  - Updated customers successfully\n";
-        echo "  - Customer IDs: " . implode(', ', $customerIds) . "\n";
+        echo "  - Updated discounts successfully\n";
+        echo "  - Discount IDs: " . implode(', ', $discountIds) . "\n";
     }
 
     /**
      * Test D: Batch Mixed Operations
      *
      * Executes create, update, and delete operations in a single batch
-     * Uses Customers for create/update and Discounts for delete (only ones supporting these operations)
+     * Uses Discounts resource which supports all three operations
      */
     public function testDBatchMixedOperations(): void
     {
         echo "\n✓ Batch Mixed Operations Test\n";
 
-        // First create a customer to update later
-        $createResult = self::$client->batchCreate('customers', [
-            ['email' => 'mixed-op-' . time() . '@example.com', 'name' => 'Mixed Op Customer'],
+        // First create a discount to update and delete later
+        $createResult = self::$client->batchCreate('discounts', [
+            ['store_id' => self::$storeId, 'name' => 'Mixed Op Discount - ' . time(), 'code' => 'MIXOP' . strtoupper(substr(md5(time()), 0, 6)), 'amount' => 5, 'amount_type' => 'percent'],
         ]);
 
         if (!$createResult->wasSuccessful()) {
-            $this->markTestSkipped('Failed to create customer for mixed operations test');
+            $this->markTestSkipped('Failed to create discount for mixed operations test');
         }
 
-        $tempCustomerId = null;
+        $tempDiscountId = null;
         foreach ($createResult->getSuccessful() as $success) {
             if (isset($success['result']->id)) {
-                $tempCustomerId = $success['result']->id;
+                $tempDiscountId = $success['result']->id;
                 break;
             }
         }
 
-        if (!$tempCustomerId) {
-            $this->markTestSkipped('Could not extract customer ID');
+        if (!$tempDiscountId) {
+            $this->markTestSkipped('Could not extract discount ID');
         }
 
-        // Create mixed operations (customer create/update only - discounts don't have good test data)
+        // Create mixed operations (discount create/update/delete)
         $operations = [
-            new BatchCreateOperation('customers', ['email' => 'mixed-create-' . time() . '@example.com', 'name' => 'Mixed Op Create']),
-            new BatchUpdateOperation('customers', $tempCustomerId, ['name' => 'Mixed Op Update - ' . time()]),
+            new BatchCreateOperation('discounts', ['store_id' => self::$storeId, 'name' => 'Mixed Op Create - ' . time(), 'code' => 'MIXCR' . strtoupper(substr(md5(time()), 0, 6)), 'amount' => 5, 'amount_type' => 'percent']),
+            new BatchUpdateOperation('discounts', $tempDiscountId, ['name' => 'Mixed Op Update - ' . time()]),
+            new BatchDeleteOperation('discounts', $tempDiscountId),
         ];
 
         $result = self::$client->batch($operations);
@@ -221,13 +228,13 @@ class BatchOperationsRealApiTest extends TestCase
         echo "\n✓ Batch with Custom Configuration Test\n";
 
         $items = [
-            ['email' => 'config-test-1-' . time() . '@example.com', 'name' => 'Config Test 1'],
-            ['email' => 'config-test-2-' . time() . '@example.com', 'name' => 'Config Test 2'],
+            ['store_id' => self::$storeId, 'name' => 'Config Test Discount 1 - ' . time(), 'code' => 'CFG1' . strtoupper(substr(md5(time()), 0, 6)), 'amount' => 5, 'amount_type' => 'percent'],
+            ['store_id' => self::$storeId, 'name' => 'Config Test Discount 2 - ' . time(), 'code' => 'CFG2' . strtoupper(substr(md5(time() . '2'), 0, 6)), 'amount' => 10, 'amount_type' => 'percent'],
         ];
 
         $startTime = microtime(true);
 
-        $result = self::$client->batchCreate('customers', $items, [
+        $result = self::$client->batchCreate('discounts', $items, [
             'delayMs' => 100,  // 100ms delay between operations
             'timeout' => 30,   // 30 second timeout
             'stopOnError' => false,
@@ -256,10 +263,10 @@ class BatchOperationsRealApiTest extends TestCase
     {
         echo "\n✓ Batch Error Handling Test\n";
 
-        // Mix valid and invalid operations (using customers which supports create/update)
+        // Mix valid and invalid operations (using discounts which supports create/update)
         $operations = [
-            new BatchCreateOperation('customers', ['email' => 'error-test-' . time() . '@example.com', 'name' => 'Valid Create']),
-            new BatchUpdateOperation('customers', 'invalid-id-that-does-not-exist', ['name' => 'Invalid Update']),
+            new BatchCreateOperation('discounts', ['store_id' => self::$storeId, 'name' => 'Valid Create - ' . time(), 'code' => 'ERR1' . strtoupper(substr(md5(time()), 0, 6)), 'amount' => 5, 'amount_type' => 'percent']),
+            new BatchUpdateOperation('discounts', 'invalid-id-that-does-not-exist', ['name' => 'Invalid Update']),
         ];
 
         $result = self::$client->batch($operations, ['stopOnError' => false]);
@@ -300,13 +307,13 @@ class BatchOperationsRealApiTest extends TestCase
 
         for ($i = 1; $i <= 3; $i++) {
             $items = [
-                ['email' => "rate-test-{$i}-1-" . time() . '@example.com', 'name' => "Rate Test Batch {$i}.1"],
-                ['email' => "rate-test-{$i}-2-" . time() . '@example.com', 'name' => "Rate Test Batch {$i}.2"],
+                ['store_id' => self::$storeId, 'name' => "Rate Test Discount {$i}.1 - " . time(), 'code' => "RATE{$i}1" . strtoupper(substr(md5(time()), 0, 5)), 'amount' => 5, 'amount_type' => 'percent'],
+                ['store_id' => self::$storeId, 'name' => "Rate Test Discount {$i}.2 - " . time(), 'code' => "RATE{$i}2" . strtoupper(substr(md5(time() . 'b'), 0, 5)), 'amount' => 10, 'amount_type' => 'percent'],
             ];
 
             $batchStart = microtime(true);
 
-            $result = self::$client->batchCreate('customers', $items, [
+            $result = self::$client->batchCreate('discounts', $items, [
                 'delayMs' => 50,  // Small delay to simulate realistic scenario
             ]);
 
@@ -342,9 +349,9 @@ class BatchOperationsRealApiTest extends TestCase
         echo "\n✓ Batch Summary Statistics Test\n";
 
         $operations = [
-            new BatchCreateOperation('customers', ['email' => 'stats-test-1-' . time() . '@example.com', 'name' => 'Stats Test 1']),
-            new BatchCreateOperation('customers', ['email' => 'stats-test-2-' . time() . '@example.com', 'name' => 'Stats Test 2']),
-            new BatchCreateOperation('customers', ['email' => 'stats-test-3-' . time() . '@example.com', 'name' => 'Stats Test 3']),
+            new BatchCreateOperation('discounts', ['store_id' => self::$storeId, 'name' => 'Stats Test Discount 1 - ' . time(), 'code' => 'STATS1' . strtoupper(substr(md5(time()), 0, 6)), 'amount' => 5, 'amount_type' => 'percent']),
+            new BatchCreateOperation('discounts', ['store_id' => self::$storeId, 'name' => 'Stats Test Discount 2 - ' . time(), 'code' => 'STATS2' . strtoupper(substr(md5(time() . '2'), 0, 6)), 'amount' => 10, 'amount_type' => 'percent']),
+            new BatchCreateOperation('discounts', ['store_id' => self::$storeId, 'name' => 'Stats Test Discount 3 - ' . time(), 'code' => 'STATS3' . strtoupper(substr(md5(time() . '3'), 0, 6)), 'amount' => 15, 'amount_type' => 'percent']),
         ];
 
         $result = self::$client->batch($operations);

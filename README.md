@@ -13,6 +13,8 @@ A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemo
 -   ✅ Comprehensive exception hierarchy
 -   ✅ Middleware-based request pipeline
 -   ✅ JSON:API spec compliance
+-   ✅ **Webhook signature verification** (HMAC-SHA256 with timing-safe comparison)
+-   ✅ Batch operations for efficient bulk processing
 -   ✅ Framework-agnostic (works with any PHP project)
 -   ✅ Zero production dependencies (optional Guzzle fallback)
 
@@ -263,20 +265,172 @@ $logger->pushHandler(new StreamHandler('app.log'));
 $client = ClientFactory::create('YOUR_API_KEY', $logger);
 ```
 
-### Webhook Verification
+### Webhook Signature Verification
+
+The client includes comprehensive webhook signature verification to securely validate incoming webhooks from LemonSqueezy. The verification uses HMAC-SHA256 with timing-safe comparison to prevent timing attacks.
+
+#### Setup with Configuration
 
 ```php
+use LemonSqueezy\Configuration\ConfigBuilder;
+use LemonSqueezy\Client;
+
 $config = (new ConfigBuilder())
     ->withApiKey('YOUR_API_KEY')
-    ->withWebhookSecret('webhook_secret_...')
+    ->withWebhookSecret('whk_secret_...') // Set your webhook secret from LemonSqueezy dashboard
     ->build();
 
 $client = new Client($config);
-$secret = $client->getConfig()->getWebhookSecret();
-
-// Verify webhook signature
-// Implementation depends on LemonSqueezy's signature format
 ```
+
+#### Method 1: Using the Client Convenience Method
+
+The simplest approach for integration:
+
+```php
+use LemonSqueezy\Exception\WebhookVerificationException;
+
+// In your webhook endpoint
+$payload = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+
+try {
+    // Verify using client method
+    $client->verifyWebhookSignature($payload, $signature);
+
+    // Webhook is valid, process it
+    $data = json_decode($payload, true);
+    handleWebhook($data);
+
+} catch (WebhookVerificationException $e) {
+    http_response_code(401);
+    exit('Webhook verification failed');
+}
+```
+
+#### Method 2: Using WebhookVerifier Directly (Standalone)
+
+For standalone use without a client instance:
+
+```php
+use LemonSqueezy\Webhook\WebhookVerifier;
+use LemonSqueezy\Exception\WebhookVerificationException;
+
+$payload = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+$webhookSecret = 'whk_secret_...';
+
+try {
+    // Throws exception on invalid signature
+    WebhookVerifier::verify($payload, $signature, $webhookSecret);
+
+    // Process webhook
+    $data = json_decode($payload, true);
+    handleWebhook($data);
+
+} catch (WebhookVerificationException $e) {
+    http_response_code(401);
+    exit('Unauthorized');
+}
+```
+
+#### Method 3: Using WebhookVerifier with Config
+
+```php
+use LemonSqueezy\Webhook\WebhookVerifier;
+use LemonSqueezy\Configuration\ConfigBuilder;
+
+$payload = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+
+$config = (new ConfigBuilder())
+    ->withApiKey('YOUR_API_KEY')
+    ->withWebhookSecret('whk_secret_...')
+    ->build();
+
+try {
+    WebhookVerifier::verifyWithConfig($payload, $signature, $config);
+    // Process webhook
+} catch (WebhookVerificationException $e) {
+    http_response_code(401);
+    exit('Webhook verification failed');
+}
+```
+
+#### Method 4: Boolean Check (Non-Exception)
+
+For cases where you prefer boolean returns:
+
+```php
+use LemonSqueezy\Webhook\WebhookVerifier;
+
+$payload = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+$webhookSecret = 'whk_secret_...';
+
+if (WebhookVerifier::isValid($payload, $signature, $webhookSecret)) {
+    // Webhook is valid
+    $data = json_decode($payload, true);
+    handleWebhook($data);
+} else {
+    // Webhook verification failed
+    http_response_code(401);
+    exit('Invalid webhook signature');
+}
+```
+
+#### Working with PSR-7 Streams
+
+The verification supports PSR-7 StreamInterface for flexible webhook body handling:
+
+```php
+use LemonSqueezy\Webhook\WebhookVerifier;
+
+// With a PSR-7 stream (e.g., from a framework like Laravel, Symfony)
+$stream = $request->getBody(); // PSR-7 StreamInterface
+
+if (WebhookVerifier::isValid($stream, $signature, $webhookSecret)) {
+    // Process webhook
+}
+```
+
+#### Exception Handling
+
+Different error scenarios throw specific exception codes:
+
+```php
+use LemonSqueezy\Exception\WebhookVerificationException;
+
+try {
+    WebhookVerifier::verify($payload, $signature, $webhookSecret);
+} catch (WebhookVerificationException $e) {
+    match($e->getCode()) {
+        WebhookVerificationException::MISSING_SECRET =>
+            // Webhook secret not configured
+            echo "Configuration error: webhook secret not set",
+        WebhookVerificationException::EMPTY_SIGNATURE =>
+            // Signature header missing or empty
+            echo "Missing signature header",
+        WebhookVerificationException::INVALID_FORMAT =>
+            // Signature not in valid hex format
+            echo "Invalid signature format",
+        WebhookVerificationException::VERIFICATION_FAILED =>
+            // Signature does not match
+            echo "Webhook signature verification failed",
+        WebhookVerificationException::UNSUPPORTED_ALGORITHM =>
+            // Unsupported hash algorithm
+            echo "Unsupported algorithm",
+        default => echo "Unknown error"
+    };
+}
+```
+
+#### Security Features
+
+-   **HMAC-SHA256**: Industry-standard cryptographic hash algorithm
+-   **Timing-Safe Comparison**: Uses `hash_equals()` to prevent timing-based attacks
+-   **Hex Digest Format**: Matches LemonSqueezy's standard webhook signature format
+-   **Format Validation**: Validates signatures are 64-character hex strings
 
 ## Response Models
 

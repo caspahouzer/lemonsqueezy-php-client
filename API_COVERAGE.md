@@ -453,7 +453,6 @@ $invoice = $client->subscriptionInvoices()->generateInvoice('sub-inv-123');
 
 ## Next Steps for Enhancement
 
--   [ ] Add webhook signature verification
 -   [ ] Add retry middleware with exponential backoff
 
 ---
