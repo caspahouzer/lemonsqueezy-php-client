@@ -34,3 +34,4 @@ Thumbs.db
 !README.md
 !docs/**
 !.github/**
+.github/.DS_Store
