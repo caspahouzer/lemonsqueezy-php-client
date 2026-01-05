@@ -40,8 +40,8 @@ class RealApiTest extends TestCase
 
         if (empty($this->apiKey)) {
             $this->markTestSkipped(
-                'LEMONSQUEEZY_API_KEY environment variable not set. ' .
-                    'Set it to run real API tests: export LEMONSQUEEZY_API_KEY=your_api_key_here'
+                'LEMONSQUEEZY_API_KEY environment variable not set. '
+                    . 'Set it to run real API tests: export LEMONSQUEEZY_API_KEY=your_api_key_here'
             );
         }
 

@@ -5,11 +5,17 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2026-01-05
+
+-   **Documentation Update** - Corrected version number in `composer.json` to `1.1.3`.
+-   No code changes; purely a cs:fixer and documentation update.
+
 ## [1.1.2] - 2026-01-05
 
 ### Added
 
 -   **Webhook Signature Verification** - Comprehensive webhook signature verification utility:
+
     -   `WebhookVerifier` static utility class for HMAC-SHA256 signature verification
     -   Three verification methods:
         -   `verify()` - Throws exception on invalid signature (strict mode)
@@ -20,10 +26,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     -   Hex digest signature format (matches LemonSqueezy API standard)
 
 -   **Webhook Integration with Client**:
+
     -   Convenience method `Client::verifyWebhookSignature()` for easy integration
     -   Automatic webhook secret retrieval from configuration
 
 -   **Exception Handling**:
+
     -   `WebhookVerificationException` extending `ValidationException`
     -   Error codes for different failure scenarios: MISSING_SECRET, EMPTY_SIGNATURE, INVALID_FORMAT, VERIFICATION_FAILED, UNSUPPORTED_ALGORITHM
 
@@ -55,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   **Special API Operations** - Support for non-CRUD API endpoints:
+
     -   `Orders::generateInvoice()` - Generate invoices for orders (POST /orders/{id}/invoices)
     -   `Orders::issueRefund()` - Issue refunds for orders (POST /orders/{id}/refunds)
     -   `Subscriptions::cancelSubscription()` - Cancel subscriptions (POST /subscriptions/{id}/cancel)
@@ -62,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     -   `SubscriptionInvoices::generateInvoice()` - Generate subscription invoices (POST /subscription-invoices/{id}/generate)
 
 -   **API Coverage Improvements**:
+
     -   Comprehensive API capability audit against official LemonSqueezy API documentation
     -   Accurate CRUD operation support matrix for all 18 resources
     -   Proper error handling for unsupported operations via `UnsupportedOperationException`
@@ -92,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   **Batch Operations Support** - New feature for efficient bulk processing of resources:
+
     -   `batch()` method to execute mixed batch operations
     -   `batchCreate()` convenience method for creating multiple resources
     -   `batchUpdate()` convenience method for updating multiple resources
@@ -103,6 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     -   Support for mixed operation types in a single batch
 
 -   **Batch Operation Classes**:
+
     -   `BatchCreateOperation` - Define create operations
     -   `BatchUpdateOperation` - Define update operations
     -   `BatchDeleteOperation` - Define delete operations
@@ -110,9 +122,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     -   `BatchConfig` - Configuration and validation for batch execution
 
 -   **Exception Handling**:
+
     -   `BatchException` - Batch-specific exception with partial result tracking
 
 -   **Comprehensive Testing**:
+
     -   `BatchResultTest` - 14 tests for result container functionality
     -   `BatchOperationTest` - 10 tests for operation classes
     -   `BatchConfigTest` - 12 tests for configuration validation

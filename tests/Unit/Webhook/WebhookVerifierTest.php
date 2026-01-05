@@ -23,8 +23,8 @@ class WebhookVerifierTest extends TestCase
             'data' => [
                 'order_id' => 'ord-123',
                 'customer_id' => 'cust-456',
-                'amount' => 99.99
-            ]
+                'amount' => 99.99,
+            ],
         ]);
 
         // Compute valid signature (hex digest, as per LemonSqueezy API)
@@ -118,8 +118,11 @@ class WebhookVerifierTest extends TestCase
     public function testVerifyWithUnseekableStream(): void
     {
         // Create an unseekable stream mock
-        $stream = new class($this->validBody) extends MockStream {
-            public function isSeekable(): bool { return false; }
+        $stream = new class ($this->validBody) extends MockStream {
+            public function isSeekable(): bool
+            {
+                return false;
+            }
         };
 
         $result = WebhookVerifier::isValid($stream, $this->validSignature, $this->secret);
@@ -142,8 +145,8 @@ class WebhookVerifierTest extends TestCase
             'data' => array_fill(0, 1000, [
                 'id' => 'item-123',
                 'name' => 'Item Name',
-                'value' => 'Some long text content...'
-            ])
+                'value' => 'Some long text content...',
+            ]),
         ]);
 
         $largeBodySignature = hash_hmac('sha256', $largeBody, $this->secret);
@@ -231,7 +234,7 @@ class WebhookVerifierTest extends TestCase
                 'event_name' => 'order:created',
                 'custom_data' => null,
                 'webhook_id' => 'whk_123456789',
-                'webhook_created_at' => '2026-01-05T12:00:00Z'
+                'webhook_created_at' => '2026-01-05T12:00:00Z',
             ],
             'data' => [
                 'type' => 'orders',
@@ -244,10 +247,10 @@ class WebhookVerifierTest extends TestCase
                     'total' => '19.99',
                     'currency' => 'USD',
                     'urls' => [
-                        'receipt' => 'https://example.lemonsqueezy.com/receipt/123'
-                    ]
-                ]
-            ]
+                        'receipt' => 'https://example.lemonsqueezy.com/receipt/123',
+                    ],
+                ],
+            ],
         ]);
 
         $webhookSignature = hash_hmac('sha256', $webhookPayload, $this->secret);

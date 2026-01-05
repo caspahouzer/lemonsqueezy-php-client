@@ -60,7 +60,7 @@ class ResponseHandler
      */
     private function parseResponseBody(ResponseInterface $response): array
     {
-        $body = (string)$response->getBody();
+        $body = (string) $response->getBody();
 
         if (empty($body)) {
             return [];
@@ -146,6 +146,6 @@ class ResponseHandler
     {
         $remaining = $response->getHeaderLine('X-RateLimit-Remaining');
 
-        return is_numeric($remaining) ? (int)$remaining : 0;
+        return is_numeric($remaining) ? (int) $remaining : 0;
     }
 }

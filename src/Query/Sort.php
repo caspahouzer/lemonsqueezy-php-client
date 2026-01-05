@@ -10,8 +10,7 @@ class Sort
     public function __construct(
         private string $field,
         private string $direction = 'asc'
-    ) {
-    }
+    ) {}
 
     public function getField(): string
     {

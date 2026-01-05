@@ -18,7 +18,7 @@ abstract class AbstractModel
     public function __construct(array $data = [])
     {
         if (isset($data['id'])) {
-            $this->id = (string)$data['id'];
+            $this->id = (string) $data['id'];
         }
 
         if (isset($data['attributes'])) {

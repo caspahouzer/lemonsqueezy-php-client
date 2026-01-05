@@ -27,7 +27,7 @@ class RateLimiter
         // Remove requests older than 1 minute
         $this->requests = array_filter(
             $this->requests,
-            fn ($timestamp) => $timestamp > $oneMinuteAgo
+            fn($timestamp) => $timestamp > $oneMinuteAgo
         );
 
         // Check if we've hit the limit
@@ -57,7 +57,7 @@ class RateLimiter
 
         $recentRequests = array_filter(
             $this->requests,
-            fn ($timestamp) => $timestamp > $oneMinuteAgo
+            fn($timestamp) => $timestamp > $oneMinuteAgo
         );
 
         return max(0, self::LIMIT_PER_MINUTE - count($recentRequests));

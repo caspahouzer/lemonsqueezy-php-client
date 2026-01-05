@@ -25,7 +25,7 @@ class WebhookIntegrationTest extends TestCase
             'meta' => [
                 'event_name' => 'order:created',
                 'webhook_id' => 'whk_test123',
-                'webhook_created_at' => '2026-01-05T12:00:00Z'
+                'webhook_created_at' => '2026-01-05T12:00:00Z',
             ],
             'data' => [
                 'type' => 'orders',
@@ -34,9 +34,9 @@ class WebhookIntegrationTest extends TestCase
                     'order_number' => 42,
                     'status' => 'completed',
                     'total' => '99.99',
-                    'currency' => 'USD'
-                ]
-            ]
+                    'currency' => 'USD',
+                ],
+            ],
         ]);
 
         // Pre-compute the valid signature for this payload (hex digest)
@@ -120,15 +120,15 @@ class WebhookIntegrationTest extends TestCase
         $webhooks = [
             [
                 'event' => 'order:created',
-                'data' => ['order_id' => 'ord-1', 'amount' => 10.00]
+                'data' => ['order_id' => 'ord-1', 'amount' => 10.00],
             ],
             [
                 'event' => 'order:updated',
-                'data' => ['order_id' => 'ord-2', 'amount' => 20.00]
+                'data' => ['order_id' => 'ord-2', 'amount' => 20.00],
             ],
             [
                 'event' => 'order:refunded',
-                'data' => ['order_id' => 'ord-3', 'amount' => 30.00]
+                'data' => ['order_id' => 'ord-3', 'amount' => 30.00],
             ],
         ];
 
@@ -180,7 +180,7 @@ class WebhookIntegrationTest extends TestCase
                 'event_name' => 'order:created',
                 'custom_data' => null,
                 'webhook_id' => 'whk_3f4d5e6c7b8a9f0d',
-                'webhook_created_at' => '2026-01-05T15:30:45Z'
+                'webhook_created_at' => '2026-01-05T15:30:45Z',
             ],
             'data' => [
                 'type' => 'orders',
@@ -207,7 +207,7 @@ class WebhookIntegrationTest extends TestCase
                     'refunded_at' => null,
                     'created_at' => '2026-01-05T15:30:00Z',
                     'urls' => [
-                        'receipt' => 'https://example.lemonsqueezy.com/receipt/1234567'
+                        'receipt' => 'https://example.lemonsqueezy.com/receipt/1234567',
                     ],
                     'first_order_item' => [
                         'id' => '9876543',
@@ -218,10 +218,10 @@ class WebhookIntegrationTest extends TestCase
                         'variant_name' => 'Test Variant',
                         'license_key' => 'LICENSE-KEY-EXAMPLE',
                         'quantity' => 1,
-                        'created_at' => '2026-01-05T15:30:00Z'
-                    ]
-                ]
-            ]
+                        'created_at' => '2026-01-05T15:30:00Z',
+                    ],
+                ],
+            ],
         ]);
 
         $signature = hash_hmac('sha256', $realPayload, $this->webhookSecret);

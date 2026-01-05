@@ -47,8 +47,7 @@ class MockResponse implements ResponseInterface
         private int $statusCode,
         private array $headers,
         private string $body
-    ) {
-    }
+    ) {}
 
     public function getProtocolVersion(): string
     {
@@ -128,9 +127,7 @@ class MockResponse implements ResponseInterface
  */
 class MockStream
 {
-    public function __construct(private string $content)
-    {
-    }
+    public function __construct(private string $content) {}
 
     public function __toString(): string
     {
@@ -164,7 +161,7 @@ class MockHttpClientTest extends TestCase
                         'attributes' => [
                             'name' => 'John Doe',
                             'email' => 'john@example.com',
-                        ]
+                        ],
                     ],
                     [
                         'id' => 'cust-2',
@@ -172,8 +169,8 @@ class MockHttpClientTest extends TestCase
                         'attributes' => [
                             'name' => 'Jane Smith',
                             'email' => 'jane@example.com',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'meta' => [
                     'pagination' => [
@@ -181,8 +178,8 @@ class MockHttpClientTest extends TestCase
                         'current_page' => 1,
                         'per_page' => 50,
                         'last_page' => 1,
-                    ]
-                ]
+                    ],
+                ],
             ])
         );
 
@@ -206,8 +203,8 @@ class MockHttpClientTest extends TestCase
                     'attributes' => [
                         'name' => 'New Customer',
                         'email' => 'new@example.com',
-                    ]
-                ]
+                    ],
+                ],
             ])
         );
 
@@ -226,22 +223,22 @@ class MockHttpClientTest extends TestCase
             'data' => [
                 ['id' => 'prod-1', 'attributes' => ['name' => 'Product 1']],
                 ['id' => 'prod-2', 'attributes' => ['name' => 'Product 2']],
-            ]
+            ],
         ]));
 
         // Get response
         $getResponse = new MockResponse(200, [], json_encode([
-            'data' => ['id' => 'prod-1', 'attributes' => ['name' => 'Product 1']]
+            'data' => ['id' => 'prod-1', 'attributes' => ['name' => 'Product 1']],
         ]));
 
         // Create response
         $createResponse = new MockResponse(201, [], json_encode([
-            'data' => ['id' => 'prod-3', 'attributes' => ['name' => 'Product 3']]
+            'data' => ['id' => 'prod-3', 'attributes' => ['name' => 'Product 3']],
         ]));
 
         // Update response
         $updateResponse = new MockResponse(200, [], json_encode([
-            'data' => ['id' => 'prod-1', 'attributes' => ['name' => 'Updated Product']]
+            'data' => ['id' => 'prod-1', 'attributes' => ['name' => 'Updated Product']],
         ]));
 
         // Delete response
@@ -262,29 +259,29 @@ class MockHttpClientTest extends TestCase
         // 404 Not Found
         $notFoundResponse = new MockResponse(404, [], json_encode([
             'errors' => [
-                ['status' => '404', 'detail' => 'Resource not found']
-            ]
+                ['status' => '404', 'detail' => 'Resource not found'],
+            ],
         ]));
 
         // 401 Unauthorized
         $unauthorizedResponse = new MockResponse(401, [], json_encode([
             'errors' => [
-                ['status' => '401', 'detail' => 'Unauthorized']
-            ]
+                ['status' => '401', 'detail' => 'Unauthorized'],
+            ],
         ]));
 
         // 429 Rate Limited
         $rateLimitResponse = new MockResponse(429, [], json_encode([
             'errors' => [
-                ['status' => '429', 'detail' => 'Rate limit exceeded']
-            ]
+                ['status' => '429', 'detail' => 'Rate limit exceeded'],
+            ],
         ]));
 
         // 422 Validation Error
         $validationResponse = new MockResponse(422, [], json_encode([
             'errors' => [
-                ['status' => '422', 'detail' => 'Validation failed']
-            ]
+                ['status' => '422', 'detail' => 'Validation failed'],
+            ],
         ]));
 
         $this->assertEquals(404, $notFoundResponse->getStatusCode());
@@ -335,7 +332,7 @@ class MockHttpClientTest extends TestCase
         $paginatedResponse = new MockResponse(200, [], json_encode([
             'data' => array_map(fn($i) => [
                 'id' => "cust-$i",
-                'attributes' => ['name' => "Customer $i"]
+                'attributes' => ['name' => "Customer $i"],
             ], range(1, 25)),
             'meta' => [
                 'pagination' => [
@@ -343,8 +340,8 @@ class MockHttpClientTest extends TestCase
                     'current_page' => 1,
                     'per_page' => 25,
                     'last_page' => 4,
-                ]
-            ]
+                ],
+            ],
         ]));
 
         $body = json_decode($paginatedResponse->getBody());
@@ -384,8 +381,8 @@ class MockHttpClientTest extends TestCase
                 'data' => [
                     'id' => 'test-1',
                     'type' => $resourceType,
-                    'attributes' => ['name' => 'Test']
-                ]
+                    'attributes' => ['name' => 'Test'],
+                ],
             ]));
 
             $this->assertEquals(200, $response->getStatusCode());
@@ -448,21 +445,72 @@ class MockHttpClientTest extends TestCase
  */
 class MockRequest implements RequestInterface
 {
-    public function getRequestTarget(): string { return '/'; }
-    public function withRequestTarget($requestTarget): self { return $this; }
-    public function getMethod(): string { return 'GET'; }
-    public function withMethod($method): self { return $this; }
-    public function getUri() { return null; }
-    public function withUri($uri, $preserveHost = false): self { return $this; }
-    public function getProtocolVersion(): string { return '1.1'; }
-    public function withProtocolVersion($version): self { return $this; }
-    public function getHeaders(): array { return []; }
-    public function hasHeader($name): bool { return false; }
-    public function getHeader($name): array { return []; }
-    public function getHeaderLine($name): string { return ''; }
-    public function withHeader($name, $value): self { return $this; }
-    public function withAddedHeader($name, $value): self { return $this; }
-    public function withoutHeader($name): self { return $this; }
-    public function getBody() { return null; }
-    public function withBody($body): self { return $this; }
+    public function getRequestTarget(): string
+    {
+        return '/';
+    }
+    public function withRequestTarget($requestTarget): self
+    {
+        return $this;
+    }
+    public function getMethod(): string
+    {
+        return 'GET';
+    }
+    public function withMethod($method): self
+    {
+        return $this;
+    }
+    public function getUri()
+    {
+        return null;
+    }
+    public function withUri($uri, $preserveHost = false): self
+    {
+        return $this;
+    }
+    public function getProtocolVersion(): string
+    {
+        return '1.1';
+    }
+    public function withProtocolVersion($version): self
+    {
+        return $this;
+    }
+    public function getHeaders(): array
+    {
+        return [];
+    }
+    public function hasHeader($name): bool
+    {
+        return false;
+    }
+    public function getHeader($name): array
+    {
+        return [];
+    }
+    public function getHeaderLine($name): string
+    {
+        return '';
+    }
+    public function withHeader($name, $value): self
+    {
+        return $this;
+    }
+    public function withAddedHeader($name, $value): self
+    {
+        return $this;
+    }
+    public function withoutHeader($name): self
+    {
+        return $this;
+    }
+    public function getBody()
+    {
+        return null;
+    }
+    public function withBody($body): self
+    {
+        return $this;
+    }
 }

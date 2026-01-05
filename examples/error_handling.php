@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Error Handling Example
  *
@@ -66,7 +67,7 @@ try {
 echo "\n=== Handling Validation Error ===\n";
 try {
     $discount = $client->discounts()->create([
-        'invalid_field' => 'value'
+        'invalid_field' => 'value',
     ]);
 } catch (ValidationException $e) {
     echo "Validation error: " . $e->getMessage() . "\n";

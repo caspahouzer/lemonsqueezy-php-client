@@ -16,8 +16,7 @@ abstract class BatchOperation
      */
     public function __construct(
         protected string $resource
-    ) {
-    }
+    ) {}
 
     /**
      * Get the resource name

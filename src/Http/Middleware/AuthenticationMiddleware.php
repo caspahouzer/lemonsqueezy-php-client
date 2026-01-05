@@ -12,9 +12,7 @@ use Psr\Http\Client\ClientInterface;
  */
 class AuthenticationMiddleware implements MiddlewareInterface
 {
-    public function __construct(private AuthenticationInterface $authentication)
-    {
-    }
+    public function __construct(private AuthenticationInterface $authentication) {}
 
     /**
      * Apply authentication and JSON:API headers to request

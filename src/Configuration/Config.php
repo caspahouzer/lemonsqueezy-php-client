@@ -32,8 +32,7 @@ class Config
         private int $timeout = self::REQUEST_TIMEOUT,
         private int $maxRetries = self::MAX_RETRIES,
         private ?string $webhookSecret = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Get API credentials

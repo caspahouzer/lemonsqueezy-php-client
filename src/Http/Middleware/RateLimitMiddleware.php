@@ -12,9 +12,7 @@ use Psr\Http\Client\ClientInterface;
  */
 class RateLimitMiddleware implements MiddlewareInterface
 {
-    public function __construct(private RateLimiter $rateLimiter)
-    {
-    }
+    public function __construct(private RateLimiter $rateLimiter) {}
 
     /**
      * Record request and check rate limit before sending

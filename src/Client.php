@@ -112,7 +112,7 @@ class Client
         try {
             $guzzle = new \GuzzleHttp\Client();
 
-            return new class($guzzle) implements ClientInterface {
+            return new class ($guzzle) implements ClientInterface {
                 public function __construct(private \GuzzleHttp\Client $client) {}
 
                 public function sendRequest(RequestInterface $request): ResponseInterface
@@ -122,8 +122,8 @@ class Client
             };
         } catch (\Throwable) {
             throw new \RuntimeException(
-                'No PSR-18 HTTP client provided and GuzzleHttp is not installed. ' .
-                    'Either provide an HTTP client via Config or install guzzlehttp/guzzle.'
+                'No PSR-18 HTTP client provided and GuzzleHttp is not installed. '
+                    . 'Either provide an HTTP client via Config or install guzzlehttp/guzzle.'
             );
         }
     }
@@ -147,8 +147,8 @@ class Client
             return new RequestFactory($guzzleFactory, $guzzleFactory);
         } catch (\Throwable) {
             throw new \RuntimeException(
-                'No PSR-17 factories provided and GuzzleHttp is not installed. ' .
-                    'Either provide factories via Config or install guzzlehttp/guzzle.'
+                'No PSR-17 factories provided and GuzzleHttp is not installed. '
+                    . 'Either provide factories via Config or install guzzlehttp/guzzle.'
             );
         }
     }
@@ -381,7 +381,7 @@ class Client
     private function executeMiddlewareStack(RequestInterface $request): ResponseInterface
     {
         // Create a client wrapper that can handle remaining middleware
-        $client = new class($this->httpClient, $this->middleware) implements ClientInterface {
+        $client = new class ($this->httpClient, $this->middleware) implements ClientInterface {
             private int $index = 0;
 
             public function __construct(

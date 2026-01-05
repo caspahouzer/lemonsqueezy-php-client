@@ -22,9 +22,7 @@ abstract class AbstractResource implements ResourceInterface
      */
     abstract protected function getModelClass(): string;
 
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     /**
      * List all resources
@@ -202,7 +200,7 @@ abstract class AbstractResource implements ResourceInterface
                     'data' => [
                         'type' => $this->getRelationshipType($relationshipName),
                         'id' => (string) $value,
-                    ]
+                    ],
                 ];
             } else {
                 // Everything else is an attribute
@@ -215,7 +213,7 @@ abstract class AbstractResource implements ResourceInterface
             'data' => [
                 'type' => $type,
                 'attributes' => $attributes,
-            ]
+            ],
         ];
 
         // Add ID if present (for PATCH requests)
