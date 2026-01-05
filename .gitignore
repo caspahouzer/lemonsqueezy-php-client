@@ -14,7 +14,7 @@ composer.phar
 # Testing
 /coverage/
 .phpunit.result.cache
-.php-cs*
+.php-cs*.cache
 
 # Logs
 *.log
