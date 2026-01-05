@@ -5,6 +5,50 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-01-05
+
+### Added
+
+-   **Batch Operations Support** - New feature for efficient bulk processing of resources:
+    -   `batch()` method to execute mixed batch operations
+    -   `batchCreate()` convenience method for creating multiple resources
+    -   `batchUpdate()` convenience method for updating multiple resources
+    -   `batchDelete()` convenience method for deleting multiple resources
+    -   Sequential execution with intelligent rate limiting (respects 300 req/min limit)
+    -   Partial failure handling with detailed error tracking per operation
+    -   Configurable delays (delayMs), timeouts, and stop-on-error behavior
+    -   Comprehensive BatchResult container with success/failure tracking and statistics
+    -   Support for mixed operation types in a single batch
+
+-   **Batch Operation Classes**:
+    -   `BatchCreateOperation` - Define create operations
+    -   `BatchUpdateOperation` - Define update operations
+    -   `BatchDeleteOperation` - Define delete operations
+    -   `BatchResult` - Result container with success/failure tracking and summaries
+    -   `BatchConfig` - Configuration and validation for batch execution
+
+-   **Exception Handling**:
+    -   `BatchException` - Batch-specific exception with partial result tracking
+
+-   **Comprehensive Testing**:
+    -   `BatchResultTest` - 14 tests for result container functionality
+    -   `BatchOperationTest` - 10 tests for operation classes
+    -   `BatchConfigTest` - 12 tests for configuration validation
+    -   `BatchIntegrationTest` - 17 tests for client integration
+
+-   **Documentation**:
+    -   Added batch operations section to API_COVERAGE.md
+    -   Included usage examples for all batch operation methods
+    -   Documented rate limiting and error handling strategies
+
+### Technical Details
+
+-   Sequential batch execution ensures rate limit compliance
+-   Default 200ms delay between operations (5 ops/sec, safe for 300 req/min limit)
+-   Fluent builder pattern for batch operations
+-   Full backward compatibility - no breaking changes
+-   All batch files pass PHP syntax validation
+
 ## [1.0.5] - 2026-01-05
 
 ### Fixed

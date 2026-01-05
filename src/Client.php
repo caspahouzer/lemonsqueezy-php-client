@@ -7,6 +7,9 @@ use LemonSqueezy\Authentication\{AuthenticationInterface, BearerTokenAuth, Publi
 use LemonSqueezy\Http\{RequestFactory, ResponseHandler, RateLimiter};
 use LemonSqueezy\Http\Middleware\{MiddlewareInterface, AuthenticationMiddleware, RateLimitMiddleware, LoggingMiddleware, CacheMiddleware};
 use LemonSqueezy\Cache\FileCache;
+use LemonSqueezy\Logger\NullLogger;
+use LemonSqueezy\Batch\{BatchOperationExecutor, BatchResult};
+use LemonSqueezy\Batch\Operations\{BatchCreateOperation, BatchUpdateOperation, BatchDeleteOperation};
 use LemonSqueezy\Resource\{
     Users,
     Stores,
@@ -31,7 +34,6 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * Main LemonSqueezy API client facade
@@ -52,6 +54,7 @@ class Client
     private AuthenticationInterface $authentication;
     private LoggerInterface $logger;
     private array $middleware = [];
+    private ?BatchOperationExecutor $batchExecutor = null;
 
     // Cached resource instances
     private ?Users $users = null;
@@ -180,6 +183,128 @@ class Client
         $this->middleware[] = $middleware;
 
         return $this;
+    }
+
+    /**
+     * Execute a batch of operations
+     *
+     * Takes an array of BatchOperation objects and executes them sequentially,
+     * respecting rate limits and collecting results.
+     *
+     * Example usage:
+     * ```php
+     * $operations = [
+     *     new BatchCreateOperation('products', ['name' => 'Product 1']),
+     *     new BatchCreateOperation('products', ['name' => 'Product 2']),
+     * ];
+     * $result = $client->batch($operations);
+     * ```
+     *
+     * @param array $operations Array of BatchOperation objects
+     * @param array $options Execution options (delayMs, timeout, stopOnError, etc.)
+     * @return BatchResult The result of the batch execution
+     */
+    public function batch(array $operations, array $options = []): BatchResult
+    {
+        $executor = $this->getBatchExecutor();
+        return $executor->execute($operations, $options);
+    }
+
+    /**
+     * Execute a batch of create operations
+     *
+     * Convenience method for creating multiple resources.
+     *
+     * Example usage:
+     * ```php
+     * $items = [
+     *     ['name' => 'Product 1'],
+     *     ['name' => 'Product 2'],
+     *     ['name' => 'Product 3'],
+     * ];
+     * $result = $client->batchCreate('products', $items);
+     * ```
+     *
+     * @param string $resource The resource type (e.g., 'products', 'customers')
+     * @param array $items Array of data arrays to create
+     * @param array $options Execution options
+     * @return BatchResult The result of the batch creation
+     */
+    public function batchCreate(string $resource, array $items, array $options = []): BatchResult
+    {
+        $operations = array_map(
+            fn($data) => new BatchCreateOperation($resource, $data),
+            $items
+        );
+
+        return $this->batch($operations, $options);
+    }
+
+    /**
+     * Execute a batch of update operations
+     *
+     * Convenience method for updating multiple resources.
+     *
+     * Example usage:
+     * ```php
+     * $items = [
+     *     ['id' => 'prod-1', 'name' => 'Updated 1'],
+     *     ['id' => 'prod-2', 'name' => 'Updated 2'],
+     * ];
+     * $result = $client->batchUpdate('products', $items);
+     * ```
+     *
+     * @param string $resource The resource type (e.g., 'products', 'customers')
+     * @param array $items Array of update arrays (must contain 'id' key)
+     * @param array $options Execution options
+     * @return BatchResult The result of the batch update
+     */
+    public function batchUpdate(string $resource, array $items, array $options = []): BatchResult
+    {
+        $operations = array_map(
+            fn($data) => new BatchUpdateOperation(
+                $resource,
+                $data['id'] ?? throw new \InvalidArgumentException('Each update item must contain an "id" key'),
+                array_diff_key($data, ['id' => null])
+            ),
+            $items
+        );
+
+        return $this->batch($operations, $options);
+    }
+
+    /**
+     * Execute a batch of delete operations
+     *
+     * Convenience method for deleting multiple resources.
+     *
+     * Example usage:
+     * ```php
+     * $ids = ['prod-1', 'prod-2', 'prod-3'];
+     * $result = $client->batchDelete('products', $ids);
+     * ```
+     *
+     * @param string $resource The resource type (e.g., 'products', 'customers')
+     * @param array $ids Array of resource IDs to delete
+     * @param array $options Execution options
+     * @return BatchResult The result of the batch deletion
+     */
+    public function batchDelete(string $resource, array $ids, array $options = []): BatchResult
+    {
+        $operations = array_map(
+            fn($id) => new BatchDeleteOperation($resource, $id),
+            $ids
+        );
+
+        return $this->batch($operations, $options);
+    }
+
+    /**
+     * Get or create the batch operation executor
+     */
+    private function getBatchExecutor(): BatchOperationExecutor
+    {
+        return $this->batchExecutor ??= new BatchOperationExecutor($this);
     }
 
     /**

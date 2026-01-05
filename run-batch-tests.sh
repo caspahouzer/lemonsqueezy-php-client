@@ -1,5 +1,5 @@
 #!/bin/bash
-# LemonSqueezy API Test Runner
+# LemonSqueezy Batch Operations Test Runner
 
 # Get the directory where this script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -35,12 +35,12 @@ fi
 echo "✓ API Key loaded successfully"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
-echo "Running LemonSqueezy API Integration Tests..."
+echo "Running LemonSqueezy Batch Operations Real API Tests..."
 echo ""
 
-# Run the integration tests with test documentation output
-./vendor/bin/phpunit tests/Integration/RealApiTest.php --testdox
+# Run the batch operations integration tests
+./vendor/bin/phpunit tests/Integration/BatchOperationsRealApiTest.php
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "✓ Test run complete!"
+echo "✓ Batch test run complete!"

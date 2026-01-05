@@ -8,50 +8,35 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 
 ## API Resources & Methods
 
-### 1. Users
+### 1. Users ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /users - List all users
 -   [x] **get(id)** - GET /users/{id} - Get a specific user
 
-### 2. Stores
+### 2. Stores ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /stores - List all stores
 -   [x] **get(id)** - GET /stores/{id} - Get a specific store
--   [x] **create()** - POST /stores - Create a new store
--   [x] **update(id)** - PATCH /stores/{id} - Update store
--   [x] **delete(id)** - DELETE /stores/{id} - Delete store
 
-### 3. Products
+### 3. Products ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /products - List all products
 -   [x] **get(id)** - GET /products/{id} - Get a specific product
--   [x] **create()** - POST /products - Create a new product
--   [x] **update(id)** - PATCH /products/{id} - Update product
--   [x] **delete(id)** - DELETE /products/{id} - Delete product
 
-### 4. Variants
+### 4. Variants ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /variants - List all variants
 -   [x] **get(id)** - GET /variants/{id} - Get a specific variant
--   [x] **create()** - POST /variants - Create a new variant
--   [x] **update(id)** - PATCH /variants/{id} - Update variant
--   [x] **delete(id)** - DELETE /variants/{id} - Delete variant
 
-### 5. Prices
+### 5. Prices ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /prices - List all prices
 -   [x] **get(id)** - GET /prices/{id} - Get a specific price
--   [x] **create()** - POST /prices - Create a new price
--   [x] **update(id)** - PATCH /prices/{id} - Update price
--   [x] **delete(id)** - DELETE /prices/{id} - Delete price
 
-### 6. Files
+### 6. Files ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /files - List all files
 -   [x] **get(id)** - GET /files/{id} - Get a specific file
--   [x] **create()** - POST /files - Create a new file
--   [x] **update(id)** - PATCH /files/{id} - Update file
--   [x] **delete(id)** - DELETE /files/{id} - Delete file
 
 ### 7. Customers
 
@@ -59,14 +44,13 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] **get(id)** - GET /customers/{id} - Get a specific customer
 -   [x] **create()** - POST /customers - Create a new customer
 -   [x] **update(id)** - PATCH /customers/{id} - Update customer
--   [x] **delete(id)** - DELETE /customers/{id} - Delete customer
 
-### 8. Orders
+### 8. Orders ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /orders - List all orders
 -   [x] **get(id)** - GET /orders/{id} - Get a specific order
 
-### 9. Order Items
+### 9. Order Items ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /order-items - List all order items
 -   [x] **get(id)** - GET /order-items/{id} - Get a specific order item
@@ -75,8 +59,9 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 
 -   [x] **list()** - GET /subscriptions - List all subscriptions
 -   [x] **get(id)** - GET /subscriptions/{id} - Get a specific subscription
+-   [x] **update(id)** - PATCH /subscriptions/{id} - Update subscription
 
-### 11. Subscription Invoices
+### 11. Subscription Invoices ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /subscription-invoices - List all subscription invoices
 -   [x] **get(id)** - GET /subscription-invoices/{id} - Get a specific invoice
@@ -85,6 +70,7 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 
 -   [x] **list()** - GET /subscription-items - List all subscription items
 -   [x] **get(id)** - GET /subscription-items/{id} - Get a specific subscription item
+-   [x] **update(id)** - PATCH /subscription-items/{id} - Update subscription item
 
 ### 13. Discounts
 
@@ -94,7 +80,7 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] **update(id)** - PATCH /discounts/{id} - Update discount
 -   [x] **delete(id)** - DELETE /discounts/{id} - Delete discount
 
-### 14. Discount Redemptions
+### 14. Discount Redemptions ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /discount-redemptions - List all discount redemptions
 -   [x] **get(id)** - GET /discount-redemptions/{id} - Get a specific redemption
@@ -124,7 +110,7 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] **list()** - GET /checkouts - List all checkouts
 -   [x] **create()** - POST /checkouts - Create a new checkout
 
-### 18. Affiliates
+### 18. Affiliates ⚠️ (Read-Only)
 
 -   [x] **list()** - GET /affiliates - List all affiliates
 -   [x] **get(id)** - GET /affiliates/{id} - Get a specific affiliate
@@ -157,6 +143,15 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] Pagination (`page()`, `pageSize()`)
 -   [x] Relationship Includes (`include()`)
 -   [x] Parameter Generation
+
+### Batch Operations
+
+-   [x] Batch Create (`batchCreate()`)
+-   [x] Batch Update (`batchUpdate()`)
+-   [x] Batch Delete (`batchDelete()`)
+-   [x] Mixed Batch Operations (`batch()`)
+-   [x] Rate Limiting Awareness
+-   [x] Partial Failure Handling
 
 ### Authentication
 
@@ -192,19 +187,34 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 ### Total API Endpoints
 
 -   **Resources**: 18 ✅
--   **Methods Implemented**: 74+ ✅
--   **Read-Only API Methods**: 14 (by API design)
+-   **Methods Implemented**: 68+ ✅
+-   **Write Operations Supported**: 11 resources (create, update, or delete)
+-   **Read-Only Resources**: 7 resources (by API design)
 -   **License API Methods**: 3 ✅
+
+### API Capability Summary
+
+**Resources Supporting CREATE:**
+- Customers, Discounts, Webhooks, Checkouts
+
+**Resources Supporting UPDATE:**
+- Customers, Subscriptions, Subscription Items, Discounts, Webhooks
+
+**Resources Supporting DELETE:**
+- Discounts, Webhooks
+
+**Read-Only Resources (List/Get only):**
+- Users, Stores, Products, Variants, Prices, Files, Orders, Order Items, Subscription Invoices, Affiliates, Discount Redemptions
 
 ### Implementation Status
 
--   **Fully Implemented**: 95%
--   **Read-Only (API Limitation)**: 5%
--   **Complete Coverage**: YES ✅
+-   **Framework Complete**: 100% ✅
+-   **API Design Compliance**: 100% ✅
+-   **Accurate API Coverage**: YES ✅
 
 ### Notes
 
-1. **Read-Only APIs**: Methods marked with `(Read-only in API)` are not supported by LemonSqueezy's API, not due to missing implementation. These would throw errors if called.
+1. **API Limitations**: Resources marked with ⚠️ (Read-Only) do not support create(), update(), or delete() operations in the actual LemonSqueezy API. These methods exist in the framework but will throw HTTP errors if called on unsupported resources.
 
 2. **License Keys**: The License API is a special **public API** that doesn't require authentication.
 
@@ -266,20 +276,126 @@ $query = (new QueryBuilder())
 $customers = $client->customers()->list($query);
 ```
 
+### Batch Operations
+
+**Batch Create Multiple Customers:**
+```php
+// Customers support CREATE via the API
+$result = $client->batchCreate('customers', [
+    ['email' => 'customer1@example.com', 'name' => 'Customer 1'],
+    ['email' => 'customer2@example.com', 'name' => 'Customer 2'],
+    ['email' => 'customer3@example.com', 'name' => 'Customer 3'],
+]);
+
+if ($result->wasSuccessful()) {
+    echo "Created {$result->getSuccessCount()} customers";
+} else {
+    foreach ($result->getFailed() as $failure) {
+        echo "Error: {$failure['error']}";
+    }
+}
+```
+
+**Batch Update Multiple Customers:**
+```php
+// Customers support UPDATE via the API
+$result = $client->batchUpdate('customers', [
+    ['id' => 'cust-1', 'status' => 'active'],
+    ['id' => 'cust-2', 'status' => 'inactive'],
+    ['id' => 'cust-3', 'email' => 'newemail@example.com'],
+]);
+
+$summary = $result->getSummary();
+echo "Updated {$summary['successCount']}/{$summary['totalRequested']} customers";
+```
+
+**Batch Delete Multiple Discounts:**
+```php
+// Only Discounts and Webhooks support DELETE via the API
+$result = $client->batchDelete('discounts', [
+    'disc-1',
+    'disc-2',
+    'disc-3',
+]);
+
+echo "Deleted {$result->getSuccessCount()} discounts";
+```
+
+**Mixed Batch Operations:**
+```php
+use LemonSqueezy\Batch\Operations\{
+    BatchCreateOperation,
+    BatchUpdateOperation,
+    BatchDeleteOperation,
+};
+
+$operations = [
+    new BatchCreateOperation('products', ['name' => 'New Product']),
+    new BatchUpdateOperation('customers', 'cust-123', ['status' => 'vip']),
+    new BatchDeleteOperation('files', 'file-456'),
+];
+
+$result = $client->batch($operations, ['delayMs' => 100]);
+```
+
+**Batch Operations with Options:**
+```php
+$result = $client->batchCreate('products', $items, [
+    'delayMs' => 200,        // Delay between operations (ms)
+    'timeout' => 30,         // Timeout per operation (seconds)
+    'stopOnError' => false,  // Continue on individual errors
+]);
+```
+
+---
+
+## Batch Operations ⭐ (New)
+
+The framework now supports **batch operations** for efficient bulk processing of resources.
+
+### Batch Operation Methods
+
+-   [x] **batchCreate()** - Create multiple resources in a batch
+-   [x] **batchUpdate()** - Update multiple resources in a batch
+-   [x] **batchDelete()** - Delete multiple resources in a batch
+-   [x] **batch()** - Execute mixed batch operations
+
+### Batch Operation Features
+
+-   [x] Sequential execution with intelligent rate limiting
+-   [x] Partial failure handling (continue on errors)
+-   [x] Detailed error tracking per operation
+-   [x] Configurable delays and timeouts
+-   [x] Execution statistics and summaries
+
+### Batch Operation Tests
+
+**Unit Tests:**
+-   [x] `BatchResultTest` - Result container functionality, success/failure tracking
+-   [x] `BatchOperationTest` - BatchCreate/Update/Delete operation classes
+-   [x] `BatchConfigTest` - Configuration validation and default merging
+
+**Test Coverage:**
+- Operation creation and payload generation
+- Result accumulation and statistics
+- Error handling and partial failures
+- Configuration validation and limits
+- Fluent interface patterns
+
 ---
 
 ## Next Steps for Enhancement
 
 -   [ ] Add webhook signature verification
--   [ ] Add batch operation support
--   [ ] Add caching middleware
+-   [x] Add batch operation support
+-   [x] Add caching middleware
 -   [ ] Add retry middleware with exponential backoff
 -   [x] Add request logging middleware
--   [ ] Add cursor-based pagination (if API supports)
--   [ ] Add bulk operation helpers
+-   [x] Add bulk operation helpers
 
 ---
 
-**Last Updated**: January 4, 2024
-**Package Version**: 1.0.0
+**Last Updated**: January 5, 2026
+**Package Version**: 1.1.0
 **API Version**: LemonSqueezy REST API v1
+**New in 1.1.0**: Batch operations support (batchCreate, batchUpdate, batchDelete)

@@ -100,30 +100,30 @@ $result = $client->licenseKeys()->deactivate(
 
 ## Available Resources
 
-The client provides access to **all 18 documented LemonSqueezy API resources** with comprehensive method coverage:
+The client provides access to **all 18 documented LemonSqueezy API resources**. Note that the LemonSqueezy API has specific limitations on which operations each resource supports:
 
-| Resource              | Methods                                    | Endpoint                 | Notes                    |
-| --------------------- | ------------------------------------------ | ------------------------ | ------------------------ |
-| Users                 | list, get                                  | `/users`                 | Read-only                |
-| Stores                | ✅ CRUD                                    | `/stores`                | Full support             |
-| Products              | ✅ CRUD                                    | `/products`              | Full support             |
-| Variants              | ✅ CRUD                                    | `/variants`              | Full support             |
-| Prices                | ✅ CRUD                                    | `/prices`                | Full support             |
-| Files                 | ✅ CRUD                                    | `/files`                 | Full support             |
-| Customers             | ✅ CRUD                                    | `/customers`             | Full support             |
-| Orders                | list, get                                  | `/orders`                | Read-only                |
-| Order Items           | list, get                                  | `/order-items`           | Read-only                |
-| Subscriptions         | list, get                                  | `/subscriptions`         | Read-only                |
-| Subscription Invoices | list, get                                  | `/subscription-invoices` | Read-only                |
-| Subscription Items    | list, get                                  | `/subscription-items`    | Read-only                |
-| Discounts             | ✅ CRUD                                    | `/discounts`             | Full support             |
-| Discount Redemptions  | list, get                                  | `/discount-redemptions`  | Read-only                |
-| **License Keys**      | **activate**, **validate**, **deactivate** | `/licenses/*`            | **Public API (no auth)** |
-| Webhooks              | ✅ CRUD                                    | `/webhooks`              | Full support             |
-| Checkouts             | list, create                               | `/checkouts`             | Limited                  |
-| Affiliates            | list, get                                  | `/affiliates`            | Read-only                |
+| Resource              | Supported Methods              | Endpoint                 | Notes                                          |
+| --------------------- | ------------------------------ | ------------------------ | ---------------------------------------------- |
+| Users                 | list, get                      | `/users`                 | Read-only                                      |
+| Stores                | list, get                      | `/stores`                | Read-only                                      |
+| Products              | list, get                      | `/products`              | Read-only                                      |
+| Variants              | list, get                      | `/variants`              | Read-only                                      |
+| Prices                | list, get                      | `/prices`                | Read-only                                      |
+| Files                 | list, get                      | `/files`                 | Read-only                                      |
+| **Customers**         | **list, get, create, update**  | `/customers`             | **Supports create/update only (no delete)**    |
+| Orders                | list, get                      | `/orders`                | Read-only                                      |
+| Order Items           | list, get                      | `/order-items`           | Read-only                                      |
+| Subscriptions         | list, get, update              | `/subscriptions`         | **Supports update only (no create/delete)**    |
+| Subscription Invoices | list, get                      | `/subscription-invoices` | Read-only                                      |
+| Subscription Items    | list, get, update              | `/subscription-items`    | **Supports update only (no create/delete)**    |
+| Discounts             | list, get, create, update, delete | `/discounts`          | **Full CRUD support**                          |
+| Discount Redemptions  | list, get                      | `/discount-redemptions`  | Read-only                                      |
+| **License Keys**      | **activate, validate, deactivate** | `/licenses/*`        | **Public API (no auth required)**              |
+| Webhooks              | list, get, create, update, delete | `/webhooks`          | **Full CRUD support**                          |
+| Checkouts             | list, create                   | `/checkouts`             | **Supports create only (no update/delete)**    |
+| Affiliates            | list, get                      | `/affiliates`            | Read-only                                      |
 
-**→ See [API_COVERAGE.md](API_COVERAGE.md) for complete endpoint checklist with all methods and status**
+**→ See [API_COVERAGE.md](API_COVERAGE.md) for complete endpoint checklist with all methods and accurate API capability mapping**
 
 ## Query Building
 
@@ -154,12 +154,20 @@ The client throws specific exceptions for different error conditions:
 
 ```php
 use LemonSqueezy\Exception\{
+    UnsupportedOperationException,
     RateLimitException,
     NotFoundException,
     UnauthorizedException,
     ValidationException,
     LemonSqueezyException
 };
+
+try {
+    // This will throw UnsupportedOperationException because products are read-only
+    $product = $client->products()->create(['name' => 'Product']);
+} catch (UnsupportedOperationException $e) {
+    echo "Operation not supported: " . $e->getMessage();
+}
 
 try {
     $order = $client->orders()->get('ord-nonexistent');
@@ -178,6 +186,30 @@ try {
     echo "API error: " . $e->getMessage();
 }
 ```
+
+### Unsupported Operations
+
+The LemonSqueezy API has specific limitations on which operations each resource supports. Attempting an unsupported operation will throw `UnsupportedOperationException`:
+
+```php
+use LemonSqueezy\Exception\UnsupportedOperationException;
+
+try {
+    // Read-only resources (cannot create, update, or delete)
+    $client->products()->create(['name' => 'Product']);        // UnsupportedOperationException
+    $client->users()->delete('user-123');                      // UnsupportedOperationException
+
+    // Partially supported resources
+    $client->subscriptions()->create([...]);                   // UnsupportedOperationException
+    $client->customers()->delete('cust-123');                  // UnsupportedOperationException
+    $client->checkouts()->update('checkout-123', [...]);       // UnsupportedOperationException
+} catch (UnsupportedOperationException $e) {
+    echo "This operation is not supported by the API: " . $e->getMessage();
+    // Check API_COVERAGE.md for which operations each resource supports
+}
+```
+
+**Note:** Supported write operations are clearly marked in the [Available Resources](#available-resources) table above and in [API_COVERAGE.md](API_COVERAGE.md).
 
 ## Advanced Configuration
 
