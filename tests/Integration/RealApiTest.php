@@ -486,6 +486,7 @@ class RealApiTest extends TestCase
             if ($stores->count() > 0) {
                 $storeId = $stores->items()[0]->getId();
                 $webhook = $this->client->webhooks()->create([
+                    'test_mode' => true,
                     'store_id' => $storeId,
                     'url' => 'https://example.com/webhook-' . time(),
                     'secret' => 'test-secret-' . time(),

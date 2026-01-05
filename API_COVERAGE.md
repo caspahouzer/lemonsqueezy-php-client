@@ -200,16 +200,20 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 ### API Capability Summary
 
 **Resources Supporting CREATE:**
-- Customers, Discounts, Webhooks, Checkouts
+
+-   Customers, Discounts, Webhooks, Checkouts
 
 **Resources Supporting UPDATE:**
-- Customers, Subscriptions, Subscription Items, Discounts, Webhooks
+
+-   Customers, Subscriptions, Subscription Items, Discounts, Webhooks
 
 **Resources Supporting DELETE:**
-- Discounts, Webhooks
+
+-   Discounts, Webhooks
 
 **Read-Only Resources (List/Get only):**
-- Users, Stores, Products, Variants, Prices, Files, Orders, Order Items, Subscription Invoices, Affiliates, Discount Redemptions
+
+-   Users, Stores, Products, Variants, Prices, Files, Orders, Order Items, Subscription Invoices, Affiliates, Discount Redemptions
 
 ### Implementation Status
 
@@ -284,6 +288,7 @@ $customers = $client->customers()->list($query);
 ### Batch Operations
 
 **Batch Create Multiple Customers:**
+
 ```php
 // Customers support CREATE via the API
 $result = $client->batchCreate('customers', [
@@ -302,6 +307,7 @@ if ($result->wasSuccessful()) {
 ```
 
 **Batch Update Multiple Customers:**
+
 ```php
 // Customers support UPDATE via the API
 $result = $client->batchUpdate('customers', [
@@ -315,6 +321,7 @@ echo "Updated {$summary['successCount']}/{$summary['totalRequested']} customers"
 ```
 
 **Batch Delete Multiple Discounts:**
+
 ```php
 // Only Discounts and Webhooks support DELETE via the API
 $result = $client->batchDelete('discounts', [
@@ -327,6 +334,7 @@ echo "Deleted {$result->getSuccessCount()} discounts";
 ```
 
 **Mixed Batch Operations:**
+
 ```php
 use LemonSqueezy\Batch\Operations\{
     BatchCreateOperation,
@@ -344,6 +352,7 @@ $result = $client->batch($operations, ['delayMs' => 100]);
 ```
 
 **Batch Operations with Options:**
+
 ```php
 $result = $client->batchCreate('products', $items, [
     'delayMs' => 200,        // Delay between operations (ms)
@@ -376,16 +385,18 @@ The framework now supports **batch operations** for efficient bulk processing of
 ### Batch Operation Tests
 
 **Unit Tests:**
+
 -   [x] `BatchResultTest` - Result container functionality, success/failure tracking
 -   [x] `BatchOperationTest` - BatchCreate/Update/Delete operation classes
 -   [x] `BatchConfigTest` - Configuration validation and default merging
 
 **Test Coverage:**
-- Operation creation and payload generation
-- Result accumulation and statistics
-- Error handling and partial failures
-- Configuration validation and limits
-- Fluent interface patterns
+
+-   Operation creation and payload generation
+-   Result accumulation and statistics
+-   Error handling and partial failures
+-   Configuration validation and limits
+-   Fluent interface patterns
 
 ---
 
@@ -396,11 +407,13 @@ The framework includes support for special/custom API endpoints that don't follo
 ### Order Operations
 
 **Generate Invoice:**
+
 ```php
 $invoice = $client->orders()->generateInvoice('ord-123');
 ```
 
 **Issue Refund:**
+
 ```php
 $refund = $client->orders()->issueRefund('ord-123', [
     'refund_reason' => 'Customer requested refund',
@@ -411,6 +424,7 @@ $refund = $client->orders()->issueRefund('ord-123', [
 ### Subscription Operations
 
 **Cancel Subscription:**
+
 ```php
 $subscription = $client->subscriptions()->cancelSubscription('sub-456', [
     'reason' => 'Customer decided to cancel'
@@ -420,6 +434,7 @@ $subscription = $client->subscriptions()->cancelSubscription('sub-456', [
 ### Subscription Item Operations
 
 **Get Current Usage:**
+
 ```php
 $usage = $client->subscriptionItems()->getCurrentUsage('sub-item-789');
 // Returns: ['current_usage' => 100, 'status' => 'active', ...]
@@ -428,6 +443,7 @@ $usage = $client->subscriptionItems()->getCurrentUsage('sub-item-789');
 ### Subscription Invoice Operations
 
 **Generate Invoice:**
+
 ```php
 $invoice = $client->subscriptionInvoices()->generateInvoice('sub-inv-123');
 // Returns: ['id' => 'sub-inv-123', 'url' => 'https://...', 'status' => 'generated']
@@ -438,12 +454,7 @@ $invoice = $client->subscriptionInvoices()->generateInvoice('sub-inv-123');
 ## Next Steps for Enhancement
 
 -   [ ] Add webhook signature verification
--   [x] Add batch operation support
--   [x] Add caching middleware
 -   [ ] Add retry middleware with exponential backoff
--   [x] Add request logging middleware
--   [x] Add bulk operation helpers
--   [x] Add special API operations (invoices, refunds, cancel, usage)
 
 ---
 
