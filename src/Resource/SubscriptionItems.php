@@ -37,4 +37,20 @@ class SubscriptionItems extends AbstractResource
     {
         throw new UnsupportedOperationException('subscription-items', 'delete');
     }
+
+    /**
+     * Get current usage data for a subscription item
+     *
+     * @param string $subscriptionItemId The subscription item ID
+     * @return array The current usage data
+     *
+     * @see https://docs.lemonsqueezy.com/api/subscription-items/retrieve-subscription-item-current-usage
+     */
+    public function getCurrentUsage(string $subscriptionItemId): array
+    {
+        $endpoint = $this->getEndpoint() . '/' . urlencode($subscriptionItemId) . '/current-usage';
+        $response = $this->client->request('GET', $endpoint);
+
+        return $response['data'] ?? $response;
+    }
 }

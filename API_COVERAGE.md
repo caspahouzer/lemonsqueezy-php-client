@@ -45,10 +45,12 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] **create()** - POST /customers - Create a new customer
 -   [x] **update(id)** - PATCH /customers/{id} - Update customer
 
-### 8. Orders ⚠️ (Read-Only)
+### 8. Orders ⚠️ (Read-Only CRUD, Special Operations Available)
 
 -   [x] **list()** - GET /orders - List all orders
 -   [x] **get(id)** - GET /orders/{id} - Get a specific order
+-   [x] **generateInvoice(id)** - POST /orders/{id}/invoices - Generate an invoice for an order
+-   [x] **issueRefund(id, data)** - POST /orders/{id}/refunds - Issue a refund for an order
 
 ### 9. Order Items ⚠️ (Read-Only)
 
@@ -60,17 +62,20 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] **list()** - GET /subscriptions - List all subscriptions
 -   [x] **get(id)** - GET /subscriptions/{id} - Get a specific subscription
 -   [x] **update(id)** - PATCH /subscriptions/{id} - Update subscription
+-   [x] **cancelSubscription(id, data)** - POST /subscriptions/{id}/cancel - Cancel a subscription
 
-### 11. Subscription Invoices ⚠️ (Read-Only)
+### 11. Subscription Invoices ⚠️ (Read-Only CRUD, Special Operations Available)
 
 -   [x] **list()** - GET /subscription-invoices - List all subscription invoices
 -   [x] **get(id)** - GET /subscription-invoices/{id} - Get a specific invoice
+-   [x] **generateInvoice(id)** - POST /subscription-invoices/{id}/generate - Generate a subscription invoice
 
 ### 12. Subscription Items
 
 -   [x] **list()** - GET /subscription-items - List all subscription items
 -   [x] **get(id)** - GET /subscription-items/{id} - Get a specific subscription item
 -   [x] **update(id)** - PATCH /subscription-items/{id} - Update subscription item
+-   [x] **getCurrentUsage(id)** - GET /subscription-items/{id}/current-usage - Retrieve current usage data
 
 ### 13. Discounts
 
@@ -384,6 +389,52 @@ The framework now supports **batch operations** for efficient bulk processing of
 
 ---
 
+## Special API Operations ⭐
+
+The framework includes support for special/custom API endpoints that don't follow the standard CRUD pattern.
+
+### Order Operations
+
+**Generate Invoice:**
+```php
+$invoice = $client->orders()->generateInvoice('ord-123');
+```
+
+**Issue Refund:**
+```php
+$refund = $client->orders()->issueRefund('ord-123', [
+    'refund_reason' => 'Customer requested refund',
+    'refund_reason_description' => 'Product not as described'
+]);
+```
+
+### Subscription Operations
+
+**Cancel Subscription:**
+```php
+$subscription = $client->subscriptions()->cancelSubscription('sub-456', [
+    'reason' => 'Customer decided to cancel'
+]);
+```
+
+### Subscription Item Operations
+
+**Get Current Usage:**
+```php
+$usage = $client->subscriptionItems()->getCurrentUsage('sub-item-789');
+// Returns: ['current_usage' => 100, 'status' => 'active', ...]
+```
+
+### Subscription Invoice Operations
+
+**Generate Invoice:**
+```php
+$invoice = $client->subscriptionInvoices()->generateInvoice('sub-inv-123');
+// Returns: ['id' => 'sub-inv-123', 'url' => 'https://...', 'status' => 'generated']
+```
+
+---
+
 ## Next Steps for Enhancement
 
 -   [ ] Add webhook signature verification
@@ -392,10 +443,11 @@ The framework now supports **batch operations** for efficient bulk processing of
 -   [ ] Add retry middleware with exponential backoff
 -   [x] Add request logging middleware
 -   [x] Add bulk operation helpers
+-   [x] Add special API operations (invoices, refunds, cancel, usage)
 
 ---
 
 **Last Updated**: January 5, 2026
-**Package Version**: 1.1.0
+**Package Version**: 1.1.1
 **API Version**: LemonSqueezy REST API v1
-**New in 1.1.0**: Batch operations support (batchCreate, batchUpdate, batchDelete)
+**New in 1.1.1**: Special API operations (invoices, refunds, cancellation, usage tracking)

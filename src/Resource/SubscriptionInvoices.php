@@ -47,4 +47,21 @@ class SubscriptionInvoices extends AbstractResource
     {
         throw new UnsupportedOperationException('subscription-invoices', 'delete');
     }
+
+    /**
+     * Generate an invoice for a subscription invoice
+     *
+     * @param string $subscriptionInvoiceId The subscription invoice ID
+     * @param array $data Additional data for invoice generation
+     * @return array The generated invoice data
+     *
+     * @see https://docs.lemonsqueezy.com/api/subscription-invoices/generate-subscription-invoice
+     */
+    public function generateInvoice(string $subscriptionInvoiceId, array $data = []): array
+    {
+        $endpoint = $this->getEndpoint() . '/' . urlencode($subscriptionInvoiceId) . '/generate';
+        $response = $this->client->request('POST', $endpoint, !empty($data) ? ['data' => $data] : []);
+
+        return $response['data'] ?? $response;
+    }
 }

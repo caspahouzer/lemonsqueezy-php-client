@@ -211,6 +211,30 @@ try {
 
 **Note:** Supported write operations are clearly marked in the [Available Resources](#available-resources) table above and in [API_COVERAGE.md](API_COVERAGE.md).
 
+### Special API Operations
+
+Some resources support special action endpoints beyond standard CRUD operations:
+
+```php
+// Orders: Generate Invoice
+$invoice = $client->orders()->generateInvoice('ord-123');
+
+// Orders: Issue Refund
+$refund = $client->orders()->issueRefund('ord-123', [
+    'refund_reason' => 'Customer requested refund'
+]);
+
+// Subscriptions: Cancel Subscription
+$subscription = $client->subscriptions()->cancelSubscription('sub-456', [
+    'reason' => 'Customer decided to cancel'
+]);
+
+// Subscription Items: Get Current Usage
+$usage = $client->subscriptionItems()->getCurrentUsage('sub-item-789');
+```
+
+See [API_COVERAGE.md](API_COVERAGE.md#special-api-operations--) for all available special operations.
+
 ## Advanced Configuration
 
 ### Custom HTTP Client

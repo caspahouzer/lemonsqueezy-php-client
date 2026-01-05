@@ -53,8 +53,8 @@ class BatchIntegrationTest extends TestCase
     public function testBatchCreateWithValidOperations(): void
     {
         $operations = [
-            new BatchCreateOperation('products', ['name' => 'Product 1']),
-            new BatchCreateOperation('products', ['name' => 'Product 2']),
+            new BatchCreateOperation('customers', ['email' => 'customer1@example.com', 'name' => 'Customer 1']),
+            new BatchCreateOperation('customers', ['email' => 'customer2@example.com', 'name' => 'Customer 2']),
         ];
 
         $result = $this->client->batch($operations);
@@ -67,12 +67,12 @@ class BatchIntegrationTest extends TestCase
     public function testBatchCreateConvenienceMethod(): void
     {
         $items = [
-            ['name' => 'Product 1'],
-            ['name' => 'Product 2'],
-            ['name' => 'Product 3'],
+            ['email' => 'customer1@example.com', 'name' => 'Customer 1'],
+            ['email' => 'customer2@example.com', 'name' => 'Customer 2'],
+            ['email' => 'customer3@example.com', 'name' => 'Customer 3'],
         ];
 
-        $result = $this->client->batchCreate('products', $items);
+        $result = $this->client->batchCreate('customers', $items);
 
         $this->assertNotNull($result);
         $this->assertEquals(3, $result->getTotalCount());
@@ -81,20 +81,20 @@ class BatchIntegrationTest extends TestCase
     public function testBatchUpdateConvenienceMethod(): void
     {
         $items = [
-            ['id' => 'prod-1', 'name' => 'Updated 1'],
-            ['id' => 'prod-2', 'name' => 'Updated 2'],
+            ['id' => 'cust-1', 'name' => 'Updated 1'],
+            ['id' => 'cust-2', 'name' => 'Updated 2'],
         ];
 
-        $result = $this->client->batchUpdate('products', $items);
+        $result = $this->client->batchUpdate('customers', $items);
 
         $this->assertNotNull($result);
     }
 
     public function testBatchDeleteConvenienceMethod(): void
     {
-        $ids = ['prod-1', 'prod-2', 'prod-3'];
+        $ids = ['disc-1', 'disc-2', 'disc-3'];
 
-        $result = $this->client->batchDelete('products', $ids);
+        $result = $this->client->batchDelete('discounts', $ids);
 
         $this->assertNotNull($result);
     }
@@ -102,9 +102,9 @@ class BatchIntegrationTest extends TestCase
     public function testBatchMixedOperations(): void
     {
         $operations = [
-            new BatchCreateOperation('products', ['name' => 'New Product']),
-            new BatchUpdateOperation('products', 'prod-1', ['name' => 'Updated']),
-            new BatchDeleteOperation('products', 'prod-2'),
+            new BatchCreateOperation('customers', ['email' => 'new@example.com', 'name' => 'New Customer']),
+            new BatchUpdateOperation('customers', 'cust-1', ['name' => 'Updated']),
+            new BatchDeleteOperation('discounts', 'disc-2'),
         ];
 
         $result = $this->client->batch($operations);
@@ -126,7 +126,7 @@ class BatchIntegrationTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $this->client->batch([
-            new BatchCreateOperation('products', ['name' => 'Product']),
+            new BatchCreateOperation('customers', ['email' => 'test@example.com', 'name' => 'Customer']),
             'not an operation',
         ]);
     }
@@ -136,7 +136,7 @@ class BatchIntegrationTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Each update item must contain an "id" key');
 
-        $this->client->batchUpdate('products', [
+        $this->client->batchUpdate('customers', [
             ['name' => 'Missing ID'],
         ]);
     }
@@ -144,7 +144,7 @@ class BatchIntegrationTest extends TestCase
     public function testBatchReturnsExecutionTime(): void
     {
         $operations = [
-            new BatchCreateOperation('products', ['name' => 'Product 1']),
+            new BatchCreateOperation('customers', ['email' => 'test@example.com', 'name' => 'Customer 1']),
         ];
 
         $result = $this->client->batch($operations);
@@ -155,7 +155,7 @@ class BatchIntegrationTest extends TestCase
     public function testBatchConfigOptions(): void
     {
         $operations = [
-            new BatchCreateOperation('products', ['name' => 'Product 1']),
+            new BatchCreateOperation('customers', ['email' => 'test@example.com', 'name' => 'Customer 1']),
         ];
 
         $options = [
@@ -173,7 +173,7 @@ class BatchIntegrationTest extends TestCase
     public function testBatchConfigInvalidDelayMs(): void
     {
         $operations = [
-            new BatchCreateOperation('products', ['name' => 'Product 1']),
+            new BatchCreateOperation('customers', ['email' => 'test@example.com', 'name' => 'Customer 1']),
         ];
 
         $this->expectException(\InvalidArgumentException::class);
@@ -184,7 +184,7 @@ class BatchIntegrationTest extends TestCase
     public function testBatchConfigInvalidTimeout(): void
     {
         $operations = [
-            new BatchCreateOperation('products', ['name' => 'Product 1']),
+            new BatchCreateOperation('customers', ['email' => 'test@example.com', 'name' => 'Customer 1']),
         ];
 
         $this->expectException(\InvalidArgumentException::class);
@@ -195,8 +195,8 @@ class BatchIntegrationTest extends TestCase
     public function testBatchGetsSummaryStatistics(): void
     {
         $operations = [
-            new BatchCreateOperation('products', ['name' => 'Product 1']),
-            new BatchCreateOperation('products', ['name' => 'Product 2']),
+            new BatchCreateOperation('customers', ['email' => 'test1@example.com', 'name' => 'Customer 1']),
+            new BatchCreateOperation('customers', ['email' => 'test2@example.com', 'name' => 'Customer 2']),
         ];
 
         $result = $this->client->batch($operations);

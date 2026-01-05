@@ -47,4 +47,38 @@ class Orders extends AbstractResource
     {
         throw new UnsupportedOperationException('orders', 'delete');
     }
+
+    /**
+     * Generate an invoice for an order
+     *
+     * @param string $orderId The order ID
+     * @param array $data Additional data for invoice generation
+     * @return array The generated invoice data
+     *
+     * @see https://docs.lemonsqueezy.com/api/orders/generate-order-invoice
+     */
+    public function generateInvoice(string $orderId, array $data = []): array
+    {
+        $endpoint = $this->getEndpoint() . '/' . urlencode($orderId) . '/invoices';
+        $response = $this->client->request('POST', $endpoint, !empty($data) ? ['data' => $data] : []);
+
+        return $response['data'] ?? $response;
+    }
+
+    /**
+     * Issue a refund for an order
+     *
+     * @param string $orderId The order ID
+     * @param array $data Refund data (reason, refund_reason, etc.)
+     * @return array The refund data
+     *
+     * @see https://docs.lemonsqueezy.com/api/orders/issue-refund
+     */
+    public function issueRefund(string $orderId, array $data = []): array
+    {
+        $endpoint = $this->getEndpoint() . '/' . urlencode($orderId) . '/refunds';
+        $response = $this->client->request('POST', $endpoint, !empty($data) ? ['data' => $data] : []);
+
+        return $response['data'] ?? $response;
+    }
 }

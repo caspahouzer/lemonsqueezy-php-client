@@ -56,7 +56,7 @@ abstract class AbstractResource implements ResourceInterface
     public function create(array $data, array $options = []): AbstractModel
     {
         $endpoint = $this->getEndpoint();
-        $payload = ['data' => $data];
+        $payload = $this->buildJsonApiPayload($data);
 
         $response = $this->client->request('POST', $endpoint, $payload);
 
@@ -69,7 +69,7 @@ abstract class AbstractResource implements ResourceInterface
     public function update(string $id, array $data, array $options = []): AbstractModel
     {
         $endpoint = $this->getEndpoint() . '/' . urlencode($id);
-        $payload = ['data' => array_merge(['id' => $id], $data)];
+        $payload = $this->buildJsonApiPayload(array_merge(['id' => $id], $data));
 
         $response = $this->client->request('PATCH', $endpoint, $payload);
 
@@ -168,5 +168,97 @@ abstract class AbstractResource implements ResourceInterface
         }
 
         return new Collection($items, $pagination);
+    }
+
+    /**
+     * Build a proper JSON:API formatted payload
+     *
+     * Converts data with relationship IDs (e.g., store_id) into proper JSON:API structure
+     * with separate attributes and relationships sections.
+     *
+     * @param array $data Input data with attributes and relationship IDs
+     * @return array JSON:API formatted payload
+     */
+    protected function buildJsonApiPayload(array $data): array
+    {
+        // Get the resource type from the endpoint
+        $type = $this->getEndpoint();
+
+        $attributes = [];
+        $relationships = [];
+
+        // Separate attributes from relationships
+        // Convention: fields ending with '_id' are relationships
+        foreach ($data as $key => $value) {
+            if ($key === 'id') {
+                // 'id' goes into the data object directly, not attributes
+                continue;
+            }
+
+            // Convert snake_case _id fields to relationships
+            if (str_ends_with($key, '_id')) {
+                $relationshipName = substr($key, 0, -3); // Remove '_id' suffix
+                $relationships[$relationshipName] = [
+                    'data' => [
+                        'type' => $this->getRelationshipType($relationshipName),
+                        'id' => (string) $value,
+                    ]
+                ];
+            } else {
+                // Everything else is an attribute
+                $attributes[$key] = $value;
+            }
+        }
+
+        // Build JSON:API structure
+        $payload = [
+            'data' => [
+                'type' => $type,
+                'attributes' => $attributes,
+            ]
+        ];
+
+        // Add ID if present (for PATCH requests)
+        if (isset($data['id'])) {
+            $payload['data']['id'] = $data['id'];
+        }
+
+        // Add relationships if any were found
+        if (!empty($relationships)) {
+            $payload['data']['relationships'] = $relationships;
+        }
+
+        return $payload;
+    }
+
+    /**
+     * Get the relationship type from a relationship name
+     *
+     * Converts singular names to plural API resource types
+     * (e.g., 'store' → 'stores', 'product' → 'products')
+     *
+     * @param string $relationshipName The relationship name (e.g., 'store', 'product')
+     * @return string The API resource type (e.g., 'stores', 'products')
+     */
+    protected function getRelationshipType(string $relationshipName): string
+    {
+        // Common pluralization rules
+        $irregular = [
+            'store' => 'stores',
+            'product' => 'products',
+            'variant' => 'variants',
+            'price' => 'prices',
+            'file' => 'files',
+            'customer' => 'customers',
+            'order' => 'orders',
+            'subscription' => 'subscriptions',
+            'discount' => 'discounts',
+            'webhook' => 'webhooks',
+            'checkout' => 'checkouts',
+            'affiliate' => 'affiliates',
+            'user' => 'users',
+        ];
+
+        return $irregular[$relationshipName] ?? $relationshipName . 's';
     }
 }

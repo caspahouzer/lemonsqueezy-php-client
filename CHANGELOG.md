@@ -5,6 +5,43 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-01-05
+
+### Added
+
+-   **Special API Operations** - Support for non-CRUD API endpoints:
+    -   `Orders::generateInvoice()` - Generate invoices for orders (POST /orders/{id}/invoices)
+    -   `Orders::issueRefund()` - Issue refunds for orders (POST /orders/{id}/refunds)
+    -   `Subscriptions::cancelSubscription()` - Cancel subscriptions (POST /subscriptions/{id}/cancel)
+    -   `SubscriptionItems::getCurrentUsage()` - Get current usage data for subscription items (GET /subscription-items/{id}/current-usage)
+    -   `SubscriptionInvoices::generateInvoice()` - Generate subscription invoices (POST /subscription-invoices/{id}/generate)
+
+-   **API Coverage Improvements**:
+    -   Comprehensive API capability audit against official LemonSqueezy API documentation
+    -   Accurate CRUD operation support matrix for all 18 resources
+    -   Proper error handling for unsupported operations via `UnsupportedOperationException`
+
+-   **Documentation**:
+    -   Added special API operations section to API_COVERAGE.md with usage examples
+    -   Updated resource documentation to clearly indicate read-only vs writable resources
+    -   Added usage examples for all special operations (invoices, refunds, cancellation, usage tracking)
+
+### Fixed
+
+-   **API Capability Compliance** - Fixed misleading CRUD operation support:
+    -   Products, Variants, Prices, Files, Orders, Order Items, Subscription Invoices, Users, Stores, Affiliates, and Discount Redemptions now properly indicate they are read-only
+    -   Subscriptions now properly indicates that create and delete are not supported
+    -   Subscription Items now properly indicates that create and delete are not supported
+    -   Checkouts now properly indicates that update and delete are not supported
+    -   Customers now properly indicates that delete is not supported
+
+### Technical Details
+
+-   All special operations follow consistent endpoint construction pattern with proper URL encoding
+-   All special operations include @see links to official LemonSqueezy API documentation
+-   Batch operation tests updated to use only supported operations (Customers and Discounts)
+-   Full backward compatibility maintained
+
 ## [1.1.0] - 2026-01-05
 
 ### Added

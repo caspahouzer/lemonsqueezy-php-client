@@ -37,4 +37,21 @@ class Subscriptions extends AbstractResource
     {
         throw new UnsupportedOperationException('subscriptions', 'delete');
     }
+
+    /**
+     * Cancel a subscription
+     *
+     * @param string $subscriptionId The subscription ID
+     * @param array $data Cancellation data (reason, etc.)
+     * @return AbstractModel The updated subscription
+     *
+     * @see https://docs.lemonsqueezy.com/api/subscriptions/cancel-subscription
+     */
+    public function cancelSubscription(string $subscriptionId, array $data = []): AbstractModel
+    {
+        $endpoint = $this->getEndpoint() . '/' . urlencode($subscriptionId) . '/cancel';
+        $response = $this->client->request('POST', $endpoint, !empty($data) ? ['data' => $data] : []);
+
+        return $this->hydrateModel($response['data'] ?? $response);
+    }
 }
