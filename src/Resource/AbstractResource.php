@@ -22,7 +22,9 @@ abstract class AbstractResource implements ResourceInterface
      */
     abstract protected function getModelClass(): string;
 
-    public function __construct(protected Client $client) {}
+    public function __construct(protected Client $client)
+    {
+    }
 
     /**
      * List all resources

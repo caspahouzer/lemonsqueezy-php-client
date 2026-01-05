@@ -15,7 +15,8 @@ class RequestFactory
     public function __construct(
         private RequestFactoryInterface $requestFactory,
         private StreamFactoryInterface $streamFactory,
-    ) {}
+    ) {
+    }
 
     /**
      * Create a PSR-7 request

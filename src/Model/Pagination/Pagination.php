@@ -12,7 +12,8 @@ class Pagination
         private int $pageSize,
         private int $total,
         private int $lastPage
-    ) {}
+    ) {
+    }
 
     public function getCurrentPage(): int
     {

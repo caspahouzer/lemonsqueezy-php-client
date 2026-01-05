@@ -10,7 +10,9 @@ class Credentials
     /**
      * @param ?string $apiKey The API key for Bearer token authentication
      */
-    public function __construct(private ?string $apiKey = null) {}
+    public function __construct(private ?string $apiKey = null)
+    {
+    }
 
     /**
      * Get the API key

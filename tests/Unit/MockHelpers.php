@@ -53,7 +53,9 @@ class MockStreamFactory
  */
 class MockRequest implements RequestInterface
 {
-    public function __construct(private string $method, private string $uri) {}
+    public function __construct(private string $method, private string $uri)
+    {
+    }
     public function getRequestTarget(): string
     {
         return $this->uri;
@@ -133,7 +135,8 @@ class MockResponse implements ResponseInterface
         private int $statusCode,
         private array $headers,
         private string $body
-    ) {}
+    ) {
+    }
 
     public function getStatusCode(): int
     {
@@ -198,12 +201,16 @@ class MockResponse implements ResponseInterface
  */
 class MockStream implements StreamInterface
 {
-    public function __construct(private string $content) {}
+    public function __construct(private string $content)
+    {
+    }
     public function __toString(): string
     {
         return $this->content;
     }
-    public function close(): void {}
+    public function close(): void
+    {
+    }
     public function detach()
     {
         return null;
@@ -224,8 +231,12 @@ class MockStream implements StreamInterface
     {
         return false;
     }
-    public function seek($offset, $whence = SEEK_SET): void {}
-    public function rewind(): void {}
+    public function seek($offset, $whence = SEEK_SET): void
+    {
+    }
+    public function rewind(): void
+    {
+    }
     public function isWritable(): bool
     {
         return false;

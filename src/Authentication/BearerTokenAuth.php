@@ -10,7 +10,9 @@ use Psr\Http\Message\RequestInterface;
  */
 class BearerTokenAuth implements AuthenticationInterface
 {
-    public function __construct(private Credentials $credentials) {}
+    public function __construct(private Credentials $credentials)
+    {
+    }
 
     /**
      * Apply Bearer token authentication to request

@@ -47,7 +47,8 @@ class MockResponse implements ResponseInterface
         private int $statusCode,
         private array $headers,
         private string $body
-    ) {}
+    ) {
+    }
 
     public function getProtocolVersion(): string
     {
@@ -127,7 +128,9 @@ class MockResponse implements ResponseInterface
  */
 class MockStream
 {
-    public function __construct(private string $content) {}
+    public function __construct(private string $content)
+    {
+    }
 
     public function __toString(): string
     {
@@ -330,7 +333,7 @@ class MockHttpClientTest extends TestCase
     public function testMockPaginatedResponses(): void
     {
         $paginatedResponse = new MockResponse(200, [], json_encode([
-            'data' => array_map(fn($i) => [
+            'data' => array_map(fn ($i) => [
                 'id' => "cust-$i",
                 'attributes' => ['name' => "Customer $i"],
             ], range(1, 25)),

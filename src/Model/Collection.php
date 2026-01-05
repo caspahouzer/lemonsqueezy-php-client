@@ -14,7 +14,8 @@ class Collection implements \IteratorAggregate, \Countable
     public function __construct(
         private array $items = [],
         private ?array $paginationData = null,
-    ) {}
+    ) {
+    }
 
     /**
      * Get all items

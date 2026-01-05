@@ -6,4 +6,6 @@ namespace LemonSqueezy\Cache;
 
 use Psr\SimpleCache\CacheInterface as PsrCacheInterface;
 
-interface CacheInterface extends PsrCacheInterface {}
+interface CacheInterface extends PsrCacheInterface
+{
+}

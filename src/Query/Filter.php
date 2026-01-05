@@ -11,7 +11,8 @@ class Filter
         private string $key,
         private mixed $value,
         private string $operator = '='
-    ) {}
+    ) {
+    }
 
     public function getKey(): string
     {

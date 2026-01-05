@@ -113,7 +113,9 @@ class Client
             $guzzle = new \GuzzleHttp\Client();
 
             return new class ($guzzle) implements ClientInterface {
-                public function __construct(private \GuzzleHttp\Client $client) {}
+                public function __construct(private \GuzzleHttp\Client $client)
+                {
+                }
 
                 public function sendRequest(RequestInterface $request): ResponseInterface
                 {
@@ -236,7 +238,7 @@ class Client
     public function batchCreate(string $resource, array $items, array $options = []): BatchResult
     {
         $operations = array_map(
-            fn($data) => new BatchCreateOperation($resource, $data),
+            fn ($data) => new BatchCreateOperation($resource, $data),
             $items
         );
 
@@ -265,7 +267,7 @@ class Client
     public function batchUpdate(string $resource, array $items, array $options = []): BatchResult
     {
         $operations = array_map(
-            fn($data) => new BatchUpdateOperation(
+            fn ($data) => new BatchUpdateOperation(
                 $resource,
                 $data['id'] ?? throw new \InvalidArgumentException('Each update item must contain an "id" key'),
                 array_diff_key($data, ['id' => null])
@@ -295,7 +297,7 @@ class Client
     public function batchDelete(string $resource, array $ids, array $options = []): BatchResult
     {
         $operations = array_map(
-            fn($id) => new BatchDeleteOperation($resource, $id),
+            fn ($id) => new BatchDeleteOperation($resource, $id),
             $ids
         );
 
@@ -387,7 +389,8 @@ class Client
             public function __construct(
                 private ClientInterface $baseClient,
                 private array $middlewares
-            ) {}
+            ) {
+            }
 
             public function sendRequest(RequestInterface $request): ResponseInterface
             {
