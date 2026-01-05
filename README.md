@@ -1,5 +1,7 @@
 # LemonSqueezy PHP API Client
 
+[![Tests](https://img.shields.io/github/actions/workflow/status/caspahouzer/lemonsqueezy-php-client/tests.yml)](https://github.com/caspahouzer/lemonsqueezy-php-client/actions) [![Packagist Version](https://img.shields.io/packagist/v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![Packagist Downloads](https://img.shields.io/packagist/dt/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![PHP Version](https://img.shields.io/packagist/php-v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![License](https://img.shields.io/packagist/l/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client)
+
 A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemonsqueezy.com) platform. This package provides full coverage of all documented LemonSqueezy REST API endpoints with support for both bearer token authentication and public API access.
 
 ## Features
@@ -13,7 +15,7 @@ A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemo
 -   ✅ Comprehensive exception hierarchy
 -   ✅ Middleware-based request pipeline
 -   ✅ JSON:API spec compliance
--   ✅ **Webhook signature verification** (HMAC-SHA256 with timing-safe comparison)
+-   ✅ Webhook signature verification (HMAC-SHA256 with timing-safe comparison)
 -   ✅ Batch operations for efficient bulk processing
 -   ✅ Framework-agnostic (works with any PHP project)
 -   ✅ Zero production dependencies (optional Guzzle fallback)
@@ -102,28 +104,29 @@ $result = $client->licenseKeys()->deactivate(
 
 ## Available Resources
 
-The client provides access to **all 18 documented LemonSqueezy API resources**. Note that the LemonSqueezy API has specific limitations on which operations each resource supports:
+The client provides access to **all 19 documented LemonSqueezy API resources**. Note that the LemonSqueezy API has specific limitations on which operations each resource supports:
 
-| Resource              | Supported Methods              | Endpoint                 | Notes                                          |
-| --------------------- | ------------------------------ | ------------------------ | ---------------------------------------------- |
-| Users                 | list, get                      | `/users`                 | Read-only                                      |
-| Stores                | list, get                      | `/stores`                | Read-only                                      |
-| Products              | list, get                      | `/products`              | Read-only                                      |
-| Variants              | list, get                      | `/variants`              | Read-only                                      |
-| Prices                | list, get                      | `/prices`                | Read-only                                      |
-| Files                 | list, get                      | `/files`                 | Read-only                                      |
-| **Customers**         | **list, get, create, update**  | `/customers`             | **Supports create/update only (no delete)**    |
-| Orders                | list, get                      | `/orders`                | Read-only                                      |
-| Order Items           | list, get                      | `/order-items`           | Read-only                                      |
-| Subscriptions         | list, get, update              | `/subscriptions`         | **Supports update only (no create/delete)**    |
-| Subscription Invoices | list, get                      | `/subscription-invoices` | Read-only                                      |
-| Subscription Items    | list, get, update              | `/subscription-items`    | **Supports update only (no create/delete)**    |
-| Discounts             | list, get, create, update, delete | `/discounts`          | **Full CRUD support**                          |
-| Discount Redemptions  | list, get                      | `/discount-redemptions`  | Read-only                                      |
-| **License Keys**      | **activate, validate, deactivate** | `/licenses/*`        | **Public API (no auth required)**              |
-| Webhooks              | list, get, create, update, delete | `/webhooks`          | **Full CRUD support**                          |
-| Checkouts             | list, create                   | `/checkouts`             | **Supports create only (no update/delete)**    |
-| Affiliates            | list, get                      | `/affiliates`            | Read-only                                      |
+| Resource              | Supported Methods                  | Endpoint                 | Notes                                       |
+| --------------------- | ---------------------------------- | ------------------------ | ------------------------------------------- |
+| Users                 | list, get                          | `/users`                 | Read-only                                   |
+| Stores                | list, get                          | `/stores`                | Read-only                                   |
+| Products              | list, get                          | `/products`              | Read-only                                   |
+| Variants              | list, get                          | `/variants`              | Read-only                                   |
+| Prices                | list, get                          | `/prices`                | Read-only                                   |
+| Files                 | list, get                          | `/files`                 | Read-only                                   |
+| Customers         | list, get, create, update      | `/customers`             | **Supports create/update only (no delete)** |
+| Orders                | list, get                          | `/orders`                | Read-only                                   |
+| Order Items           | list, get                          | `/order-items`           | Read-only                                   |
+| Subscriptions         | list, get, update                  | `/subscriptions`         | **Supports update only (no create/delete)** |
+| Subscription Invoices | list, get                          | `/subscription-invoices` | Read-only                                   |
+| Subscription Items    | list, get, update                  | `/subscription-items`    | **Supports update only (no create/delete)** |
+| Discounts             | list, get, create, update, delete  | `/discounts`             | **Full CRUD support**                       |
+| Discount Redemptions  | list, get                          | `/discount-redemptions`  | Read-only                                   |
+| **License Keys**      | **activate, validate, deactivate** | `/licenses/*`            | **Public API (no auth required)**           |
+| Webhooks              | list, get, create, update, delete  | `/webhooks`              | **Full CRUD support**                       |
+| Checkouts             | list, create                       | `/checkouts`             | **Supports create only (no update/delete)** |
+| Affiliates            | list, get                          | `/affiliates`            | Read-only                                   |
+| Usage Records         | list, get, create                  | `/usage-records`         | **Supports create only (no update/delete)** |
 
 **→ See [API_COVERAGE.md](API_COVERAGE.md) for complete endpoint checklist with all methods and accurate API capability mapping**
 
@@ -236,6 +239,131 @@ $usage = $client->subscriptionItems()->getCurrentUsage('sub-item-789');
 ```
 
 See [API_COVERAGE.md](API_COVERAGE.md#special-api-operations--) for all available special operations.
+
+## Batch Operations
+
+The client supports efficient bulk processing of resources through batch operations. Execute multiple create, update, and delete operations in a single batch with intelligent rate limiting.
+
+### Quick Start
+
+```php
+use LemonSqueezy\Batch\Operations\BatchCreateOperation;
+use LemonSqueezy\Batch\Operations\BatchUpdateOperation;
+use LemonSqueezy\Batch\Operations\BatchDeleteOperation;
+
+// Create multiple discounts
+$result = $client->batchCreate('discounts', [
+    [
+        'store_id' => 123,
+        'name' => 'Discount 1',
+        'code' => 'DISC1',
+        'amount' => 10,
+        'amount_type' => 'percent'
+    ],
+    [
+        'store_id' => 123,
+        'name' => 'Discount 2',
+        'code' => 'DISC2',
+        'amount' => 20,
+        'amount_type' => 'percent'
+    ]
+]);
+
+// Check results
+echo "Success: " . $result->getSuccessCount();
+echo "Failed: " . $result->getFailureCount();
+echo "Success Rate: " . $result->getSummary()['successRate'] . "%";
+```
+
+### Batch Methods
+
+**1. Create Multiple Resources**
+
+```php
+// Using convenience method
+$result = $client->batchCreate('customers', [
+    ['email' => 'customer1@example.com', 'name' => 'Customer 1'],
+    ['email' => 'customer2@example.com', 'name' => 'Customer 2'],
+]);
+```
+
+**2. Update Multiple Resources**
+
+```php
+$result = $client->batchUpdate('customers', [
+    ['id' => 'cust-1', 'name' => 'Updated Name 1'],
+    ['id' => 'cust-2', 'name' => 'Updated Name 2'],
+]);
+```
+
+**3. Delete Multiple Resources**
+
+```php
+$result = $client->batchDelete('customers', [
+    'cust-1',
+    'cust-2',
+    'cust-3'
+]);
+```
+
+**4. Mixed Operations**
+
+```php
+$operations = [
+    new BatchCreateOperation('discounts', ['store_id' => 123, 'name' => 'New Discount', 'code' => 'NEW', 'amount' => 5, 'amount_type' => 'percent']),
+    new BatchUpdateOperation('discounts', 'disc-1', ['name' => 'Updated Discount']),
+    new BatchDeleteOperation('discounts', 'disc-2'),
+];
+
+$result = $client->batch($operations);
+```
+
+### Configuration Options
+
+```php
+$result = $client->batchCreate('customers', $items, [
+    'delayMs' => 100,        // 100ms delay between operations
+    'timeout' => 30,         // 30 second timeout per operation
+    'stopOnError' => false,  // Continue on error (default: false)
+]);
+```
+
+### Handling Results
+
+```php
+// Check overall status
+if ($result->wasSuccessful()) {
+    echo "All operations succeeded!";
+}
+
+// Get statistics
+$summary = $result->getSummary();
+echo "Total: " . $summary['totalRequested'];
+echo "Success: " . $summary['successCount'];
+echo "Failed: " . $summary['failureCount'];
+echo "Success Rate: " . $summary['successRate'] . "%";
+echo "Execution Time: " . $summary['executionTime'] . "s";
+
+// Get successful operations
+foreach ($result->getSuccessful() as $success) {
+    echo "ID: " . $success['result']->id;
+    echo "Status: " . $success['status'];
+}
+
+// Get failed operations
+foreach ($result->getFailed() as $failure) {
+    echo "Error: " . $failure['error'];
+    echo "Details: " . json_encode($failure['details']);
+}
+```
+
+### Rate Limiting
+
+Batch operations automatically respect the API's 300 requests/minute rate limit:
+
+-   Default delay: 200ms between operations (5 ops/sec)
+-   Configurable via `delayMs` parameter
+-   Operations execute sequentially to ensure compliance
 
 ## Advanced Configuration
 

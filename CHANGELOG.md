@@ -5,6 +5,33 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-01-05
+
+### Added
+
+-   **Usage Records API Resource** - New resource for usage-based billing tracking:
+
+    -   `UsageRecords` resource class for managing usage records
+    -   List all usage records: `$client->usageRecords()->list()`
+    -   Get specific usage record: `$client->usageRecords()->get('id')`
+    -   Create usage record: `$client->usageRecords()->create([...])` with `increment` or `set` actions
+    -   Comprehensive unit tests for all operations and error conditions
+    -   API endpoint: `/usage-records` (POST, GET, GET /id)
+
+-   **API Coverage Completion**:
+
+    -   Extended from 18 to 19 API resources
+    -   Full JSON:API compliance for usage records
+    -   Proper exception handling for unsupported operations (update/delete)
+    -   Updated API_COVERAGE.md reflecting complete resource list
+
+### Technical Details
+
+-   Usage Records extends `AbstractResource` and properly throws `UnsupportedOperationException` for update() and delete() methods
+-   Full backward compatibility maintained - purely additive feature
+-   All unit tests pass with UsageRecords integration
+-   Resource follows established SDK patterns for consistency
+
 ## [1.1.3] - 2026-01-05
 
 -   **Documentation Update** - Corrected version number in `composer.json` to `1.1.3`.

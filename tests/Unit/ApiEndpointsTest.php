@@ -40,7 +40,7 @@ class ApiEndpointsTest extends TestCase
     }
 
     /**
-     * Test that all 18 resources are accessible
+     * Test that all 19 resources are accessible
      */
     public function testAllResourcesAreAccessible(): void
     {
@@ -62,6 +62,7 @@ class ApiEndpointsTest extends TestCase
         $this->assertNotNull($this->client->webhooks());
         $this->assertNotNull($this->client->checkouts());
         $this->assertNotNull($this->client->affiliates());
+        $this->assertNotNull($this->client->usageRecords());
     }
 
     /**
@@ -88,6 +89,7 @@ class ApiEndpointsTest extends TestCase
         $this->assertEquals('webhooks', $this->client->webhooks()->getEndpoint());
         $this->assertEquals('checkouts', $this->client->checkouts()->getEndpoint());
         $this->assertEquals('affiliates', $this->client->affiliates()->getEndpoint());
+        $this->assertEquals('usage-records', $this->client->usageRecords()->getEndpoint());
     }
 
     /**
@@ -323,6 +325,7 @@ class ApiEndpointsTest extends TestCase
             'webhooks' => $this->client->webhooks(),
             'checkouts' => $this->client->checkouts(),
             'affiliates' => $this->client->affiliates(),
+            'usage-records' => $this->client->usageRecords(),
         ];
 
         foreach ($endpoints as $expectedEndpoint => $resource) {
@@ -336,7 +339,7 @@ class ApiEndpointsTest extends TestCase
      */
     public function testFullApiCoverageSummary(): void
     {
-        // This test verifies that all 18 resources are implemented
+        // This test verifies that all 19 resources are implemented
         $resources = [
             $this->client->users(),
             $this->client->stores(),
@@ -356,15 +359,53 @@ class ApiEndpointsTest extends TestCase
             $this->client->webhooks(),
             $this->client->checkouts(),
             $this->client->affiliates(),
+            $this->client->usageRecords(),
         ];
 
-        // Verify all 18 resources are accessible
-        $this->assertCount(18, $resources);
+        // Verify all 19 resources are accessible
+        $this->assertCount(19, $resources);
 
         // Verify each has getEndpoint method
         foreach ($resources as $resource) {
             $this->assertNotNull($resource->getEndpoint());
         }
+    }
+
+    /**
+     * Test UsageRecords resource operations
+     */
+    public function testUsageRecordsOperations(): void
+    {
+        $usageRecords = $this->client->usageRecords();
+
+        // Verify basic methods exist
+        $this->assertTrue(method_exists($usageRecords, 'list'));
+        $this->assertTrue(method_exists($usageRecords, 'get'));
+        $this->assertTrue(method_exists($usageRecords, 'create'));
+        $this->assertTrue(method_exists($usageRecords, 'update'));
+        $this->assertTrue(method_exists($usageRecords, 'delete'));
+    }
+
+    /**
+     * Test UsageRecords update throws UnsupportedOperationException
+     */
+    public function testUsageRecordsUpdateThrowsUnsupported(): void
+    {
+        $usageRecords = $this->client->usageRecords();
+
+        $this->expectException(\LemonSqueezy\Exception\UnsupportedOperationException::class);
+        $usageRecords->update('123', ['quantity' => 50]);
+    }
+
+    /**
+     * Test UsageRecords delete throws UnsupportedOperationException
+     */
+    public function testUsageRecordsDeleteThrowsUnsupported(): void
+    {
+        $usageRecords = $this->client->usageRecords();
+
+        $this->expectException(\LemonSqueezy\Exception\UnsupportedOperationException::class);
+        $usageRecords->delete('123');
     }
 
     /**

@@ -31,7 +31,8 @@ use LemonSqueezy\Resource\{
     LicenseKeys,
     Webhooks,
     Checkouts,
-    Affiliates
+    Affiliates,
+    UsageRecords
 };
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -78,6 +79,7 @@ class Client
     private ?Webhooks $webhooks = null;
     private ?Checkouts $checkouts = null;
     private ?Affiliates $affiliates = null;
+    private ?UsageRecords $usageRecords = null;
 
     /**
      * Create a new LemonSqueezy API client
@@ -551,6 +553,14 @@ class Client
     public function affiliates(): Affiliates
     {
         return $this->affiliates ??= new Affiliates($this);
+    }
+
+    /**
+     * Get the Usage Records resource
+     */
+    public function usageRecords(): UsageRecords
+    {
+        return $this->usageRecords ??= new UsageRecords($this);
     }
 
     /**

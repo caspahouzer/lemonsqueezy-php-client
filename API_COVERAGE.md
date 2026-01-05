@@ -120,6 +120,12 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] **list()** - GET /affiliates - List all affiliates
 -   [x] **get(id)** - GET /affiliates/{id} - Get a specific affiliate
 
+### 19. Usage Records
+
+-   [x] **list()** - GET /usage-records - List all usage records
+-   [x] **get(id)** - GET /usage-records/{id} - Get a specific usage record
+-   [x] **create()** - POST /usage-records - Create a new usage record (increment or set)
+
 ---
 
 ## Feature Coverage
@@ -191,9 +197,9 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 
 ### Total API Endpoints
 
--   **Resources**: 18 ✅
--   **Methods Implemented**: 68+ ✅
--   **Write Operations Supported**: 11 resources (create, update, or delete)
+-   **Resources**: 19 ✅
+-   **Methods Implemented**: 71+ ✅
+-   **Write Operations Supported**: 12 resources (create, update, or delete)
 -   **Read-Only Resources**: 7 resources (by API design)
 -   **License API Methods**: 3 ✅
 
@@ -201,7 +207,7 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 
 **Resources Supporting CREATE:**
 
--   Customers, Discounts, Webhooks, Checkouts
+-   Customers, Discounts, Webhooks, Checkouts, Usage Records
 
 **Resources Supporting UPDATE:**
 
