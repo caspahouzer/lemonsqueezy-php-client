@@ -52,6 +52,7 @@ jobs:
         rm -rf docs
         mkdir -p docs
         cp -r output/* docs/
+        touch docs/.nojekyll
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
