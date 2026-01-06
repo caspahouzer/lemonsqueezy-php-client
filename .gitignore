@@ -13,8 +13,10 @@ composer.phar
 
 # Testing
 /coverage/
+/build/
 .phpunit.result.cache
 .php-cs*.cache
+.doctum_cache
 
 # Logs
 *.log

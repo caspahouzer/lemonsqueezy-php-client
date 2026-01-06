@@ -51,11 +51,25 @@ class SubscriptionInvoices extends AbstractResource
     /**
      * Generate an invoice for a subscription invoice
      *
-     * @param string $subscriptionInvoiceId The subscription invoice ID
-     * @param array $data Additional data for invoice generation
-     * @return array The generated invoice data
+     * Generates a formal invoice PDF from an existing subscription invoice. This operation
+     * creates a downloadable document representing the subscription billing period.
+     *
+     * @param string $subscriptionInvoiceId The unique identifier of the subscription invoice to generate
+     * @param array  $data                  Optional invoice generation parameters with structure:
+     *     - custom_number: string Optional. Custom invoice number override
+     *     - custom_date: string Optional. Custom invoice date in ISO 8601 format
+     * @return array<string, mixed> The generated invoice data containing:
+     *     - id: string The unique invoice identifier
+     *     - url: string The publicly accessible invoice PDF URL
+     *     - pdf_url: string Direct URL to the invoice PDF file
+     *     - created_at: string Invoice generation timestamp in ISO 8601 format
+     *     - status: string The invoice generation status
+     * @throws ClientException If the API request fails (e.g., invalid subscription invoice ID)
+     * @throws HttpException If a network or HTTP protocol error occurs
      *
      * @see https://docs.lemonsqueezy.com/api/subscription-invoices/generate-subscription-invoice
+     *
+     * @since 1.0.0
      */
     public function generateInvoice(string $subscriptionInvoiceId, array $data = []): array
     {

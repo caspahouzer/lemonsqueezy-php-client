@@ -30,6 +30,7 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.0",
+        "code-lts/doctum": "^5.0",
         "phpunit/phpunit": "^9.0 || ^10.0",
         "phpstan/phpstan": "^1.8",
         "squizlabs/php_codesniffer": "^3.7",
@@ -55,7 +56,9 @@
         "cs:check": "php-cs-fixer fix --dry-run --diff --config .php-cs-fixer.dist.php",
         "cs:fix": "php-cs-fixer fix --config .php-cs-fixer.dist.php",
         "test": "phpunit --testsuite Unit",
-        "test:integration": "phpunit --testsuite Integration"
+        "test:integration": "phpunit --testsuite Integration",
+        "docs": "./vendor/bin/doctum render doctum.php --no-interaction",
+        "docs:watch": "./vendor/bin/doctum render --watch doctum.php"
     },
     "extra": {
         "branch-alias": {

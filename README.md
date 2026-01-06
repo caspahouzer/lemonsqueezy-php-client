@@ -102,6 +102,21 @@ $result = $client->licenseKeys()->deactivate(
 );
 ```
 
+## API Documentation
+
+[![Docs](https://img.shields.io/badge/docs-online-blue)](https://caspahouzer.github.io/lemonsqueezy-api-client/)
+
+**[View Full API Documentation](https://caspahouzer.github.io/lemonsqueezy-api-client/)** - Generated with [Doctum](https://www.doctum.io/), the modern PHP documentation generator.
+
+The comprehensive API documentation includes:
+- **Class reference** - Complete API reference for all public classes and methods
+- **Method signatures** - Detailed parameter and return type documentation
+- **Usage examples** - Code examples in class-level documentation
+- **Type hints** - Full PSR-5 compliant type hints for PHP 8.0+
+- **Cross-references** - Links between related classes and methods
+
+Documentation is automatically generated and deployed to GitHub Pages on each release.
+
 ## Available Resources
 
 The client provides access to **all 19 documented LemonSqueezy API resources**. Note that the LemonSqueezy API has specific limitations on which operations each resource supports:
