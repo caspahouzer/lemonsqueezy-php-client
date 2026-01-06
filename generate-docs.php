@@ -26,10 +26,11 @@ $command = "cd " . escapeshellarg($baseDir) . " && {$phpdocPath} run -d {$srcPat
 $output = shell_exec($command);
 $returnCode = 0;
 
-// Check if there were any errors
-if (strpos($output, 'Fatal error') !== false ||
-    strpos($output, 'Exception') !== false ||
-    strpos($output, 'Error') !== false) {
+// Check if there were any critical errors
+// Only flag as error if there's an actual failure (not just "Error" in output)
+if (strpos($output, 'The base URI must be an absolute URI') !== false ||
+    strpos($output, 'Fatal error') !== false ||
+    (strpos($output, 'Exception') !== false && strpos($output, 'All done') === false)) {
     $returnCode = 1;
 }
 

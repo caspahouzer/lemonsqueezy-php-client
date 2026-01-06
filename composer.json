@@ -58,7 +58,7 @@
         "test": "phpunit --testsuite Unit",
         "test:integration": "phpunit --testsuite Integration",
         "docs": "php generate-docs.php",
-        "docs:watch": "./vendor/bin/phpdoc -c phpdoc.xml.dist"
+        "docs:watch": "./vendor/bin/phpdoc run -d src"
     },
     "extra": {
         "branch-alias": {
