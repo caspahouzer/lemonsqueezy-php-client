@@ -20,17 +20,19 @@ $phpdocBuildDir = $baseDir . '/.phpdoc/build';
 $phpdocPath = escapeshellarg($vendorDir . '/bin/phpdoc');
 $srcPath = escapeshellarg('src');
 
-// Change to the project directory and run phpdoc without specifying target
-$command = "cd " . escapeshellarg($baseDir) . " && {$phpdocPath} run -d {$srcPath} 2>&1";
+// Change to the project directory and run phpdoc
+$command = "cd " . escapeshellarg($baseDir) . " && {$phpdocPath} run -d {$srcPath} -t .phpdoc/build 2>&1";
 
 $output = shell_exec($command);
 $returnCode = 0;
 
 // Check if there were any critical errors
 // Only flag as error if there's an actual failure (not just "Error" in output)
-if (strpos($output, 'The base URI must be an absolute URI') !== false ||
+if (
+    strpos($output, 'The base URI must be an absolute URI') !== false ||
     strpos($output, 'Fatal error') !== false ||
-    (strpos($output, 'Exception') !== false && strpos($output, 'All done') === false)) {
+    (strpos($output, 'Exception') !== false && strpos($output, 'All done') === false)
+) {
     $returnCode = 1;
 }
 

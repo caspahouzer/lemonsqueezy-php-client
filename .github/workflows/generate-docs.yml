@@ -66,6 +66,6 @@ jobs:
               run: |
                   git config user.name "GitHub Actions"
                   git config user.email "actions@github.com"
-                  git add docs/
+                  git add --force docs/
                   git diff --cached --quiet || git commit -m "docs: Update API documentation"
                   git push
