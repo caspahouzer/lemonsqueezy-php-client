@@ -1,6 +1,6 @@
 # LemonSqueezy PHP API Client
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/caspahouzer/lemonsqueezy-php-client/tests.yml)](https://github.com/caspahouzer/lemonsqueezy-php-client/actions) [![Packagist Version](https://img.shields.io/packagist/v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![Packagist Downloads](https://img.shields.io/packagist/dt/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![PHP Version](https://img.shields.io/packagist/php-v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![License](https://img.shields.io/packagist/l/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client)
+[![Tests](https://img.shields.io/github/actions/workflow/status/caspahouzer/lemonsqueezy-php-client/tests.yml)](https://github.com/caspahouzer/lemonsqueezy-php-client/actions) [![Packagist Version](https://img.shields.io/packagist/v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![Packagist Downloads](https://img.shields.io/packagist/dt/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![PHP Version](https://img.shields.io/packagist/php-v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![License](https://img.shields.io/packagist/l/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-donate-white.svg)](https://www.buymeacoffee.com/caspahouzer)
 
 A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemonsqueezy.com) platform. This package provides full coverage of all documented LemonSqueezy REST API endpoints with support for both bearer token authentication and public API access.
 
@@ -114,7 +114,7 @@ The client provides access to **all 19 documented LemonSqueezy API resources**. 
 | Variants              | list, get                          | `/variants`              | Read-only                                   |
 | Prices                | list, get                          | `/prices`                | Read-only                                   |
 | Files                 | list, get                          | `/files`                 | Read-only                                   |
-| Customers         | list, get, create, update      | `/customers`             | **Supports create/update only (no delete)** |
+| Customers             | list, get, create, update          | `/customers`             | **Supports create/update only (no delete)** |
 | Orders                | list, get                          | `/orders`                | Read-only                                   |
 | Order Items           | list, get                          | `/order-items`           | Read-only                                   |
 | Subscriptions         | list, get, update                  | `/subscriptions`         | **Supports update only (no create/delete)** |
