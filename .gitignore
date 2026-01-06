@@ -13,10 +13,11 @@ composer.phar
 
 # Testing
 /coverage/
-/build/
+/output/
+/.phpdoc/
 .phpunit.result.cache
 .php-cs*.cache
-.doctum_cache
+.phpdocumentor_cache
 
 # Logs
 *.log
@@ -28,6 +29,8 @@ composer.phar
 # OS
 Thumbs.db
 .DS_Store
+
+cache/
 
 # ignore *.md files except README.md
 *.md

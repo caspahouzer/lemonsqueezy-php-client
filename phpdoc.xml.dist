@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpdocumentor configVersion="3" xmlns="https://www.phpdoc.org/xsd/config.xsd">
+    <title>LemonSqueezy PHP API Client</title>
+    <paths>
+        <output>.phpdoc/build</output>
+        <cache>.phpdocumentor_cache</cache>
+    </paths>
+    <version number="1.2.0"/>
+</phpdocumentor>
