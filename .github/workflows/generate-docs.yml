@@ -39,7 +39,7 @@ jobs:
           ${{ runner.os }}-composer-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: composer install --prefer-dist --no-progress --no-audit
 
     - name: Run PHPStan validation
       run: composer stan
