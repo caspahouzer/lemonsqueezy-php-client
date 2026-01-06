@@ -5,6 +5,25 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-01-06
+
+### Changed
+
+-   **Documentation Generation** - Added phpDocumentor:
+
+### Fixed
+
+-   **Batch Operations Type Checking** - Added default method implementations to `BatchOperation` base class:
+    -   Added `getId()` method to resolve undefined method errors in IDE/PHPStan
+    -   Added `getData()` method to resolve undefined method errors in IDE/PHPStan
+    -   Methods throw `BadMethodCallException` if called on operations that don't support them
+    -   Fixes type checking without breaking runtime behavior
+
+### Technical Details
+
+-   All existing batch operation tests continue to pass without modification
+-   Type safety improved for batch operations while maintaining backward compatibility
+
 ## [1.2.0] - 2026-01-05
 
 ### Added

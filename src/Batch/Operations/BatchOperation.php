@@ -46,4 +46,28 @@ abstract class BatchOperation
      * Get the request payload for this operation
      */
     abstract public function getPayload(): ?array;
+
+    /**
+     * Get the resource ID (for update/delete operations)
+     *
+     * @throws \BadMethodCallException If called on an operation that doesn't support it
+     */
+    public function getId(): string
+    {
+        throw new \BadMethodCallException(
+            'getId() is not supported for ' . static::class
+        );
+    }
+
+    /**
+     * Get the data payload (for create/update operations)
+     *
+     * @throws \BadMethodCallException If called on an operation that doesn't support it
+     */
+    public function getData(): array
+    {
+        throw new \BadMethodCallException(
+            'getData() is not supported for ' . static::class
+        );
+    }
 }
