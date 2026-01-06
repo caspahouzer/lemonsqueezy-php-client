@@ -14,6 +14,7 @@ composer.phar
 # Testing
 /coverage/
 /output/
+/docs/
 /.phpdoc/
 .phpunit.result.cache
 .php-cs*.cache
@@ -30,7 +31,7 @@ composer.phar
 Thumbs.db
 .DS_Store
 
-cache/
+/cache/
 
 # ignore *.md files except README.md
 *.md
