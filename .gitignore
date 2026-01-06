@@ -13,11 +13,8 @@ composer.phar
 
 # Testing
 /coverage/
-/output/
-/.phpdoc/
 .phpunit.result.cache
 .php-cs*.cache
-.phpdocumentor_cache
 
 # Logs
 *.log

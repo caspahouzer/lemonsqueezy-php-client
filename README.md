@@ -1,6 +1,6 @@
 # LemonSqueezy PHP API Client
 
-[![Docs](https://img.shields.io/badge/docs-online-blue)](https://caspahouzer.github.io/lemonsqueezy-php-client/) [![Tests](https://img.shields.io/github/actions/workflow/status/caspahouzer/lemonsqueezy-php-client/tests.yml)](https://github.com/caspahouzer/lemonsqueezy-php-client/actions) [![Packagist Version](https://img.shields.io/packagist/v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![Packagist Downloads](https://img.shields.io/packagist/dt/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![PHP Version](https://img.shields.io/packagist/php-v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![License](https://img.shields.io/packagist/l/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-donate-white.svg)](https://www.buymeacoffee.com/caspahouzer)
+[![Tests](https://img.shields.io/github/actions/workflow/status/caspahouzer/lemonsqueezy-php-client/tests.yml)](https://github.com/caspahouzer/lemonsqueezy-php-client/actions) [![Packagist Version](https://img.shields.io/packagist/v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![Packagist Downloads](https://img.shields.io/packagist/dt/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![PHP Version](https://img.shields.io/packagist/php-v/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![License](https://img.shields.io/packagist/l/caspahouzer/lemonsqueezy-api-client)](https://packagist.org/packages/caspahouzer/lemonsqueezy-api-client) [![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-donate-white.svg)](https://www.buymeacoffee.com/caspahouzer)
 
 A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemonsqueezy.com) platform. This package provides full coverage of all documented LemonSqueezy REST API endpoints with support for both bearer token authentication and public API access.
 
@@ -104,7 +104,7 @@ $result = $client->licenseKeys()->deactivate(
 
 ## API Documentation
 
-**[View Full API Documentation](https://caspahouzer.github.io/lemonsqueezy-php-client/)** - Generated with [phpDocumentor](https://www.phpdoc.org/), the modern PHP documentation generator.
+**[View Full API Documentation](https://caspahouzer.github.io/lemonsqueezy-php-client/)**
 
 The comprehensive API documentation includes:
 
