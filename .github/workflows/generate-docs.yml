@@ -1,71 +1,71 @@
 name: Generate Documentation
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-  release:
-    types: [ published ]
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+    release:
+        types: [published]
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+    contents: write
+    pages: write
+    id-token: write
 
 jobs:
-  build-docs:
-    runs-on: ubuntu-latest
+    build-docs:
+        runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3'
-        tools: composer
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  tools: composer
 
-    - name: Cache Composer dependencies
-      uses: actions/cache@v4
-      with:
-        path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-composer-
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: vendor
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-audit
+            - name: Install dependencies
+              run: composer install --prefer-dist --no-progress
 
-    - name: Run PHPStan validation
-      run: composer stan
+            - name: Run PHPStan validation
+              run: composer stan
 
-    - name: Generate documentation with phpDocumentor
-      run: php generate-docs.php
+            - name: Generate documentation with phpDocumentor
+              run: php generate-docs.php
 
-    - name: Copy docs to docs directory for GitHub Pages
-      run: |
-        rm -rf docs
-        mkdir -p docs
-        cp -r output/* docs/
-        touch docs/.nojekyll
+            - name: Copy docs to docs directory for GitHub Pages
+              run: |
+                  rm -rf docs
+                  mkdir -p docs
+                  cp -r output/* docs/
+                  touch docs/.nojekyll
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: documentation
-        path: output/
-        retention-days: 30
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: documentation
+                  path: output/
+                  retention-days: 30
 
-    - name: Commit and push documentation
-      if: github.ref == 'refs/heads/main'
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add docs/
-        git diff --cached --quiet || git commit -m "docs: Update API documentation"
-        git push
+            - name: Commit and push documentation
+              if: github.ref == 'refs/heads/main'
+              run: |
+                  git config user.name "GitHub Actions"
+                  git config user.email "actions@github.com"
+                  git add docs/
+                  git diff --cached --quiet || git commit -m "docs: Update API documentation"
+                  git push
