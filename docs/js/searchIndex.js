@@ -361,6 +361,16 @@ Search.appendIndex(
             "summary": "Get\u0020the\u0020request\u0020payload\u0020for\u0020this\u0020operation",
             "url": "classes/LemonSqueezy-Batch-Operations-BatchOperation.html#method_getPayload"
         },                {
+            "fqsen": "\\LemonSqueezy\\Batch\\Operations\\BatchOperation\u003A\u003AgetId\u0028\u0029",
+            "name": "getId",
+            "summary": "Get\u0020the\u0020resource\u0020ID\u0020\u0028for\u0020update\/delete\u0020operations\u0029",
+            "url": "classes/LemonSqueezy-Batch-Operations-BatchOperation.html#method_getId"
+        },                {
+            "fqsen": "\\LemonSqueezy\\Batch\\Operations\\BatchOperation\u003A\u003AgetData\u0028\u0029",
+            "name": "getData",
+            "summary": "Get\u0020the\u0020data\u0020payload\u0020\u0028for\u0020create\/update\u0020operations\u0029",
+            "url": "classes/LemonSqueezy-Batch-Operations-BatchOperation.html#method_getData"
+        },                {
             "fqsen": "\\LemonSqueezy\\Batch\\Operations\\BatchOperation\u003A\u003A\u0024resource",
             "name": "resource",
             "summary": "",
