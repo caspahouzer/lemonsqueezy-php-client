@@ -27,7 +27,7 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
             ];
         });
 
-        EventDispatcher::register('order.created', new class implements EventListenerInterface {
+        EventDispatcher::register('order.created', new class () implements EventListenerInterface {
             public function handle(\LemonSqueezy\Webhook\Event\EventInterface $event): void
             {
                 // Second listener

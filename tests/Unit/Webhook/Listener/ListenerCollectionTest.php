@@ -10,7 +10,7 @@ class ListenerCollectionTest extends TestCase
     public function testAddListener(): void
     {
         $collection = new ListenerCollection();
-        $listener = fn() => null;
+        $listener = fn () => null;
 
         $result = $collection->add($listener);
 
@@ -22,8 +22,8 @@ class ListenerCollectionTest extends TestCase
     public function testGetAllListeners(): void
     {
         $collection = new ListenerCollection();
-        $listener1 = fn() => null;
-        $listener2 = fn() => null;
+        $listener1 = fn () => null;
+        $listener2 = fn () => null;
 
         $collection->add($listener1)->add($listener2);
 
@@ -42,7 +42,7 @@ class ListenerCollectionTest extends TestCase
     public function testClearCollection(): void
     {
         $collection = new ListenerCollection();
-        $collection->add(fn() => null)->add(fn() => null);
+        $collection->add(fn () => null)->add(fn () => null);
 
         $result = $collection->clear();
 
@@ -54,8 +54,8 @@ class ListenerCollectionTest extends TestCase
     public function testIterator(): void
     {
         $collection = new ListenerCollection();
-        $listener1 = fn() => null;
-        $listener2 = fn() => null;
+        $listener1 = fn () => null;
+        $listener2 = fn () => null;
 
         $collection->add($listener1)->add($listener2);
 
@@ -72,9 +72,9 @@ class ListenerCollectionTest extends TestCase
         $collection = new ListenerCollection();
 
         $result = $collection
-            ->add(fn() => null)
-            ->add(fn() => null)
-            ->add(fn() => null);
+            ->add(fn () => null)
+            ->add(fn () => null)
+            ->add(fn () => null);
 
         $this->assertSame($collection, $result);
         $this->assertEquals(3, $collection->count());

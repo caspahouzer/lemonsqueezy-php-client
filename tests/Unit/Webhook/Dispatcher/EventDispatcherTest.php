@@ -59,7 +59,7 @@ class EventDispatcherTest extends TestCase
 
     public function testDispatchWithListenerClass(): void
     {
-        $listener = new class implements EventListenerInterface {
+        $listener = new class () implements EventListenerInterface {
             public $handled = false;
 
             public function handle(\LemonSqueezy\Webhook\Event\EventInterface $event): void

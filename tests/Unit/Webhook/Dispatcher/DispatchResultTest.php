@@ -20,7 +20,7 @@ class DispatchResultTest extends TestCase
     public function testRecordSuccess(): void
     {
         $result = new DispatchResult('order.created');
-        $handler = fn() => null;
+        $handler = fn () => null;
 
         $result->recordSuccess($handler, 'result');
 
@@ -31,7 +31,7 @@ class DispatchResultTest extends TestCase
     public function testRecordFailure(): void
     {
         $result = new DispatchResult('order.created');
-        $handler = fn() => null;
+        $handler = fn () => null;
         $error = new \Exception('Test error');
 
         $result->recordFailure($handler, $error);
@@ -45,7 +45,7 @@ class DispatchResultTest extends TestCase
     public function testAllSucceeded(): void
     {
         $result = new DispatchResult('order.created', 1);
-        $result->recordSuccess(fn() => null);
+        $result->recordSuccess(fn () => null);
 
         $this->assertTrue($result->allSucceeded());
     }
@@ -53,8 +53,8 @@ class DispatchResultTest extends TestCase
     public function testAllSucceededWithFailures(): void
     {
         $result = new DispatchResult('order.created', 2);
-        $result->recordSuccess(fn() => null);
-        $result->recordFailure(fn() => null, new \Exception('error'));
+        $result->recordSuccess(fn () => null);
+        $result->recordFailure(fn () => null, new \Exception('error'));
 
         $this->assertFalse($result->allSucceeded());
     }
@@ -69,8 +69,8 @@ class DispatchResultTest extends TestCase
     public function testConvertToArray(): void
     {
         $result = new DispatchResult('order.created', 2);
-        $result->recordSuccess(fn() => null);
-        $result->recordFailure(fn() => null, new \Exception('test error'));
+        $result->recordSuccess(fn () => null);
+        $result->recordFailure(fn () => null, new \Exception('test error'));
 
         $array = $result->toArray();
 
@@ -85,7 +85,7 @@ class DispatchResultTest extends TestCase
 
     public function testFluentInterface(): void
     {
-        $handler = fn() => null;
+        $handler = fn () => null;
         $result = (new DispatchResult('order.created'))
             ->recordSuccess($handler)
             ->recordSuccess($handler)
@@ -98,7 +98,7 @@ class DispatchResultTest extends TestCase
     public function testSerializeClosureHandler(): void
     {
         $result = new DispatchResult('order.created');
-        $closure = fn() => null;
+        $closure = fn () => null;
         $result->recordFailure($closure, new \Exception('error'));
 
         $array = $result->toArray();

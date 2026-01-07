@@ -11,7 +11,7 @@ class EventRegistryTest extends TestCase
     public function testRegisterListener(): void
     {
         $registry = new EventRegistry();
-        $listener = fn() => null;
+        $listener = fn () => null;
 
         $result = $registry->register('order.created', $listener);
 
@@ -22,8 +22,8 @@ class EventRegistryTest extends TestCase
     public function testGetListeners(): void
     {
         $registry = new EventRegistry();
-        $listener1 = fn() => null;
-        $listener2 = fn() => null;
+        $listener1 = fn () => null;
+        $listener2 = fn () => null;
 
         $registry->register('order.created', $listener1);
         $registry->register('order.created', $listener2);
@@ -48,7 +48,7 @@ class EventRegistryTest extends TestCase
         $registry = new EventRegistry();
         $this->assertFalse($registry->hasListeners('order.created'));
 
-        $registry->register('order.created', fn() => null);
+        $registry->register('order.created', fn () => null);
         $this->assertTrue($registry->hasListeners('order.created'));
     }
 
@@ -56,8 +56,8 @@ class EventRegistryTest extends TestCase
     {
         $registry = new EventRegistry();
 
-        $registry->register('order.created', fn() => null);
-        $registry->register('subscription.updated', fn() => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('subscription.updated', fn () => null);
 
         $types = $registry->getEventTypes();
 
@@ -69,8 +69,8 @@ class EventRegistryTest extends TestCase
     public function testClearAll(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn() => null);
-        $registry->register('subscription.updated', fn() => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('subscription.updated', fn () => null);
 
         $this->assertEquals(2, count($registry->getEventTypes()));
 
@@ -83,8 +83,8 @@ class EventRegistryTest extends TestCase
     public function testClearEvent(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn() => null);
-        $registry->register('subscription.updated', fn() => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('subscription.updated', fn () => null);
 
         $registry->clearEvent('order.created');
 
@@ -95,9 +95,9 @@ class EventRegistryTest extends TestCase
     public function testCountListeners(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn() => null);
-        $registry->register('order.created', fn() => null);
-        $registry->register('subscription.updated', fn() => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('subscription.updated', fn () => null);
 
         $this->assertEquals(2, $registry->countListeners('order.created'));
         $this->assertEquals(1, $registry->countListeners('subscription.updated'));
@@ -107,9 +107,9 @@ class EventRegistryTest extends TestCase
     public function testCountAll(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn() => null);
-        $registry->register('order.created', fn() => null);
-        $registry->register('subscription.updated', fn() => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('subscription.updated', fn () => null);
 
         $this->assertEquals(3, $registry->countAll());
     }
@@ -117,8 +117,8 @@ class EventRegistryTest extends TestCase
     public function testGetAll(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn() => null);
-        $registry->register('subscription.updated', fn() => null);
+        $registry->register('order.created', fn () => null);
+        $registry->register('subscription.updated', fn () => null);
 
         $all = $registry->all();
 
@@ -132,9 +132,9 @@ class EventRegistryTest extends TestCase
         $registry = new EventRegistry();
 
         $result = $registry
-            ->register('order.created', fn() => null)
-            ->register('order.refunded', fn() => null)
-            ->register('subscription.updated', fn() => null);
+            ->register('order.created', fn () => null)
+            ->register('order.refunded', fn () => null)
+            ->register('subscription.updated', fn () => null);
 
         $this->assertSame($registry, $result);
         $this->assertEquals(3, count($registry->getEventTypes()));
