@@ -10,25 +10,25 @@ class ListenerCollectionTest extends TestCase
     public function testAddListener(): void
     {
         $collection = new ListenerCollection();
-        $listener = fn () => null;
+        $listener = fn() => null;
 
         $result = $collection->add($listener);
 
         $this->assertSame($collection, $result);
-        $this->assertEqual(1, $collection->count());
+        $this->assertEquals(1, $collection->count());
         $this->assertFalse($collection->isEmpty());
     }
 
     public function testGetAllListeners(): void
     {
         $collection = new ListenerCollection();
-        $listener1 = fn () => null;
-        $listener2 = fn () => null;
+        $listener1 = fn() => null;
+        $listener2 = fn() => null;
 
         $collection->add($listener1)->add($listener2);
 
         $listeners = $collection->all();
-        $this->assertEqual([$listener1, $listener2], $listeners);
+        $this->assertEquals([$listener1, $listener2], $listeners);
     }
 
     public function testEmptyCollection(): void
@@ -36,26 +36,26 @@ class ListenerCollectionTest extends TestCase
         $collection = new ListenerCollection();
 
         $this->assertTrue($collection->isEmpty());
-        $this->assertEqual(0, $collection->count());
+        $this->assertEquals(0, $collection->count());
     }
 
     public function testClearCollection(): void
     {
         $collection = new ListenerCollection();
-        $collection->add(fn () => null)->add(fn () => null);
+        $collection->add(fn() => null)->add(fn() => null);
 
         $result = $collection->clear();
 
         $this->assertSame($collection, $result);
         $this->assertTrue($collection->isEmpty());
-        $this->assertEqual(0, $collection->count());
+        $this->assertEquals(0, $collection->count());
     }
 
     public function testIterator(): void
     {
         $collection = new ListenerCollection();
-        $listener1 = fn () => null;
-        $listener2 = fn () => null;
+        $listener1 = fn() => null;
+        $listener2 = fn() => null;
 
         $collection->add($listener1)->add($listener2);
 
@@ -64,7 +64,7 @@ class ListenerCollectionTest extends TestCase
             $listeners[] = $listener;
         }
 
-        $this->assertEqual([$listener1, $listener2], $listeners);
+        $this->assertEquals([$listener1, $listener2], $listeners);
     }
 
     public function testFluentInterface(): void
@@ -72,11 +72,11 @@ class ListenerCollectionTest extends TestCase
         $collection = new ListenerCollection();
 
         $result = $collection
-            ->add(fn () => null)
-            ->add(fn () => null)
-            ->add(fn () => null);
+            ->add(fn() => null)
+            ->add(fn() => null)
+            ->add(fn() => null);
 
         $this->assertSame($collection, $result);
-        $this->assertEqual(3, $collection->count());
+        $this->assertEquals(3, $collection->count());
     }
 }

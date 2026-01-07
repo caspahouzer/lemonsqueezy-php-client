@@ -14,7 +14,7 @@ class EventMetadataTest extends TestCase
 
         $this->assertSame($now, $metadata->getReceivedAt());
         $this->assertFalse($metadata->isVerified());
-        $this->assertEqual('sha256', $metadata->getAlgorithm());
+        $this->assertEquals('sha256', $metadata->getAlgorithm());
         $this->assertNull($metadata->getExecutionInfo());
     }
 
@@ -33,7 +33,7 @@ class EventMetadataTest extends TestCase
         $info = ['handlers' => 2, 'duration_ms' => 125];
 
         $metadata->setExecutionInfo($info);
-        $this->assertEqual($info, $metadata->getExecutionInfo());
+        $this->assertEquals($info, $metadata->getExecutionInfo());
     }
 
     public function testConvertToArray(): void
@@ -44,7 +44,7 @@ class EventMetadataTest extends TestCase
         $array = $metadata->toArray();
 
         $this->assertTrue($array['is_verified']);
-        $this->assertEqual('sha256', $array['algorithm']);
+        $this->assertEquals('sha256', $array['algorithm']);
         $this->assertStringContainsString('2026-01-06', $array['received_at']);
     }
 

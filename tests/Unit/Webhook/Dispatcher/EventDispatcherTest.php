@@ -36,7 +36,7 @@ class EventDispatcherTest extends TestCase
 
         $this->assertTrue($called);
         $this->assertTrue($result->allSucceeded());
-        $this->assertEqual(1, $result->getHandlerCount());
+        $this->assertEquals(1, $result->getHandlerCount());
     }
 
     public function testDispatchWithMultipleListeners(): void
@@ -54,7 +54,7 @@ class EventDispatcherTest extends TestCase
         $dispatcher = new EventDispatcher();
         $dispatcher->dispatch($this->event);
 
-        $this->assertEqual(['handler1', 'handler2'], $calls);
+        $this->assertEquals(['handler1', 'handler2'], $calls);
     }
 
     public function testDispatchWithListenerClass(): void
@@ -86,8 +86,8 @@ class EventDispatcherTest extends TestCase
         $result = $dispatcher->dispatch($this->event);
 
         $this->assertTrue($result->hasFailures());
-        $this->assertEqual(1, $result->getFailureCount());
-        $this->assertEqual(0, $result->getSuccessCount());
+        $this->assertEquals(1, $result->getFailureCount());
+        $this->assertEquals(0, $result->getSuccessCount());
     }
 
     public function testDispatchContinuesAfterFailure(): void
@@ -106,9 +106,9 @@ class EventDispatcherTest extends TestCase
         $result = $dispatcher->dispatch($this->event);
 
         // Second handler should still be called despite first handler failure
-        $this->assertEqual(['second_handler'], $calls);
-        $this->assertEqual(1, $result->getFailureCount());
-        $this->assertEqual(1, $result->getSuccessCount());
+        $this->assertEquals(['second_handler'], $calls);
+        $this->assertEquals(1, $result->getFailureCount());
+        $this->assertEquals(1, $result->getSuccessCount());
     }
 
     public function testHasListeners(): void
@@ -143,8 +143,8 @@ class EventDispatcherTest extends TestCase
         $dispatcher = new EventDispatcher();
         $result = $dispatcher->dispatch($this->event);
 
-        $this->assertEqual('order.created', $result->getEventType());
-        $this->assertEqual(1, $result->getHandlerCount());
+        $this->assertEquals('order.created', $result->getEventType());
+        $this->assertEquals(1, $result->getHandlerCount());
         $this->assertTrue($result->allSucceeded());
     }
 

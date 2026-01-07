@@ -5,6 +5,17 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-01-07
+
+### Fixed
+
+-   **Webhook Event Listener Tests** - Fixed test suite issues:
+    -   Fixed fluent interface syntax by wrapping `new` expression in parentheses
+    -   Fixed all test assertions from `assertEqual()` to `assertEquals()` (PHPUnit compatibility)
+    -   Added `IteratorAggregate` interface to `ListenerCollection` for proper foreach support
+    -   Fixed test object instantiation to use `stdClass` instead of anonymous class
+    -   All 199 unit and integration tests now pass successfully
+
 ## [1.3.0] - 2026-01-07
 
 ### Added

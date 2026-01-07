@@ -57,13 +57,13 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
 
         // Verify
         $this->assertTrue($result->allSucceeded());
-        $this->assertEqual(2, $result->getHandlerCount());
-        $this->assertEqual(2, $result->getSuccessCount());
-        $this->assertEqual(0, $result->getFailureCount());
+        $this->assertEquals(2, $result->getHandlerCount());
+        $this->assertEquals(2, $result->getSuccessCount());
+        $this->assertEquals(0, $result->getFailureCount());
 
         // Verify handlers were called
         $this->assertArrayHasKey('order_created', $events);
-        $this->assertEqual('order.created', $events['order_created']['type']);
+        $this->assertEquals('order.created', $events['order_created']['type']);
     }
 
     public function testMultipleEventTypes(): void
@@ -96,7 +96,7 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
         $dispatcher->dispatch(WebhookEvent::fromArray($payload3));
 
         // Verify all events were dispatched
-        $this->assertEqual(['order.created', 'subscription.updated', 'subscription.expired'], $events);
+        $this->assertEquals(['order.created', 'subscription.updated', 'subscription.expired'], $events);
     }
 
     public function testEventWithFailureHandling(): void
@@ -125,13 +125,13 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
         $result = $dispatcher->dispatch($event);
 
         // Verify
-        $this->assertEqual(3, $result->getHandlerCount());
-        $this->assertEqual(2, $result->getSuccessCount());
-        $this->assertEqual(1, $result->getFailureCount());
+        $this->assertEquals(3, $result->getHandlerCount());
+        $this->assertEquals(2, $result->getSuccessCount());
+        $this->assertEquals(1, $result->getFailureCount());
         $this->assertTrue($result->hasFailures());
 
         // Handlers before and after failure should still execute
-        $this->assertEqual(['handler1_success', 'handler3_success'], $results);
+        $this->assertEquals(['handler1_success', 'handler3_success'], $results);
     }
 
     public function testEventMetadataTracking(): void
@@ -153,7 +153,7 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
         // Verify metadata
         $metadata = $event->getMetadata();
         $this->assertTrue($metadata->isVerified());
-        $this->assertEqual('sha256', $metadata->getAlgorithm());
+        $this->assertEquals('sha256', $metadata->getAlgorithm());
         $this->assertNotNull($metadata->getReceivedAt());
     }
 
@@ -177,13 +177,13 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
         // Convert to array for debugging/logging
         $resultArray = $result->toArray();
 
-        $this->assertEqual('order.created', $resultArray['event_type']);
-        $this->assertEqual(2, $resultArray['handler_count']);
-        $this->assertEqual(1, $resultArray['success_count']);
-        $this->assertEqual(1, $resultArray['failure_count']);
+        $this->assertEquals('order.created', $resultArray['event_type']);
+        $this->assertEquals(2, $resultArray['handler_count']);
+        $this->assertEquals(1, $resultArray['success_count']);
+        $this->assertEquals(1, $resultArray['failure_count']);
         $this->assertFalse($resultArray['all_succeeded']);
         $this->assertIsArray($resultArray['failures']);
-        $this->assertEqual('Test error', $resultArray['failures'][0]['error']['message']);
+        $this->assertEquals('Test error', $resultArray['failures'][0]['error']['message']);
     }
 
     public function testEventDataDeserialization(): void
@@ -193,8 +193,8 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
 
             // Verify data is accessible
             if (is_array($data)) {
-                $this->assertEqual('orders', $data['type']);
-                $this->assertEqual('ord-123', $data['id']);
+                $this->assertEquals('orders', $data['type']);
+                $this->assertEquals('ord-123', $data['id']);
             }
         });
 
@@ -226,8 +226,8 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
         $result = $dispatcher->dispatch($event);
 
         // Should not fail, just have no handlers
-        $this->assertEqual(0, $result->getHandlerCount());
-        $this->assertEqual(0, $result->getSuccessCount());
+        $this->assertEquals(0, $result->getHandlerCount());
+        $this->assertEquals(0, $result->getSuccessCount());
         $this->assertFalse($result->allSucceeded());
     }
 
@@ -256,9 +256,9 @@ class WebhookEventDispatcherIntegrationTest extends TestCase
         $dispatcher->dispatch($event);
 
         // Verify all data is accessible
-        $this->assertEqual('order.created', $capturedData['event_type']);
+        $this->assertEquals('order.created', $capturedData['event_type']);
         $this->assertIsArray($capturedData['payload']);
-        $this->assertEqual('orders', $capturedData['raw_data']['type']);
-        $this->assertEqual('wh-123', $capturedData['webhook_meta']['webhook_id']);
+        $this->assertEquals('orders', $capturedData['raw_data']['type']);
+        $this->assertEquals('wh-123', $capturedData['webhook_meta']['webhook_id']);
     }
 }

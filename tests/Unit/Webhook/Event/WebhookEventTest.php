@@ -37,7 +37,7 @@ class WebhookEventTest extends TestCase
     {
         $event = new WebhookEvent($this->jsonPayload);
 
-        $this->assertEqual('order.created', $event->getEventType());
+        $this->assertEquals('order.created', $event->getEventType());
         $this->assertIsArray($event->getPayload());
         $this->assertNotNull($event->getMetadata());
         $this->assertFalse($event->isVerified());
@@ -47,14 +47,14 @@ class WebhookEventTest extends TestCase
     {
         $event = new WebhookEvent($this->jsonPayload, 'custom.event');
 
-        $this->assertEqual('custom.event', $event->getEventType());
+        $this->assertEquals('custom.event', $event->getEventType());
     }
 
     public function testCreateFromArray(): void
     {
         $event = WebhookEvent::fromArray($this->samplePayload);
 
-        $this->assertEqual('order.created', $event->getEventType());
+        $this->assertEquals('order.created', $event->getEventType());
         $this->assertIsArray($event->getPayload());
     }
 
@@ -63,8 +63,8 @@ class WebhookEventTest extends TestCase
         $event = new WebhookEvent($this->jsonPayload);
         $data = $event->getRawData();
 
-        $this->assertEqual('orders', $data['type']);
-        $this->assertEqual('ord-123', $data['id']);
+        $this->assertEquals('orders', $data['type']);
+        $this->assertEquals('ord-123', $data['id']);
     }
 
     public function testGetIncluded(): void
@@ -80,8 +80,8 @@ class WebhookEventTest extends TestCase
         $event = new WebhookEvent($this->jsonPayload);
         $meta = $event->getWebhookMeta();
 
-        $this->assertEqual('order.created', $meta['event_name']);
-        $this->assertEqual('webhook-123', $meta['webhook_id']);
+        $this->assertEquals('order.created', $meta['event_name']);
+        $this->assertEquals('webhook-123', $meta['webhook_id']);
     }
 
     public function testMarkVerified(): void
@@ -109,7 +109,7 @@ class WebhookEventTest extends TestCase
         ];
 
         $event = WebhookEvent::fromArray($payload);
-        $this->assertEqual('subscription.updated', $event->getEventType());
+        $this->assertEquals('subscription.updated', $event->getEventType());
     }
 
     public function testUnknownEventType(): void
@@ -120,7 +120,7 @@ class WebhookEventTest extends TestCase
         ];
 
         $event = WebhookEvent::fromArray($payload);
-        $this->assertEqual('unknown', $event->getEventType());
+        $this->assertEquals('unknown', $event->getEventType());
     }
 
     public function testLazyDataDeserialization(): void
@@ -133,7 +133,7 @@ class WebhookEventTest extends TestCase
         $data2 = $event->getData();
 
         // Should be the same reference/value
-        $this->assertEqual($data1, $data2);
+        $this->assertEquals($data1, $data2);
     }
 
     public function testWithCustomMetadata(): void

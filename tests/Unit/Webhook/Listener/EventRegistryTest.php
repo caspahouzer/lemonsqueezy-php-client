@@ -11,7 +11,7 @@ class EventRegistryTest extends TestCase
     public function testRegisterListener(): void
     {
         $registry = new EventRegistry();
-        $listener = fn () => null;
+        $listener = fn() => null;
 
         $result = $registry->register('order.created', $listener);
 
@@ -22,8 +22,8 @@ class EventRegistryTest extends TestCase
     public function testGetListeners(): void
     {
         $registry = new EventRegistry();
-        $listener1 = fn () => null;
-        $listener2 = fn () => null;
+        $listener1 = fn() => null;
+        $listener2 = fn() => null;
 
         $registry->register('order.created', $listener1);
         $registry->register('order.created', $listener2);
@@ -31,7 +31,7 @@ class EventRegistryTest extends TestCase
         $listeners = $registry->getListeners('order.created');
 
         $this->assertInstanceOf(ListenerCollection::class, $listeners);
-        $this->assertEqual(2, $listeners->count());
+        $this->assertEquals(2, $listeners->count());
     }
 
     public function testGetNonExistentEvent(): void
@@ -48,7 +48,7 @@ class EventRegistryTest extends TestCase
         $registry = new EventRegistry();
         $this->assertFalse($registry->hasListeners('order.created'));
 
-        $registry->register('order.created', fn () => null);
+        $registry->register('order.created', fn() => null);
         $this->assertTrue($registry->hasListeners('order.created'));
     }
 
@@ -56,35 +56,35 @@ class EventRegistryTest extends TestCase
     {
         $registry = new EventRegistry();
 
-        $registry->register('order.created', fn () => null);
-        $registry->register('subscription.updated', fn () => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('subscription.updated', fn() => null);
 
         $types = $registry->getEventTypes();
 
         $this->assertContains('order.created', $types);
         $this->assertContains('subscription.updated', $types);
-        $this->assertEqual(2, count($types));
+        $this->assertEquals(2, count($types));
     }
 
     public function testClearAll(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn () => null);
-        $registry->register('subscription.updated', fn () => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('subscription.updated', fn() => null);
 
-        $this->assertEqual(2, count($registry->getEventTypes()));
+        $this->assertEquals(2, count($registry->getEventTypes()));
 
         $result = $registry->clear();
 
         $this->assertSame($registry, $result);
-        $this->assertEqual(0, count($registry->getEventTypes()));
+        $this->assertEquals(0, count($registry->getEventTypes()));
     }
 
     public function testClearEvent(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn () => null);
-        $registry->register('subscription.updated', fn () => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('subscription.updated', fn() => null);
 
         $registry->clearEvent('order.created');
 
@@ -95,34 +95,34 @@ class EventRegistryTest extends TestCase
     public function testCountListeners(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn () => null);
-        $registry->register('order.created', fn () => null);
-        $registry->register('subscription.updated', fn () => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('subscription.updated', fn() => null);
 
-        $this->assertEqual(2, $registry->countListeners('order.created'));
-        $this->assertEqual(1, $registry->countListeners('subscription.updated'));
-        $this->assertEqual(0, $registry->countListeners('non.existent'));
+        $this->assertEquals(2, $registry->countListeners('order.created'));
+        $this->assertEquals(1, $registry->countListeners('subscription.updated'));
+        $this->assertEquals(0, $registry->countListeners('non.existent'));
     }
 
     public function testCountAll(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn () => null);
-        $registry->register('order.created', fn () => null);
-        $registry->register('subscription.updated', fn () => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('subscription.updated', fn() => null);
 
-        $this->assertEqual(3, $registry->countAll());
+        $this->assertEquals(3, $registry->countAll());
     }
 
     public function testGetAll(): void
     {
         $registry = new EventRegistry();
-        $registry->register('order.created', fn () => null);
-        $registry->register('subscription.updated', fn () => null);
+        $registry->register('order.created', fn() => null);
+        $registry->register('subscription.updated', fn() => null);
 
         $all = $registry->all();
 
-        $this->assertEqual(2, count($all));
+        $this->assertEquals(2, count($all));
         $this->assertArrayHasKey('order.created', $all);
         $this->assertArrayHasKey('subscription.updated', $all);
     }
@@ -132,11 +132,11 @@ class EventRegistryTest extends TestCase
         $registry = new EventRegistry();
 
         $result = $registry
-            ->register('order.created', fn () => null)
-            ->register('order.refunded', fn () => null)
-            ->register('subscription.updated', fn () => null);
+            ->register('order.created', fn() => null)
+            ->register('order.refunded', fn() => null)
+            ->register('subscription.updated', fn() => null);
 
         $this->assertSame($registry, $result);
-        $this->assertEqual(3, count($registry->getEventTypes()));
+        $this->assertEquals(3, count($registry->getEventTypes()));
     }
 }

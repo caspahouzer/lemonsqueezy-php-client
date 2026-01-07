@@ -8,7 +8,7 @@ namespace LemonSqueezy\Webhook\Listener;
  * Provides a structured way to store listeners for a specific event type,
  * ensuring type safety and offering convenient iteration methods.
  */
-class ListenerCollection
+class ListenerCollection implements \IteratorAggregate
 {
     /**
      * @var array<callable|EventListenerInterface>
