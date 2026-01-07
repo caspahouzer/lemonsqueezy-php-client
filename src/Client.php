@@ -12,6 +12,8 @@ use LemonSqueezy\Batch\{BatchOperationExecutor, BatchResult};
 use LemonSqueezy\Batch\Operations\{BatchCreateOperation, BatchUpdateOperation, BatchDeleteOperation};
 use LemonSqueezy\Webhook\WebhookVerifier;
 use LemonSqueezy\Exception\WebhookVerificationException;
+use LemonSqueezy\Webhook\Dispatcher\EventDispatcher;
+use LemonSqueezy\Webhook\Event\EventInterface;
 use Psr\Http\Message\StreamInterface;
 use LemonSqueezy\Resource\{
     Users,
@@ -336,6 +338,55 @@ class Client
         string $algorithm = 'sha256'
     ): void {
         WebhookVerifier::verifyWithConfig($body, $signature, $this->config, $algorithm);
+    }
+
+    /**
+     * Verify webhook signature and dispatch the event to registered listeners
+     *
+     * Convenience method that verifies the webhook signature and then dispatches
+     * the event to all registered listeners in a single operation.
+     *
+     * Example usage:
+     * ```php
+     * use LemonSqueezy\Webhook\Event\WebhookEvent;
+     *
+     * $body = file_get_contents('php://input');
+     * $signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+     *
+     * try {
+     *     $event = new WebhookEvent($body);
+     *     $result = $client->dispatchWebhookEvent($body, $signature, $event);
+     *
+     *     if ($result->hasFailures()) {
+     *         http_response_code(202); // Accepted but some handlers failed
+     *     }
+     * } catch (WebhookVerificationException $e) {
+     *     http_response_code(401);
+     * }
+     * ```
+     *
+     * @param string|StreamInterface $body The webhook request body
+     * @param string $signature The signature from webhook header
+     * @param EventInterface $event The webhook event to dispatch
+     * @param string $algorithm The hash algorithm to use (default: sha256)
+     * @return \LemonSqueezy\Webhook\Dispatcher\DispatchResult The dispatch result
+     * @throws WebhookVerificationException If webhook signature verification fails
+     */
+    public function dispatchWebhookEvent(
+        string|StreamInterface $body,
+        string $signature,
+        EventInterface $event,
+        string $algorithm = 'sha256'
+    ): \LemonSqueezy\Webhook\Dispatcher\DispatchResult {
+        // Verify the webhook signature first
+        $this->verifyWebhookSignature($body, $signature, $algorithm);
+
+        // Mark event as verified
+        $event->markVerified();
+
+        // Dispatch to registered listeners
+        $dispatcher = new EventDispatcher();
+        return $dispatcher->dispatch($event);
     }
 
     /**

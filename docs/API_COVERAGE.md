@@ -191,6 +191,15 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 -   [x] Request Timeout Config
 -   [x] Retry Support (Framework Ready)
 
+### Webhook Features
+
+-   [x] Webhook Event Dispatcher
+-   [x] Listener Registration (Closures & Classes)
+-   [x] HMAC-SHA256 Signature Verification
+-   [x] Event Metadata Tracking
+-   [x] Error Resilience
+-   [x] Dispatch Result Tracking
+
 ---
 
 ## Summary
@@ -233,14 +242,16 @@ This document provides a detailed checklist of all LemonSqueezy API endpoints an
 
 2. **License Keys**: The License API is a special **public API** that doesn't require authentication.
 
-3. **Middleware Ready**: The framework is ready for additional middleware like:
+3. **Webhook Listeners**: The framework includes a built-in event dispatcher for handling webhooks. See [WEBHOOKS.md](WEBHOOKS.md) for detailed webhook listener documentation.
+
+4. **Middleware Ready**: The framework is ready for additional middleware like:
 
     - Caching
     - Logging
     - Retries
     - Request/Response Transformation
 
-4. **Framework Extensible**: You can extend resources and add custom methods by extending `AbstractResource`.
+5. **Framework Extensible**: You can extend resources and add custom methods by extending `AbstractResource`.
 
 ---
 
@@ -463,7 +474,7 @@ $invoice = $client->subscriptionInvoices()->generateInvoice('sub-inv-123');
 
 ---
 
-**Last Updated**: January 5, 2026
-**Package Version**: 1.1.1
+**Last Updated**: January 7, 2026
+**Package Version**: 1.2.2
 **API Version**: LemonSqueezy REST API v1
-**New in 1.1.1**: Special API operations (invoices, refunds, cancellation, usage tracking)
+**New in 1.2.2**: Webhook Event Listener System with Event Dispatcher and Listener Registration

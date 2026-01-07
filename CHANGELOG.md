@@ -5,6 +5,111 @@ All notable changes to the LemonSqueezy PHP API Client are documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-01-07
+
+### Added
+
+-   **Webhook Event Listener System** - Complete event dispatcher and listener system for handling webhooks:
+
+    -   `EventDispatcher` - Central hub for listener registration and event dispatching with static and instance APIs
+    -   `EventInterface` - Contract for webhook events with support for event type, payload, metadata, and data access
+    -   `WebhookEvent` - Concrete implementation wrapping JSON:API formatted webhook payloads
+    -   `EventMetadata` - Tracks verification status, timestamps, and execution information
+    -   `EventListenerInterface` - Contract for event handlers supporting closures and classes
+    -   `ListenerCollection` - Type-safe storage for registered listeners
+    -   `EventRegistry` - Manages listener registrations by event type
+    -   `DispatchResult` - Detailed result tracking with success/failure information
+    -   `EventPayloadDeserializer` - Converts JSON:API types to entity models
+    -   `EntityHydrator` - Model instantiation utilities
+
+-   **Event Dispatcher Features**:
+
+    -   Register listeners as closures or classes implementing `EventListenerInterface`
+    -   Register multiple listeners for the same event
+    -   Automatic webhook signature verification before event dispatch
+    -   Error resilience: handler failures don't prevent other handlers from executing
+    -   Event metadata with verification status, timestamps, and execution details
+    -   Fluent API for listener registration and registry management
+    -   Static methods for convenient global listener registration
+    -   Instance methods for isolated listener management
+
+-   **Exception Classes**:
+
+    -   `EventDispatcherException` - Base exception for dispatcher errors
+    -   `ListenerException` - Listener execution failures
+    -   `InvalidEventException` - Invalid event data
+    -   `UnregisteredEventException` - No listeners registered for event
+
+-   **Client Integration**:
+
+    -   New `Client::dispatchWebhookEvent()` method for verifying signature and dispatching in one call
+    -   Automatic event verification marking
+    -   Seamless integration with existing webhook verification system
+
+-   **Documentation**:
+
+    -   Moved `API_COVERAGE.md` to `docs/` directory
+    -   Created comprehensive `docs/WEBHOOKS.md` guide with:
+        -   Quick start guide
+        -   Listener registration patterns (closures and classes)
+        -   Complete event type reference
+        -   Error handling and dispatch results
+        -   Signature verification details
+        -   Advanced usage with custom registries
+        -   Testing strategies and examples
+        -   Best practices and troubleshooting
+        -   Real-world examples for orders, subscriptions, and licenses
+    -   Updated README.md with webhook event listeners section
+    -   Added webhook listener example to documentation structure
+
+-   **Examples**:
+
+    -   Created `examples/webhook_listener.php` with 8 comprehensive demonstrations:
+        -   Closure-based listener registration
+        -   Listener class implementation
+        -   Multiple listeners for single event
+        -   Complete webhook processing flow
+        -   HTTP webhook endpoint handling (code reference)
+        -   Error handling with dispatch results
+        -   Processing multiple event types
+        -   Event data and metadata access
+
+-   **Comprehensive Testing**:
+
+    -   **Unit Tests** (6 test files, 30+ test cases):
+        -   `WebhookEventTest` - Event creation, data access, metadata tracking
+        -   `EventMetadataTest` - Metadata functionality and serialization
+        -   `EventDispatcherTest` - Listener registration, dispatch execution, error handling
+        -   `DispatchResultTest` - Result tracking with success/failure details
+        -   `ListenerCollectionTest` - Type-safe listener storage
+        -   `EventRegistryTest` - Listener registration and retrieval
+    -   **Integration Tests**:
+        -   `WebhookEventDispatcherIntegrationTest` - Full webhook flow with signature verification and dispatch
+        -   Multiple event type handling
+        -   Error recovery and continuation
+        -   Metadata tracking
+        -   Data deserialization
+
+### Technical Details
+
+-   Framework-agnostic design with zero extra dependencies
+-   Uses only PSR interfaces and existing framework code
+-   Backward compatible: no breaking changes
+-   Type-safe with proper interface contracts
+-   Fluent APIs consistent with existing framework patterns
+-   Full test coverage for all components
+-   Comprehensive documentation with examples
+-   Production-ready implementation
+
+### Supported Webhook Events
+
+All 15 LemonSqueezy webhook events are supported:
+
+-   **Orders**: `order.created`, `order.refunded`
+-   **Subscriptions**: `subscription.created`, `subscription.updated`, `subscription.expired`, `subscription.cancelled`
+-   **License Keys**: `license-key.created`, `license-key.updated`, `license-key.expired`
+-   **Invoices**: `subscription-invoice.created`, `subscription-invoice.paid`, `subscription-invoice.past-due`, `subscription-invoice.payment-attempt-failed`, `subscription-invoice.refunded`
+
 ## [1.2.2] - 2026-01-06
 
 ### Removed

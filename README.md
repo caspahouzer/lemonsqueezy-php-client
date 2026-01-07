@@ -16,6 +16,7 @@ A modern, PSR-4 compliant PHP API client for the [LemonSqueezy](https://www.lemo
 -   ✅ Middleware-based request pipeline
 -   ✅ JSON:API spec compliance
 -   ✅ Webhook signature verification (HMAC-SHA256 with timing-safe comparison)
+-   ✅ Webhook event listeners with dispatcher system
 -   ✅ Batch operations for efficient bulk processing
 -   ✅ Framework-agnostic (works with any PHP project)
 -   ✅ Zero production dependencies (optional Guzzle fallback)
@@ -142,7 +143,7 @@ The client provides access to **all 19 documented LemonSqueezy API resources**. 
 | Affiliates            | list, get                          | `/affiliates`            | Read-only                                   |
 | Usage Records         | list, get, create                  | `/usage-records`         | **Supports create only (no update/delete)** |
 
-**→ See [API_COVERAGE.md](API_COVERAGE.md) for complete endpoint checklist with all methods and accurate API capability mapping**
+**→ See [docs/API_COVERAGE.md](docs/API_COVERAGE.md) for complete endpoint checklist with all methods and accurate API capability mapping**
 
 ## Query Building
 
@@ -224,11 +225,11 @@ try {
     $client->checkouts()->update('checkout-123', [...]);       // UnsupportedOperationException
 } catch (UnsupportedOperationException $e) {
     echo "This operation is not supported by the API: " . $e->getMessage();
-    // Check API_COVERAGE.md for which operations each resource supports
+    // Check docs/API_COVERAGE.md for which operations each resource supports
 }
 ```
 
-**Note:** Supported write operations are clearly marked in the [Available Resources](#available-resources) table above and in [API_COVERAGE.md](API_COVERAGE.md).
+**Note:** Supported write operations are clearly marked in the [Available Resources](#available-resources) table above and in [docs/API_COVERAGE.md](docs/API_COVERAGE.md).
 
 ### Special API Operations
 
@@ -252,7 +253,7 @@ $subscription = $client->subscriptions()->cancelSubscription('sub-456', [
 $usage = $client->subscriptionItems()->getCurrentUsage('sub-item-789');
 ```
 
-See [API_COVERAGE.md](API_COVERAGE.md#special-api-operations--) for all available special operations.
+See [docs/API_COVERAGE.md](docs/API_COVERAGE.md#special-api-operations--) for all available special operations.
 
 ## Batch Operations
 
@@ -573,6 +574,100 @@ try {
 -   **Timing-Safe Comparison**: Uses `hash_equals()` to prevent timing-based attacks
 -   **Hex Digest Format**: Matches LemonSqueezy's standard webhook signature format
 -   **Format Validation**: Validates signatures are 64-character hex strings
+
+## Webhook Event Listeners
+
+The framework includes a powerful event dispatcher system for handling webhooks. Register listeners for specific webhook events and they will be automatically executed when webhooks are received.
+
+### Quick Start
+
+```php
+use LemonSqueezy\Webhook\Dispatcher\EventDispatcher;
+use LemonSqueezy\Webhook\Event\WebhookEvent;
+
+// Register a listener for order creation
+EventDispatcher::register('order.created', function($event) {
+    $data = $event->getData();
+    // Save order, send confirmation email, etc.
+    echo "New order: {$data['id']}";
+});
+
+// In your webhook endpoint:
+$body = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+
+try {
+    $event = new WebhookEvent($body);
+    $result = $client->dispatchWebhookEvent($body, $signature, $event);
+
+    if ($result->hasFailures()) {
+        http_response_code(202); // Accepted with some failures
+    } else {
+        http_response_code(200);
+    }
+} catch (WebhookVerificationException $e) {
+    http_response_code(401);
+}
+```
+
+### Features
+
+-   **Event Dispatcher**: Central hub for listener registration and event dispatch
+-   **Closure & Class Listeners**: Use closures for simple handlers or implement `EventListenerInterface` for complex logic
+-   **Automatic Verification**: Webhook signature is automatically verified before dispatch
+-   **Error Resilience**: Failures in one handler don't prevent others from executing
+-   **Event Metadata**: Access verification status, timestamps, and raw webhook data
+-   **Type-Safe**: Listener collections and registries prevent accidental misuse
+
+### Supported Events
+
+All LemonSqueezy webhook events are supported:
+
+-   **Orders**: `order.created`, `order.refunded`
+-   **Subscriptions**: `subscription.created`, `subscription.updated`, `subscription.expired`, `subscription.cancelled`
+-   **License Keys**: `license-key.created`, `license-key.updated`, `license-key.expired`
+-   **Invoices**: `subscription-invoice.created`, `subscription-invoice.paid`, `subscription-invoice.past-due`, `subscription-invoice.payment-attempt-failed`, `subscription-invoice.refunded`
+
+**→ See [docs/WEBHOOKS.md](docs/WEBHOOKS.md) for comprehensive webhook listener documentation with examples**
+
+### Examples
+
+**Using Closures:**
+
+```php
+EventDispatcher::register('subscription.updated', function($event) {
+    $subscription = $event->getData();
+    // Update subscription in your database
+});
+```
+
+**Using Listener Classes:**
+
+```php
+use LemonSqueezy\Webhook\Listener\EventListenerInterface;
+use LemonSqueezy\Webhook\Event\EventInterface;
+
+class OrderCreatedListener implements EventListenerInterface {
+    public function handle(EventInterface $event): void {
+        $data = $event->getData();
+        // Process order creation
+    }
+}
+
+EventDispatcher::register('order.created', new OrderCreatedListener());
+```
+
+**Multiple Listeners for One Event:**
+
+```php
+EventDispatcher::register('order.created', new SaveOrderListener());
+EventDispatcher::register('order.created', new SendEmailListener());
+EventDispatcher::register('order.created', new LogAnalyticsListener());
+```
+
+### Example: Complete Webhook Endpoint
+
+See [examples/webhook_listener.php](examples/webhook_listener.php) for a complete working example.
 
 ## Response Models
 
