@@ -54,7 +54,7 @@
         "stan": "phpstan analyse src",
         "cs:check": "php-cs-fixer fix --dry-run --diff --config .php-cs-fixer.dist.php",
         "cs:fix": "php-cs-fixer fix --config .php-cs-fixer.dist.php",
-        "test": "phpunit --testsuite Unit",
+        "test": "composer cs:fix && phpunit --testsuite Unit",
         "test:integration": "phpunit --testsuite Integration",
         "docs": "php generate-docs.php",
         "docs:watch": "./vendor/bin/phpdoc run -d src"
